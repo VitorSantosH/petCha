@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import "./LoginUser.css"
+import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
 
 import logoTitulo from '../../../assets/Layer 1.png';
 import img1 from '../../../assets/amico.png';
 import imgOlhoAberto from '../../../assets/olho-vermelhoAberto.png';
 import imgOlhoFechado from '../../../assets/olho-vermelho.png';
+import imglogoWhite from '../../../assets/logoWhite.png'
 
 
 const UseLoginState = () => {
@@ -13,27 +15,27 @@ const UseLoginState = () => {
     const [stateLogin, setStateLogin] = useState({
         stateTypePassword: true,
         stateEmailStyle: true,
-        emailValue:undefined,
+        emailValue: undefined,
+        display: "none"
 
     })
 
     useEffect(() => {
 
-        console.log(stateLogin.emailValue != undefined)
 
-        if(stateLogin.emailValue != "master@gmail.com" && stateLogin.emailValue  !== undefined  && stateLogin.emailValue  !== '' ) {
+        if (stateLogin.emailValue != "master@gmail.com" && stateLogin.emailValue !== undefined && stateLogin.emailValue !== '') {
             setStateLogin({
                 ...stateLogin,
-                stateEmailStyle: false 
+                stateEmailStyle: false
             })
         } else {
             setStateLogin({
                 ...stateLogin,
-                stateEmailStyle: true 
+                stateEmailStyle: true
             })
         }
 
-    }, [stateLogin.emailValue])
+    }, [stateLogin.emailValue, stateLogin.display])
 
     function chanceTypeInput() {
         setStateLogin({
@@ -49,10 +51,23 @@ const UseLoginState = () => {
         })
     }
 
+    function setDisplay(value) {
+       
+        setStateLogin({
+            ...stateLogin,
+            display: value
+        })
+    }
+    function ReqSenha() {
+        return  <RecuperarSenha display={stateLogin.display} setDisplay={setDisplay}/>
+    }
+
     return {
         stateLogin,
         chanceTypeInput,
-        changeEmailValue
+        changeEmailValue,
+        setDisplay,
+        ReqSenha
     }
 
 }
@@ -65,19 +80,25 @@ const LoginUser = () => {
     const {
         stateLogin,
         chanceTypeInput,
-        changeEmailValue,
+        changeEmailValue,        
+        setDisplay,
+        ReqSenha
 
     } = UseLoginState()
+   
 
-    console.log(stateLogin.emailValue)
 
     return (
         <div className="loginUser">
+           
+           {ReqSenha()}
 
             <div className="lado1">
                 <img src={logoTitulo} id='img1' alt="" />
-                <img src={img1}  id='img2' alt="" />
+                <img src={img1} id='img2' alt="" />
             </div>
+
+            <img src={imglogoWhite} id='logoWhiteLogin' alt="" />
 
             <div className="lado2">
 
@@ -91,18 +112,20 @@ const LoginUser = () => {
                         <label htmlFor="email">
                             E-mail
                         </label>
-                        <input 
-                            type="text" 
-                            name="email" 
-                            placeholder="Digite seu E-mail"   
-                            style={{'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
+                        <input
+                            type="text"
+                            name="email"
+                            placeholder="Digite seu E-mail"
+                            style={{ 'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
                             value={stateLogin.emailValue}
                             onChange={e => {
                                 console.log(stateLogin.emailValue)
                                 changeEmailValue(e.target.value)
                             }}
 
-                            />
+                        />
+
+                        <span className="spanErro"  style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B',  'display': stateLogin.stateEmailStyle ? 'none' : 'block'  }}> *Não existe uma conta com esse E-mail</span>
                     </div>
 
                     <div className="senhaLogin">
@@ -127,7 +150,12 @@ const LoginUser = () => {
 
                     </div>
 
-                    <div className="esqueciSenha">
+                    <div 
+                        className="esqueciSenha"
+                        onClick={e => {
+                            setDisplay('flex')
+                        }}
+                    >
                         <span>
                             Esqueci minha senha
                         </span>
@@ -141,7 +169,7 @@ const LoginUser = () => {
                         <span>
                             É logista e ainda não possue uma conta?
                         </span>
-                       
+
                         <hr />
                         <Link to='/cadastro' className="linkCriarConta">
                             Clique aqui e cadastre sua loja
@@ -149,7 +177,11 @@ const LoginUser = () => {
 
                     </div>
 
+
+
                 </div>
+
+                
 
             </div>
         </div>

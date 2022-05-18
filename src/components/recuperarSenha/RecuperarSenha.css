@@ -1,0 +1,172 @@
+.recuperarSenha {
+    display: flex;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9;
+    justify-content: center;
+    align-items: center;
+}
+
+.recuperarSenha h2 {
+    font-size: 30px;
+}
+
+.showBanner0, .showBanner1, .showBanner2, .showBanner3 {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    line-height: 28px;
+    border-radius: 10px;
+    border-top: 14px solid #FD9E02;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.showBanner0 {
+    box-sizing: border-box;
+    max-width: 690px;
+    height: 340px;
+}
+
+.showBanner0 .titulo {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.showBanner0 .titulo img {
+    position: relative;
+    left: -25%;
+}
+
+.showBanner0 span {
+    margin-top: 50px;
+    font-weight: 600;
+    line-height: 28px;
+    font-size: 22px;
+    padding: 10px;
+}
+
+.enviarEmailRec, .validarCodigo, .Prosseguir {
+    background-color: #FB8500;
+    height: 50px;
+    width: 86%;
+    margin-top: 30px;
+    border-radius: 7px;
+    color: white;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.showBanner1 {
+    padding: 20px;
+    border-top: 14px solid #56BC4F;
+
+}
+
+.iconsBanner1 {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+#btnCerto {
+    position: relative;
+    top: -15px;
+    margin-bottom: 30px;
+}
+
+.showBanner1 h2 {
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 33.6px;
+    margin-bottom: 30px;
+}
+
+.titleValidarCodigo {
+    display: flex;
+    margin-top: 34px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 32px;
+    margin-bottom: 30px;
+}
+#h2ShowBanner {
+
+    font-size:  36px;
+}
+
+#btnVoltarValidarCod {
+    position: relative;
+    left: -25%;
+}
+.titleValidarCodigo img {
+    position: relative;
+    left: -45%;
+}
+.showBanner2 {
+    padding: 20px;
+    height: 335px;
+    min-width: 500px;
+    
+}
+
+.basicInputContainer {
+   
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+        box-sizing: border-box;
+        align-items: center;
+
+ 
+}
+
+.basicInputContainer input {
+    
+    width: 80%;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    height: 40px;
+    padding: 5px;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 30px;
+    
+
+}
+.basicInputContainer  label {
+    width: 85%;
+    text-align: left;
+    opacity: 0.6;
+}
+.basicInputContainer img {
+    position: relative;
+    right: -35%;
+    top: -60px
+}
+
+.showBanner3 {
+    min-width: 500px;
+    padding: 20px;
+    box-sizing: border-box;
+}

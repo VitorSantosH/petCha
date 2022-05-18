@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: row;
     background: linear-gradient(91.09deg, #FB8500 0.3%, #FD9E02 100%);
+    overflow-x: scroll;
+
 }
 
 .lado1 {
@@ -46,6 +48,7 @@
     height: 600px;
     align-items: center;
     border-radius: 15px;
+    margin-bottom: 100px ;
 }
 
 .titulo {
@@ -71,7 +74,10 @@
     margin-bottom: 25px;
     border: 1px solid #BDBDBD;
     border-radius: 8px;
-    padding: 16px;
+    height: 40px;
+    padding: 5px;
+    padding-left: 16px;
+    padding-right: 16px;
 
 }
 
@@ -111,7 +117,12 @@
     justify-content: center;
     font-weight: 600;
     line-height: 21;
+    box-sizing: border-box;
+    overflow: hidden;
   
+}
+.fazerLoginBtn:active {
+    background-color: #FD9E02;
 }
 
 .linkCadastro {
@@ -130,6 +141,20 @@
     text-decoration-color: #FD9E02 ;
 }
 
+#logoWhiteLogin {
+    display: none;
+    height: auto;
+    max-width: 300px;
+    margin-top: 50px;
+}
+.spanErro {
+    position: relative;
+    margin-top: -15px;
+}
+
+.emailLogin, .senhaLogin, .fazerLoginBtn, .esqueciSenha {
+    width: 70%;
+}
 
 @media only screen and (max-width: 1500px) {
 
@@ -143,6 +168,9 @@
 
 @media only screen and (max-width: 1130px) {
     
+    #logoWhiteLogin {
+        display: block;
+    }
     .login {
         margin-top: 50px;
     }
@@ -151,6 +179,7 @@
         align-items: center;
     }
     .lado1  {
+        display: none;
         background-color: white;
         width: 100%;
         flex-direction: column;
@@ -168,5 +197,17 @@
         max-width: 660px;
     } 
    
+
+}
+
+@media only screen and (max-width: 800px) {
+    .lado2 {
+        width: 90%;
+        height: 600px;
+    }
+
+    .emailLogin, .senhaLogin, .fazerLoginBtn, .esqueciSenha {
+        width: 80%;
+    }
 
 }
