@@ -11,7 +11,11 @@ import {
 
 import LoginUser from "./components/logins/login_usuario/LoginUser";
 import HomeCliente from "./components/home/homeCliente/HomeCliente";
-import LoginMaster from "./components/logins/login_master/LoginMaster";
+import CadastrarLoja from "./components/cadastrarLoja/CadastrarLoja";
+import HomeEmployee from './components/home/homeEMPLOYEE/HomeEmployee';
+import HomePerfil from "./components/home/homePerfil/HomePerfil";
+
+import Teste from "./components/home/testeRedux";
 
 const Rotas = () => {
 
@@ -19,13 +23,18 @@ const Rotas = () => {
 
         <Router>
             <Routes>
-                <Route exact path="/loginMaster" element={<LoginMaster/>} />
-                <Route exact path="/homecliente" element={<HomeCliente/>} />
-                <Route exact path="/" element={<LoginUser/>}/>
+
+                <Route exact path="/homePerfil" element={<HomePerfil />} />
+                <Route exact path="/homeEmployee" element={<HomeEmployee />} />
+                <Route exact path="/teste" element={<Teste />} />
+                <Route exact path="/cadastrarLoja" element={<CadastrarLoja />} />
+                <Route exact path="/homecliente" element={<HomeCliente />} />
+                <Route exact path="/" element={<LoginUser />} />
                 <Route
                     path="*"
                     element={<Navigate to="/" replace />}
                 />
+
             </Routes>
         </Router>
 

@@ -46,6 +46,23 @@ const useRecSenha = (props) => {
 
     }
 
+    function resetState() {
+        setRecState({
+            stage: 0,
+            display: props.display,
+            inputNovaSenhaStyle: true,
+            inputOldSenhaStyle: true,
+            codigoStatus: true,
+            codigo: 'teste',
+            codInputValue: '',
+            codigoStatusMessage: false,
+            novaSenha: "",
+            confirmNovaSenha: "",
+            senhasBaten: undefined
+        })
+    }
+
+
     function changeStyleInput(n) {
 
         if (n === 0) {
@@ -298,6 +315,7 @@ const useRecSenha = (props) => {
 
                     <div className="Prosseguir" onClick={e => {
 
+                        resetState()
                         props.setDisplay('none')
 
                     }}>

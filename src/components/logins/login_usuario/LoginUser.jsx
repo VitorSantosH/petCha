@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
-import "./LoginUser.css"
+import { Link, useNavigate } from 'react-router-dom';
+import "./LoginUser.css";
+
+import conect from "../../../services/conect";
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
 
 import logoTitulo from '../../../assets/Layer 1.png';
@@ -15,10 +17,13 @@ const UseLoginState = () => {
     const [stateLogin, setStateLogin] = useState({
         stateTypePassword: true,
         stateEmailStyle: true,
-        emailValue: undefined,
-        display: "none"
+        emailValue: "",
+        display: "none",
+        isLog: false,
+        password: ""
 
     })
+    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -37,6 +42,34 @@ const UseLoginState = () => {
 
     }, [stateLogin.emailValue, stateLogin.display])
 
+
+    async function logar() {
+
+        const username = stateLogin.emailValue
+        const password = stateLogin.password
+        const response = await conect({ username, password })
+        const codAuth = response.data.results[0].usome.codAuthGroup
+
+        console.log(codAuth)
+
+        switch (codAuth) {
+            case 'EMPLOYEE':
+                return navigate('/homeEmployee')
+                break;
+            case 'CUSTOMER':
+                return navigate('/homeCliente')
+                break;
+            case 'STORE_MANAGER':
+                return navigate('/homePerfil')
+                break;
+            case 'OWNER':
+                return navigate('/homePerfil')
+                break;
+            default:
+                break;
+        }
+    }
+
     function chanceTypeInput() {
         setStateLogin({
             ...stateLogin,
@@ -52,14 +85,20 @@ const UseLoginState = () => {
     }
 
     function setDisplay(value) {
-       
+
         setStateLogin({
             ...stateLogin,
             display: value
         })
     }
     function ReqSenha() {
-        return  <RecuperarSenha display={stateLogin.display} setDisplay={setDisplay}/>
+        return <RecuperarSenha display={stateLogin.display} setDisplay={setDisplay} />
+    }
+    function setPassword(value) {
+        setStateLogin({
+            ...stateLogin,
+            password: value
+        })
     }
 
     return {
@@ -67,7 +106,10 @@ const UseLoginState = () => {
         chanceTypeInput,
         changeEmailValue,
         setDisplay,
-        ReqSenha
+        ReqSenha,
+        conect,
+        setPassword,
+        logar
     }
 
 }
@@ -80,18 +122,20 @@ const LoginUser = () => {
     const {
         stateLogin,
         chanceTypeInput,
-        changeEmailValue,        
+        changeEmailValue,
         setDisplay,
-        ReqSenha
+        ReqSenha,
+        logar,
+        setPassword
 
     } = UseLoginState()
-   
+
 
 
     return (
         <div className="loginUser">
-           
-           {ReqSenha()}
+
+            {ReqSenha()}
 
             <div className="lado1">
                 <img src={logoTitulo} id='img1' alt="" />
@@ -125,7 +169,7 @@ const LoginUser = () => {
 
                         />
 
-                        <span className="spanErro"  style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B',  'display': stateLogin.stateEmailStyle ? 'none' : 'block'  }}> *Não existe uma conta com esse E-mail</span>
+                        <span className="spanErro" style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B', 'display': stateLogin.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span>
                     </div>
 
                     <div className="senhaLogin">
@@ -134,7 +178,14 @@ const LoginUser = () => {
                             Senha
                         </label>
 
-                        <input type={stateLogin.stateTypePassword ? 'password' : "text"} name="senha" id="" placeholder="Digite seua senha" />
+                        <input
+                            type={stateLogin.stateTypePassword ? 'password' : "text"}
+                            name="senha"
+                            id=""
+                            placeholder="Digite seua senha"
+                            value={stateLogin.password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
 
                         <img
                             src={imgOlhoAberto}
@@ -150,7 +201,7 @@ const LoginUser = () => {
 
                     </div>
 
-                    <div 
+                    <div
                         className="esqueciSenha"
                         onClick={e => {
                             setDisplay('flex')
@@ -161,7 +212,10 @@ const LoginUser = () => {
                         </span>
                     </div>
 
-                    <div className="fazerLoginBtn">
+                    <div
+                        className="fazerLoginBtn"
+                        onClick={logar}
+                    >
                         Fazer Login
                     </div>
 
@@ -171,7 +225,7 @@ const LoginUser = () => {
                         </span>
 
                         <hr />
-                        <Link to='/cadastro' className="linkCriarConta">
+                        <Link to='/cadastrarLoja' className="linkCriarConta">
                             Clique aqui e cadastre sua loja
                         </Link>
 
@@ -181,7 +235,7 @@ const LoginUser = () => {
 
                 </div>
 
-                
+
 
             </div>
         </div>
