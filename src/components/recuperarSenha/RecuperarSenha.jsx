@@ -60,6 +60,7 @@ const useRecSenha = (props) => {
             confirmNovaSenha: "",
             senhasBaten: undefined
         })
+        props.setDisplay('none')
     }
 
 
@@ -134,7 +135,7 @@ const useRecSenha = (props) => {
 
 
                     <div className="titulo">
-                        <img src={btnVoltar} alt="" onClick={backStage} />
+                        <img src={btnVoltar} alt="" onClick={resetState} />
                         <h2>Recuperar Senha</h2>
                     </div>
                     <br />
@@ -158,7 +159,12 @@ const useRecSenha = (props) => {
 
                     <div className="iconsBanner1">
 
-                        <img src={btnFechar} id='btnFechar' alt="" />
+                        <img 
+                            src={btnFechar} 
+                            id='btnFechar' 
+                            alt="" 
+                            onClick={resetState}
+                        />
 
                     </div>
                     <img src={btnCrto} id='btnCerto' alt="" />
@@ -316,7 +322,7 @@ const useRecSenha = (props) => {
                     <div className="Prosseguir" onClick={e => {
 
                         resetState()
-                        props.setDisplay('none')
+                        
 
                     }}>
                         <span>Fechar</span>

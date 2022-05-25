@@ -17,6 +17,7 @@ const conect = async (props) => {
         }
     }).then(res => {
 
+        console.log(res)
         return res
 
     }).catch(err => {

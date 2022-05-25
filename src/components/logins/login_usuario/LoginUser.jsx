@@ -48,7 +48,14 @@ const UseLoginState = () => {
         const username = stateLogin.emailValue
         const password = stateLogin.password
         const response = await conect({ username, password })
-        const codAuth = response.data.results[0].usome.codAuthGroup
+
+        let codAuth
+
+        try {
+            codAuth = response.data.results[0].usome.codAuthGroup
+        } catch (error) {
+            console.log(error)
+        }
 
         console.log(codAuth)
 
