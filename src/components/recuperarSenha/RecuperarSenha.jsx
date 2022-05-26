@@ -138,13 +138,11 @@ const useRecSenha = (props) => {
                         <img src={btnVoltar} alt="" onClick={resetState} />
                         <h2>Recuperar Senha</h2>
                     </div>
-                    <br />
-                    <br />
+                   
                     <span>
                         Para recuperação de sua senha, enviaremos um código para o e-mail de cadastro para podermos validar sua conta.
                     </span>
-                    <br />
-                    <br />
+                   
                     <div className="enviarEmailRec" onClick={nextStage} >
 
                         Enviar código por e-mail

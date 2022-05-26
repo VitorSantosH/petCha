@@ -47,7 +47,7 @@ const UseLoginState = () => {
 
         const username = stateLogin.emailValue
         const password = stateLogin.password
-        const response = await conect({ username, password })
+        const response = await conect.login({ username, password })
 
         let codAuth
 

@@ -28,7 +28,7 @@
 .showBanner0 {
     box-sizing: border-box;
     max-width: 690px;
-    height: 340px;
+    min-height: 340px;
 }
 .showBanner4 {
     height: 270px;

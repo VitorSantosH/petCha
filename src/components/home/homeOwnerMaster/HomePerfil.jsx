@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './HomePerfil.css';
-
+import conect from '../../../services/conect';
 
 // componentes
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
-
+import EditarPerfil from "./EditarPerfil";
+import Perfil from "./Perfil";
 
 // imgs 
 import logo from '../../../assets/Layer 1.png';
@@ -13,15 +14,34 @@ import sinoIcon from '../../../assets/notification.png';
 import dashboardIcon from '../../../assets/dashboardIcon.png';
 import lojasIcon from '../../../assets/lojasIcon.png';
 import categoriasIcon from '../../../assets/categoriasIcon.png';
-
+import imgUser from '../../../assets/ftUser.png';
 
 
 const useHomeState = () => {
+
     const [homeState, setHomeState] = useState({
         display: "none",
+        user: {
+            name: 'Rafael Coimbra',
+            tel: "31 996400879",
+            email: 'rafael@gmail.com',
+            cep: '99999-88',
+            logradouro: 'Rua das Couves',
+            complemento: 'ao lado do...',
+            estado: "Sâo Paulo",
+            cidade: "São Paulo",
+            cargo: 'Master',
+            imgPerfil: imgUser
+
+
+        },
+        displayEditarPerfil: "none"
 
     })
 
+    useEffect(() => {
+       
+    }, [homeState.user])
 
     function setDisplay(value) {
 
@@ -31,14 +51,45 @@ const useHomeState = () => {
         })
     }
 
+    function setDisplayEditPerfil(value) {
+
+        setHomeState({
+            ...homeState,
+            displayEditarPerfil: value
+        })
+
+    }
+
+    function setUser(obj) {
+        
+        setHomeState({
+            ...homeState,
+            user: obj 
+        })
+
+    }
+
     function ReqSenha() {
         return <RecuperarSenha display={homeState.display} setDisplay={setDisplay} />
+    }
+    function EditarPerfilFunc() {
+        return (
+            <EditarPerfil
+                display={homeState.displayEditarPerfil}
+                setDisplay={setDisplayEditPerfil}
+                user={homeState.user}
+                setUser={setUser}
+            />
+        )
     }
 
     return {
         homeState,
         ReqSenha,
-        setDisplay
+        setDisplay,
+        setDisplayEditPerfil,
+        EditarPerfilFunc,
+        setUser
     }
 }
 
@@ -51,13 +102,20 @@ const HomePerfil = (props) => {
         homeState,
         ReqSenha,
         setDisplay,
+        setDisplayEditPerfil,
+        EditarPerfilFunc,
+        setUser
 
     } = useHomeState()
 
-    const ftPerfil = props.user ? props.user.imgPerfil : userNotFoundImg
+    // const ftPerfil = props.user ? props.user.imgPerfil : userNotFoundImg
+    // const response = conect.getOwnerInfo({ username: 'owner1@mind5.com.br', password: "%xK!S898" })
+
 
     return (
         <div className="homePerfil">
+
+            {EditarPerfilFunc()}
             {ReqSenha()}
             <div className="menuLateral">
 
@@ -66,17 +124,17 @@ const HomePerfil = (props) => {
                 </div>
 
                 <div className="bemVindoHomePerfil">
-                    <img src={ftPerfil} />
+                    <img src={homeState.user.imgPerfil} />
 
                     <div className="textCotainerPerfil">
 
                         <div className="cargo">
-                            Master
+                            {homeState.user.cargo}
                         </div>
                         <span>Bem vindo</span>
 
                         <h6>
-                            Rafael Coimbra
+                            {homeState.user.name}
                         </h6>
 
                     </div>
@@ -107,51 +165,7 @@ const HomePerfil = (props) => {
 
             </div>
             <div className="containerPerfil">
-                <div className="menusuperior">
-                    Perfil
-
-                    <div className="editarPerfil">
-
-                        <div
-                            className="btnAltSenha"
-                            onClick={e => {
-                                setDisplay('flex')
-                            }}
-                        >
-                            Alterar senha
-                        </div>
-
-                        <div className="btnAltPerfil">
-                            Editar perfil
-                        </div>
-
-                    </div>
-                </div>
-                <div className="conteudoPerfil">
-
-                    <div className="parteSuperior">
-
-                        <div className="barraSuperior">
-
-                        </div>
-
-                        <div className="informacoesPerfil">
-
-                            <img src={ftPerfil} alt="" srcset="" />
-
-                            <div className="infoPerfilText">
-                                <div className="cargo">
-                                    Master
-                                </div>
-                                <h2>
-                                    Rafael Coimbra
-                                </h2>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
+                <Perfil useHomeState={useHomeState}/>
             </div>
         </div>
     )
