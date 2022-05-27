@@ -5,7 +5,7 @@ const config = {
     codPlatform: 'web',
     codLanguage: "PT",
     codStore: 28,
-    basicToken: 'c3RvcmUxQG1pbmQ1LmNvbS5icjpNJDMjYzJFOQ=='
+   // basicToken: 'c3RvcmUxQG1pbmQ1LmNvbS5icjpNJDMjYzJFOQ=='
 }
 
 

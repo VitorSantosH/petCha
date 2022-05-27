@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import './HomePerfil.css';
 import conect from '../../../services/conect';
 
@@ -6,6 +6,8 @@ import conect from '../../../services/conect';
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
 import EditarPerfil from "./EditarPerfil";
 import Perfil from "./Perfil";
+import Categorias from "./Categorias";
+
 
 // imgs 
 import logo from '../../../assets/Layer 1.png';
@@ -17,7 +19,7 @@ import categoriasIcon from '../../../assets/categoriasIcon.png';
 import imgUser from '../../../assets/ftUser.png';
 
 
-const useHomeState = () => {
+const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
     const [homeState, setHomeState] = useState({
         display: "none",
@@ -35,13 +37,51 @@ const useHomeState = () => {
 
 
         },
-        displayEditarPerfil: "none"
+        displayEditarPerfil: "none",
+        btnFocos: null,
+        screen: "PERFIL"
+
 
     })
 
+    var arr = [$btnDashboard, $btnLojas, $btnCatgorias]
+
     useEffect(() => {
-       
-    }, [homeState.user])
+
+
+
+        if (arr[0] !== undefined) {
+            for (let index = 0; index < arr.length; index++) {
+                if (arr[index] !== homeState.btnFocos) {
+                    arr[index].current.attributes.class.value = 'dashboardAtalho'
+                } else {
+
+
+                    if (arr[index].current.attributes.value != undefined) {
+                        setScreen(arr[index].current.attributes.value.value)
+                    }
+
+
+                    arr[index].current.attributes.class.value = 'itemFocus'
+                }
+
+            }
+        }
+
+    }, [homeState.user, homeState.btnFocos])
+
+
+    function setBtnFocus(referencia) {
+
+        // referencia.current.attributes.class.value = 'itemFocus'
+
+        return setHomeState({
+            ...homeState,
+            btnFocos: referencia
+        })
+
+    }
+
 
     function setDisplay(value) {
 
@@ -61,10 +101,10 @@ const useHomeState = () => {
     }
 
     function setUser(obj) {
-        
+
         setHomeState({
             ...homeState,
-            user: obj 
+            user: obj
         })
 
     }
@@ -72,6 +112,7 @@ const useHomeState = () => {
     function ReqSenha() {
         return <RecuperarSenha display={homeState.display} setDisplay={setDisplay} />
     }
+
     function EditarPerfilFunc() {
         return (
             <EditarPerfil
@@ -83,13 +124,36 @@ const useHomeState = () => {
         )
     }
 
+    function CustonRouter() {
+
+        if (homeState.screen == "PERFIL") {
+            return <Perfil useHomeState={useHomeState} />
+        }
+
+        if (homeState.screen == "CATEGORIA") {
+            return <Categorias />
+        }
+
+    }
+
+    function setScreen(v) {
+
+        setHomeState({
+            ...homeState,
+            screen: v
+        })
+    }
+
     return {
         homeState,
         ReqSenha,
         setDisplay,
         setDisplayEditPerfil,
         EditarPerfilFunc,
-        setUser
+        setUser,
+        setBtnFocus,
+        CustonRouter,
+        setScreen
     }
 }
 
@@ -98,19 +162,27 @@ const useHomeState = () => {
 
 const HomePerfil = (props) => {
 
+
+    const $btnDashboard = useRef(null)
+    const $btnLojas = useRef(null)
+    const $btnCatgorias = useRef(null)
+
+
     const {
         homeState,
         ReqSenha,
-        setDisplay,
-        setDisplayEditPerfil,
         EditarPerfilFunc,
-        setUser
+        setBtnFocus,
+        CustonRouter,
+        setScreen
 
-    } = useHomeState()
+    } = useHomeState($btnDashboard, $btnLojas, $btnCatgorias)
+
+
 
     // const ftPerfil = props.user ? props.user.imgPerfil : userNotFoundImg
-    // const response = conect.getOwnerInfo({ username: 'owner1@mind5.com.br', password: "%xK!S898" })
-
+    //const response = conect.getOwnerInfo({ username: 'owner1@mind5.com.br', password: "%xK!S898" })
+    //console.log(response)
 
     return (
         <div className="homePerfil">
@@ -148,24 +220,40 @@ const HomePerfil = (props) => {
 
                 </div>
 
-                <div className="dashboardAtalho">
+                <div
+                    className="dashboardAtalho"
+                    ref={$btnDashboard}
+                    value="CATEGORIA"
+                    onClick={e => {
+                        setBtnFocus($btnDashboard)
+
+                    }}
+                >
                     <img src={dashboardIcon} className='iconsHome' alt="" />
                     <span>Dashboard</span>
                 </div>
 
-                <div className="dashboardAtalho">
+                <div
+                    className="dashboardAtalho"
+                    ref={$btnLojas}
+                    onClick={e => setBtnFocus($btnLojas)}
+                >
                     <img src={lojasIcon} alt="" />
                     <span>Lojas</span>
                 </div>
 
-                <div className="dashboardAtalho">
+                <div
+                    className="dashboardAtalho"
+                    ref={$btnCatgorias}
+                    onClick={e => setBtnFocus($btnCatgorias)}
+                >
                     <img src={categoriasIcon} alt="" />
                     <span>Categorias</span>
                 </div>
 
             </div>
             <div className="containerPerfil">
-                <Perfil useHomeState={useHomeState}/>
+                {CustonRouter()}
             </div>
         </div>
     )
