@@ -61,16 +61,19 @@ const UseLoginState = () => {
 
     function conect() {
 
-        api.get('/Agenda_WS/Home/main', {
-            headers: {
-             //   role: 'EMPREGADO',
-              //  codOwner: 26,
-               // codEmployee: 28,
-                //codStore: 28,
-                username: "employee1@mind5.com.br",
-                password: "rt#NN$wL"
+        api.post('/Agenda_WS/Prospect/insertOtpProspectStore', {
+            codOwner: 26,
+            prospectEmail: 'wytorh@gmail.com',
+            codLanguage: "PT"
+
+        },
+            {
+                headers: {
+            
+                }
             }
-        }).then(res => {
+          
+        ).then(res => {
             console.log(res)
         }).catch(err => {
             console.log(err)

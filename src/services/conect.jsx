@@ -24,7 +24,10 @@ const conect = {
         }).then(res => {
 
             sessionStorage.setItem('authToken', res.headers.authorization);
-            console.log(res)
+            sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
+
+           // console.log(res)
+            
             return res
 
         }).catch(err => {

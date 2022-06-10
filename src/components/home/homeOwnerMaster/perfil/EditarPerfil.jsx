@@ -4,11 +4,12 @@ import './EditarPerfil.css';
 
 
 //imgs 
-import trashIcon from '../../../assets/trashIcon.png';
+import trashIcon from '../../../../assets/trashIcon.png';
 
 
 const EditarPerfil = (props) => {
 
+    const {setUser} = props
     const [stateEdit, setStateEdit] = useState({
         user: props.user
     })
@@ -220,8 +221,9 @@ const EditarPerfil = (props) => {
                         className="btnSalvar"
                         onClick={ e => {
                            
-                            props.setUser({...stateEdit.user})
-                            changeDisplayValue()
+                            const user = stateEdit.user
+                            setUser(user)
+                            //changeDisplayValue()
                             
                         }}
                     >

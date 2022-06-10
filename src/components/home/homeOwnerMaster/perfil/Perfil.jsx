@@ -7,13 +7,11 @@ const Perfil = (props) => {
 
     const {
         homeState,
-        ReqSenha,
         setDisplay,
         setDisplayEditPerfil,
-        EditarPerfilFunc,
-        setUser
+     
 
-    } = props.useHomeState()
+    } = {...props}
 
 
     return (

@@ -8,6 +8,8 @@ const api = axios.create({
         'codOwner': 26,
         'codPlatform': 'web' ,
         'codLanguage': "PT" ,
+        codCountry: "BR",
+        
         
     }
 })

@@ -52,12 +52,12 @@ const UseLoginState = () => {
         let codAuth
 
         try {
-            codAuth = response.data.results[0].usome.codAuthGroup
+            codAuth = response.data.results[0].usomeData.codAuthGroup
         } catch (error) {
             console.log(error)
         }
 
-        console.log(codAuth)
+       
 
         switch (codAuth) {
             case 'EMPLOYEE':

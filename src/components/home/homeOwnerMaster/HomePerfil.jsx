@@ -4,9 +4,10 @@ import conect from '../../../services/conect';
 
 // componentes
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
-import EditarPerfil from "./EditarPerfil";
-import Perfil from "./Perfil";
-import Categorias from "./Categorias";
+import EditarPerfil from "./perfil/EditarPerfil";
+import Perfil from "./perfil/Perfil";
+import Categorias from "./categorias/Categorias";
+import Dashboard from "./dashboard/Dashboard";
 
 
 // imgs 
@@ -34,8 +35,6 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
             cidade: "São Paulo",
             cargo: 'Master',
             imgPerfil: imgUser
-
-
         },
         displayEditarPerfil: "none",
         btnFocos: null,
@@ -68,7 +67,7 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
             }
         }
 
-    }, [homeState.user, homeState.btnFocos])
+    }, [homeState.user, homeState.btnFocos,])
 
 
     function setBtnFocus(referencia) {
@@ -104,7 +103,8 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
         setHomeState({
             ...homeState,
-            user: obj
+            user: obj,
+            displayEditarPerfil: "none"
         })
 
     }
@@ -126,13 +126,27 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
     function CustonRouter() {
 
-        if (homeState.screen == "PERFIL") {
-            return <Perfil useHomeState={useHomeState} />
+
+        switch (homeState.screen) {
+
+            case "PERFIL":
+                return <Perfil
+                    homeState={homeState}
+                    setDisplay={setDisplay}
+                    setDisplayEditPerfil={setDisplayEditPerfil} />
+                break;
+            case "CATEGORIA":
+                return <Categorias />
+                break;
+
+            case "DASHBOARD":
+                return <Dashboard />
+                break;
+
+            default:
+                break;
         }
 
-        if (homeState.screen == "CATEGORIA") {
-            return <Categorias />
-        }
 
     }
 
@@ -150,10 +164,10 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
         setDisplay,
         setDisplayEditPerfil,
         EditarPerfilFunc,
-        setUser,
         setBtnFocus,
         CustonRouter,
-        setScreen
+
+
     }
 }
 
@@ -174,7 +188,7 @@ const HomePerfil = (props) => {
         EditarPerfilFunc,
         setBtnFocus,
         CustonRouter,
-        setScreen
+
 
     } = useHomeState($btnDashboard, $btnLojas, $btnCatgorias)
 
@@ -223,7 +237,7 @@ const HomePerfil = (props) => {
                 <div
                     className="dashboardAtalho"
                     ref={$btnDashboard}
-                    value="CATEGORIA"
+                    value="DASHBOARD"
                     onClick={e => {
                         setBtnFocus($btnDashboard)
 
@@ -237,6 +251,7 @@ const HomePerfil = (props) => {
                     className="dashboardAtalho"
                     ref={$btnLojas}
                     onClick={e => setBtnFocus($btnLojas)}
+                    value="LOJAS"
                 >
                     <img src={lojasIcon} alt="" />
                     <span>Lojas</span>
@@ -246,6 +261,7 @@ const HomePerfil = (props) => {
                     className="dashboardAtalho"
                     ref={$btnCatgorias}
                     onClick={e => setBtnFocus($btnCatgorias)}
+                    value="CATEGORIA"
                 >
                     <img src={categoriasIcon} alt="" />
                     <span>Categorias</span>
