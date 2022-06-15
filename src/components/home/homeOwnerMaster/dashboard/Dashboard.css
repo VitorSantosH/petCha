@@ -26,10 +26,14 @@
 }
 
 .containerDashboard {
-    height: 100%;
     width: 100%;
+    min-height: 100%;
     background-color: #E5E5E5;
     display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 50px;
+    flex-direction: column;
+
 }
 
 .cotainerLojasCadastradas {
@@ -37,18 +41,252 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    max-height: 300px;
+    box-sizing: border-box;
     height: auto;
     box-sizing: border-box;
     padding: 10px;
     position: relative;
     margin: 10px;
-    
+    overflow: hidden;
+    height: 390px;
+    width: 25vw;
+    min-width: 390px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+
 
 }
+
 .title {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
+.lojasCad {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    box-sizing: border-box;
+    height: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    position: relative;
+    margin: 10px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 390px;
+    width: 25vw;
+    min-width: 390px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+
+}
+
+.cotainerCircleGrafic {
+    max-width: 230px;
+    max-height: 230px;
+    z-index: 9;
+    margin: 10px;
+    
+}
+
+.totalSolicitacoesCircle {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -60%;
+    color: #292D32;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+
+
+}
+
+.spansCircle, .spansCircle2 {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    color: #292D32;
+    position: relative;
+    top: -250px;
+    left: 105%;
+    border-left: solid 5px #28C76F;
+    padding-left: 4px;
+}
+
+.spansCircle2 {
+    border-left: solid 5px #EA5455;
+}
+
+
+#estadosGraficos {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: hidden;
+    height: 390px;
+    width: 25vw;
+    min-width: 390px;
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+    background-color: white;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+
+
+}
+
+.titulosEstados {
+
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+
+}
+
+.titulosEstados select {
+    margin-left: auto;
+    margin-right: 25px;
+}
+
+.cotainerEstados {
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-height: 250px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    margin-left: 10%;
+
+}
+
+.cotainerEstados span {
+    color: #BDBDBD;
+}
+
+.cotainerEstados div {
+    padding-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    min-width: 30%;
+    align-items: center;
+}
+
+.cotainerEstados div span {
+    min-width: 30px;
+
+}
+
+.selectGraficoEstados {
+    width: 80px;
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    background-color: transparent;
+    padding-left: 3px;
+}
+
+.rangeDivs {
+    background-color: #023047;
+    height: 10px;
+    margin-right: 10px;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.headerDashboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 60px;
+    height: 100px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+
+}
+
+.controlHeaderDashboard {
+    display: flex;
+}
+
+.controlHeaderDashboard div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.visaoGeral {
+
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    border-bottom: 5px solid #FD9E02;
+}
+
+.controlHeaderDashboard div select {
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    width: 247px;
+    height: 48px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    padding: 5px;
+    color: #292D32;
+    background-color: transparent;
+}
+
+.lojasDashboard {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.labelsLojas {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 40px 30px 40px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #292D32;
+    opacity: 0.6;
+}
+
+.graficNovasLojasDashboard {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}

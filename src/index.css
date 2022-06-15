@@ -5,11 +5,18 @@ body {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(48, 47, 47);
+  background-color: white;
   color: white;
+  overflow-x: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.app {
+  overflow: hidden;
+  overflow-y: hidden;
+  overflow-y: auto;
 }

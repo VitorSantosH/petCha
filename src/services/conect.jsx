@@ -5,11 +5,11 @@ import config from './.config.jsx';
 const conect = {
 
 
-    
+
     login: async (props) => {
 
         const string = `${props.username}:${props.password}`
-        const emBase64  = btoa(string)
+        const emBase64 = btoa(string)
 
         const response = await api.get('/Agenda_WS/Home/main', {
             headers: {
@@ -23,11 +23,13 @@ const conect = {
             }
         }).then(res => {
 
-            sessionStorage.setItem('authToken', res.headers.authorization);
-            sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
+            if (res.data && res.headers.Authorization) {
+                sessionStorage.setItem('authToken', res.headers.authorization);
+                sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
+            }
 
-           // console.log(res)
-            
+            console.log(res)
+
             return res
 
         }).catch(err => {
@@ -42,17 +44,17 @@ const conect = {
     getOwnerInfo: async (props) => {
 
         const response = await api.post('/Agenda_WS/Store/searchStore', {
-      
+
             username: `${props.username}`,
             codOwner: `${config.codOwner}`,
             codLinguage: "PT",
 
         }, {
-            headers : {
-                'Authorization':  `${sessionStorage.getItem('authToken')}`
+            headers: {
+                'Authorization': `${sessionStorage.getItem('authToken')}`
             },
         }
-        
+
         ).then(res => {
 
             console.log(res)
