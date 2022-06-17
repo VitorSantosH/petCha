@@ -20,10 +20,11 @@ const conect = {
                 'Authorization': `Basic ${emBase64}`,
                 // username: props.username,
                 // password: props.password
+              
             }
         }).then(res => {
 
-            if (res.data && res.headers.Authorization) {
+            if (res.data && res.headers.authorization) {
                 sessionStorage.setItem('authToken', res.headers.authorization);
                 sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
             }
@@ -51,7 +52,8 @@ const conect = {
 
         }, {
             headers: {
-                'Authorization': `${sessionStorage.getItem('authToken')}`
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+               
             },
         }
 
@@ -68,6 +70,29 @@ const conect = {
         })
 
         return response
+
+    },
+
+    getDashboradData: (data) => {
+
+        const response = api.get('/Agenda_WS/Stats/selectOwnerDashboard', {
+            headers: {
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                'codLanguage' : 'PT',
+                'codCountry': "BR",
+                'calmonth': data,
+                'app': 'owner'
+
+            },
+        })
+        .then(res => {
+            console.log(res)
+            return res
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        })
 
     }
 

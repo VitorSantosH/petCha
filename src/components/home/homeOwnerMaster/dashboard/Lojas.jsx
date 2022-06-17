@@ -8,21 +8,22 @@ ChartJS.register(...registerables)
 
 const Lojas = (props) => {
 
+    console.log(props)
     
     const [state, setState] = useState({
         labels: props.labels,
         values: props.values,
         data: JSON.parse(sessionStorage.getItem('sowotesDatas')),
-        hora_data: undefined,
+        hora_data: props.hora_data,
         generateValues: true,
         dadosFalsos: true,
         valueDropBox: "A-Z",
-        estado: 'TODOS-ESTADOS'
+        estado: 'TODOS-ESTADOS',
+       
     })
 
     function ordenarArray(value, estados) {
 
-        console.log(value)
 
         switch (value) {
             case "A-Z":
@@ -69,72 +70,27 @@ const Lojas = (props) => {
         }
     }
 
-    function OptionEstados() {
+  
 
-        let estados = [
-            { value: 'AC', label: 'Acre' },
-            { value: 'AL', label: 'Alagoas' },
-            { value: 'AP', label: 'Amapá' },
-            { value: 'AM', label: 'Amazonas' },
-            { value: 'BA', label: 'Bahia' },
-            { value: 'CE', label: 'Ceará' },
-            { value: 'DF', label: 'Distrito Federal' },
-            { value: 'ES', label: 'Espírito Santo' },
-            { value: 'GO', label: 'Goías' },
-            { value: 'MA', label: 'Maranhão' },
-            { value: 'MT', label: 'Mato Grosso' },
-            { value: 'MS', label: 'Mato Grosso do Sul' },
-            { value: 'MG', label: 'Minas Gerais' },
-            { value: 'PA', label: 'Pará' },
-            { value: 'PB', label: 'Paraíba' },
-            { value: 'PR', label: 'Paraná' },
-            { value: 'PE', label: 'Pernambuco' },
-            { value: 'PI', label: 'Piauí' },
-            { value: 'RJ', label: 'Rio de Janeiro' },
-            { value: 'RN', label: 'Rio Grande do Norte' },
-            { value: 'RS', label: 'Rio Grande do Sul' },
-            { value: 'RO', label: 'Rondônia' },
-            { value: 'RR', label: 'Roraíma' },
-            { value: 'SC', label: 'Santa Catarina' },
-            { value: 'SP', label: 'São Paulo' },
-            { value: 'SE', label: 'Sergipe' },
-            { value: 'TO', label: 'Tocantins' },
-        ]
+    function GetNovasLojasGrafic(labels, data) {
 
-        const options = estados.map((estado) => {
+      
+        
+        
+        const values = data
 
-            return (
-                <option key={estado.value + estado.label} value={estado.value}>{estado.label}</option>
-            )
-
-        })
-
-        return options
-
-
-    }
-
-    function GetNovasLojasGrafic(labels, dataArray, data) {
-
-        console.log(labels)
-
-        const values = dataArray
         var totalMonth = 0;
-        dataArray.map((value) => {
-            return totalMonth += parseInt(value)
+        data.map((value) => {
+            console.log(value)
+            return totalMonth += parseInt(value.countStoreCreatedMonth || value)
         })
-        if (totalMonth === 0) {
-            totalMonth = data[data.length - 1].countStoreTotalMonth
-        }
-        //const {values} = generateArrayValues(data)
-        //const totalMonth = data[data.length - 1].countStoreTotalMonth;
-        //const { labelReal } = generateArrayValues(data)
 
         const valuesLine = values.map((value) => {
-            return value * 1.2
+            return value.countStoreCreatedMonth  || value * 1.2
         })
-        const menorValue = Math.min(...values)
-        const maiorValue = Math.max(...values)
+
+        const menorValue = Math.min(...values) || 0
+        const maiorValue = Math.max(...values) ||1
         const colors = values.map((value) => {
             if (value == menorValue) {
                 return '#EE3B3B'
@@ -147,8 +103,7 @@ const Lojas = (props) => {
             }
         })
 
-
-
+       
         return (
             <div className="cotainerLojasCadastradas">
 
@@ -446,32 +401,7 @@ const Lojas = (props) => {
     return (
         <>
 
-            <div className="headerDashboard">
-                <div className="visaoGeral">
-                    Visão geral
-                </div>
-
-                <div className="controlHeaderDashboard">
-
-                    <div className="estadoSelect">
-                        <label>Estado</label>
-                        <select>
-                            <option value={state.estado}>Todos os Estados</option>
-                            {OptionEstados()}
-                        </select>
-                    </div>
-
-                    <div className="datas">
-                        <label>Data</label>
-                        <select>
-                            <option value={state.estado}>Todos os Estados</option>
-                            {OptionEstados()}
-                        </select>
-                    </div>
-
-                </div>
-
-            </div>
+           
 
             <div className="lojasDashboard">
                 <div className="labelsLojas">
@@ -479,8 +409,8 @@ const Lojas = (props) => {
                     <span>Datas atualizadas em {state.hora_data}</span>
                 </div>
                 <div className="graficNovasLojasDashboard">
-                    {GetNovasLojasGrafic(props.labels, props.values, props.data)}
-                    {GetLojasCadGrafic(140, 60,)}
+                    {GetNovasLojasGrafic(props.labels,  props.values)}
+                    {GetLojasCadGrafic(props.countStoreCompletedMonth, props.countStorePendingMonth)}
                     {estadosGraficos()}
                 </div>
             </div>

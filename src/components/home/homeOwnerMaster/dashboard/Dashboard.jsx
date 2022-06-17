@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import api from '../../../../services/api';
+import conect from "../../../../services/conect";
 import './Dashboard.css';
 
 
@@ -17,54 +17,119 @@ const useDashboardState = () => {
         labels: "",
         values: [],
         data: JSON.parse(sessionStorage.getItem('sowotesDatas')),
+        dataConst: JSON.parse(sessionStorage.getItem('sowotesDatas')),
         hora_data: undefined,
-        generateValues: true,
         dadosFalsos: true,
         valueDropBox: "A-Z",
-        estado: 'TODOS-ESTADOS'
+        estadoLabel: 'TODOS-ESTADOS',
+        estados: undefined
+
     })
 
     useEffect(() => {
 
-
-
-        if (state.dadosFalsos) {
-
-            if (state.values.length === 0) {
-
-                const labels = [`Jan`, 'February', 'March', 'April', 'May', 'June', `Jan 680`, 'February', 'March', 'April', 'May', 'June',];
-                const values = labels.map(() => parseInt(Math.random() * (100 - 10) + 10));
-
-                setState({
-                    ...state,
-                    labels: labels,
-                    values: values
-                })
-            }
-
-            return
-
-        } else {
-
-
-            if (state.generateValues === false) {
-                console.log('aqui')
-                return generateArrayValues(state.data)
-            }
-
+        if (state.dadosFalsos == true && state.values.length == 0) {
+            generateArrayValues(state.data)
         }
-
 
 
     }, [state, state.valueDropBox])
 
+    // conect.getDashboradData("202201")
+
+
+
+    
+    function generateArrayValues(data) {
+
+        if (state.dadosFalsos) {
+
+            const labels = [`Jan`, 'February', 'March', 'April', 'May', 'June', `Jan 680`, 'February', 'March', 'April', 'May', 'June',];
+            const values = labels.map(() => parseInt(Math.random() * (100 - 10) + 10));
+            var countStoreCompletedMonth = 0
+            var countStorePendingMonth = 0
+
+            for (let index = 0; index < values.length; index++) {
+
+                countStoreCompletedMonth += parseInt(values[index])
+            }
+
+            countStorePendingMonth = parseInt(countStoreCompletedMonth * 0.25)
+
+            setState({
+                ...state,
+                labels: labels,
+                values: values,
+                dadosFalsos: !state.dadosFalsos,
+                countStoreCompletedMonth,
+                countStorePendingMonth
+            })
+
+        } else {
+
+
+            const retorno = [Number]
+            const labels = [];
+            var countStoreCompletedMonth = 0
+            var countStorePendingMonth = 0
+
+            for (let index = 0; index < data.length; index++) {
+
+                countStoreCompletedMonth += parseInt(data[index].countStoreCompletedMonth)
+                countStorePendingMonth += parseInt(data[index].countStorePendingMonth)
+
+                if (labels.includes(data[index].txtMonth)) {
+
+                } else {
+
+
+                    labels.push(data[index].txtMonth)
+
+                }
+
+            }
+
+
+            for (let index = 0; index < labels.length; index++) {
+
+                retorno[index] = parseInt(retorno[index])
+
+                for (let index2 = 0; index2 < data.length; index2++) {
+
+                   
+
+                    if (labels[index] == data[index2].txtMonth) {
+
+                        const n = parseInt(data[index2].countStoreCreatedMonth)
+                       
+                        retorno[index] = n 
+                    }
+
+                }
+
+            }
+
+
+
+            return setState({
+                ...state,
+                values: retorno,
+                labels,
+                dadosFalsos: !state.dadosFalsos,
+                countStoreCompletedMonth,
+                countStorePendingMonth
+
+            })
+        }
+
+    }
+
     function time_data() {
 
-        const arr = JSON.parse(sessionStorage.getItem('sowotesDatas'))
-        const dateObj = arr[arr.length - 1].lastChanged
+
+        const dateObj = state.data[state.data.length - 1].lastChanged
+
         const dateUTC = new Date(Date.UTC(dateObj.date.year, dateObj.date.month, dateObj.date.day, dateObj.time.hour, dateObj.time.minute, 0))
-
-
 
         return setState({
             ...state,
@@ -77,33 +142,79 @@ const useDashboardState = () => {
         time_data()
     }
 
+    function OptionEstados() {
 
-    function generateArrayValues(data) {
+        let estados = [
+            { value: 'AC', label: 'Acre' },
+            { value: 'AL', label: 'Alagoas' },
+            { value: 'AP', label: 'Amapá' },
+            { value: 'AM', label: 'Amazonas' },
+            { value: 'BA', label: 'Bahia' },
+            { value: 'CE', label: 'Ceará' },
+            { value: 'DF', label: 'Distrito Federal' },
+            { value: 'ES', label: 'Espírito Santo' },
+            { value: 'GO', label: 'Goías' },
+            { value: 'MA', label: 'Maranhão' },
+            { value: 'MT', label: 'Mato Grosso' },
+            { value: 'MS', label: 'Mato Grosso do Sul' },
+            { value: 'MG', label: 'Minas Gerais' },
+            { value: 'PA', label: 'Pará' },
+            { value: 'PB', label: 'Paraíba' },
+            { value: 'PR', label: 'Paraná' },
+            { value: 'PE', label: 'Pernambuco' },
+            { value: 'PI', label: 'Piauí' },
+            { value: 'RJ', label: 'Rio de Janeiro' },
+            { value: 'RN', label: 'Rio Grande do Norte' },
+            { value: 'RS', label: 'Rio Grande do Sul' },
+            { value: 'RO', label: 'Rondônia' },
+            { value: 'RR', label: 'Roraíma' },
+            { value: 'SC', label: 'Santa Catarina' },
+            { value: 'SP', label: 'São Paulo' },
+            { value: 'SE', label: 'Sergipe' },
+            { value: 'TO', label: 'Tocantins' },
+        ]
 
-        const retorno = [];
-        const labels = []
-        console.log(data)
+        const options = estados.map((estado) => {
 
-        for (let index = 0; index < data.length; index++) {
+            return (
+                <option key={estado.value + estado.label} value={estado.value}>{estado.label}</option>
+            )
 
-            retorno.push(data[index].countStoreCreatedMonth)
-            labels.push(data[index].txtMonth)
-        }
+        })
 
+        return options
+
+
+    }
+
+    function changeStateLabel(filter) {
+
+
+        const newData = state.data.filter((value) => {
+
+            if (value.codState == filter) return value
+        })
 
 
         return setState({
             ...state,
-            values: retorno,
-            labels,
-            generateValues: !state.generateValues
+            data: newData,
+            estadoLabel: filter
         })
+
+    }
+
+    function dadosFalsos() {
+
+        generateArrayValues(state.data)
+
     }
 
     return {
         state,
-
-
+        OptionEstados,
+        changeStateLabel,
+        dadosFalsos
 
     }
 
@@ -115,6 +226,9 @@ const Dashboard = () => {
 
     const {
         state,
+        OptionEstados,
+        changeStateLabel,
+        dadosFalsos
 
     } = useDashboardState();
 
@@ -127,29 +241,64 @@ const Dashboard = () => {
 
             <div className="menuSuperiorDashboard">
                 Dashboard
-                {/**
-                *  <div
+
+                <div
                     className="FalseDatas"
                     onClick={e => {
-                        falseDatas()
+                        dadosFalsos()
                     }}
                 >
-                    {state.dadosFalsos === false && <h4>Verdadeiros</h4>}
-                    {state.dadosFalsos && <h4>Falsos</h4>}
+                    {state.dadosFalsos === false && <h4>Falsos</h4>}
+                    {state.dadosFalsos && <h4>Reais</h4>}
                 </div>
-                */}
 
-                <button onClick={e => console.log(state)}>
-                    state
+                <button onClick={e => {
+                    console.log(state)
+                }}>
+                    State
                 </button>
 
             </div>
-            <div className="containerDashboard">
 
+            <div className="containerDashboard">
+                <div className="headerDashboard">
+                    <div className="visaoGeral">
+                        Visão geral
+                    </div>
+
+                    <div className="controlHeaderDashboard">
+
+                        <div className="estadoSelect">
+                            <label>Estado</label>
+                            <select
+                                value={state.estadoLabel}
+                                onChange={e => {
+                                    changeStateLabel(e.target.value)
+                                }}
+                            >
+                                <option value='TODOS-ESTADOS'>Todos os Estados</option>
+                                {OptionEstados()}
+                            </select>
+                        </div>
+
+                        <div className="datas">
+                            <label>Data</label>
+                            <select>
+                                <option value={state.estadoLabel}>Todos os Estados</option>
+                                {OptionEstados()}
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
                 <Lojas
                     labels={state.labels}
                     values={state.values}
                     data={state.data}
+                    hora_data={state.hora_data}
+                    countStoreCompletedMonth={state.countStoreCompletedMonth}
+                    countStorePendingMonth={state.countStorePendingMonth}
                 />
 
                 <Usuarios
@@ -176,146 +325,3 @@ const Dashboard = () => {
 export default Dashboard;
 
 
-
-/**
- * 
-                <div className="headerDashboard">
-                    <div className="visaoGeral">
-                        Visão geral
-                    </div>
-
-                    <div className="controlHeaderDashboard">
-
-                        <div className="estadoSelect">
-                            <label>Estado</label>
-                            <select>
-                                <option value={state.estado}>Todos os Estados</option>
-                                {OptionEstados()}
-                            </select>
-                        </div>
-
-                        <div className="datas">
-                            <label>Data</label>
-                            <select>
-                                <option value={state.estado}>Todos os Estados</option>
-                                {OptionEstados()}
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div className="lojasDashboard">
-                    <div className="labelsLojas">
-                        <span>Lojas</span>
-                        <span>Datas atualizadas em {state.hora_data}</span>
-                    </div>
-                    <div className="graficNovasLojasDashboard">
-                        {GetNovasLojasGrafic(state.labels, state.values, state.data)}
-                        {GetLojasCadGrafic(140, 60,)}
-                        {estadosGraficos()}
-                    </div>
-                </div>
- */
-
-
-
-
-/*
-  const labels = [`Jan 680`, 'February', 'March', 'April', 'May', 'June', 'July', `Jan 680`, 'February', 'March', 'April', 'May', 'June', 'July'];
-    const values = labels.map(() => Math.random() * (1000 - 0) + 0)
-    const valuesLine = values.map((value) => {
-        return value * 1.2
-    })
-    const maiorValue = Math.max(...values)
-    const colors = values.map((value) => {
-        if (value != maiorValue) {
-            return '#FD9E02';
-        } else {
-            return '#56BC4F'
-        }
-    })
-
-
- <div className="cotainerLojasCadastradas">
-
-                    <div className="title">
-                        <div className="textoLojasCad">
-                            <span>
-                                Novas lojas cadastradas
-                            </span>
-                            <h5>Durante os últimos 12 meses</h5>
-                        </div>
-
-                        <div className="TotalLojasCad">
-                            120
-                        </div>
-
-                    </div>
-
-                    <Bar
-                        className="novasLojas"
-                        data={{
-                            labels: [`Jan 680`, 'February', 'March', 'April', 'May', 'June', 'July', `Jan 680`, 'February', 'March', 'April', 'May', 'June', 'July'],
-                            datasets: [
-                                {
-                                    type: 'line',
-                                    borderColor: '#023047',
-                                    borderWidth: 2,
-                                    fill: false,
-                                    data: [...valuesLine, ...valuesLine],
-                                },
-                                {
-                                    type: 'bar',
-
-                                    backgroundColor: colors,
-                                    data: [...values, ...values],
-                                    borderColor: 'white',
-                                    borderWidth: 2,
-                                },
-
-                            ],
-
-
-
-                        }}
-                        options={{
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-
-                            borderRadius: 15,
-                            barPercentage: .6,
-
-                        }}
-
-                        width={400}
-                        height={200}
-
-                    />
-                </div>
-
-
-                 if (state.isLoaded === false) {
-            api.get('/Agenda_WS/MasterData/selectState', {
-                headers: {
-                    'Authorization':  `${sessionStorage.getItem('authToken')}`,
-                    "codCountry": "BR"
-                }
-            })
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-
-            setState({
-                ...state,
-                isLoaded: true 
-            })
-        }
-
-*/

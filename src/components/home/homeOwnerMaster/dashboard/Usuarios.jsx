@@ -24,8 +24,7 @@ const Usuarios = (props) => {
 
     function ordenarArray(value, estados) {
 
-        console.log(value)
-
+     
         switch (value) {
             case "A-Z":
                 estados.sort()
@@ -73,7 +72,7 @@ const Usuarios = (props) => {
 
     function GetNovasLojasGrafic(labels, dataArray, data, span1, span2) {
 
-        console.log(labels)
+     
 
         const values = dataArray
         var totalMonth = 0;
