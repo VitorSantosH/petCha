@@ -8,12 +8,13 @@ ChartJS.register(...registerables)
 
 const Lojas = (props) => {
 
-    console.log(props)
+   
+    
     
     const [state, setState] = useState({
         labels: props.labels,
         values: props.values,
-        data: JSON.parse(sessionStorage.getItem('sowotesDatas')),
+        data: props.data,
         hora_data: props.hora_data,
         generateValues: true,
         dadosFalsos: true,
@@ -74,14 +75,13 @@ const Lojas = (props) => {
 
     function GetNovasLojasGrafic(labels, data) {
 
-      
-        
+    
         
         const values = data
 
         var totalMonth = 0;
         data.map((value) => {
-            console.log(value)
+        
             return totalMonth += parseInt(value.countStoreCreatedMonth || value)
         })
 

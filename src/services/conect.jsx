@@ -27,6 +27,9 @@ const conect = {
             if (res.data && res.headers.authorization) {
                 sessionStorage.setItem('authToken', res.headers.authorization);
                 sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
+                sessionStorage.setItem('generalData', JSON.stringify(res.data.results[0]))
+                //sessionStorage.setItem('userData', JSON.stringify(res.data.results[0].sowashData.sowuses));
+                sessionStorage.setItem('vendas', JSON.stringify(res.data.results[0].sowashData.sowales));
             }
 
             console.log(res)
@@ -73,9 +76,9 @@ const conect = {
 
     },
 
-    getDashboradData: (data) => {
+    getDashboradData: async (data) => {
 
-        const response = api.get('/Agenda_WS/Stats/selectOwnerDashboard', {
+        const response =  await api.get('/Agenda_WS/Stats/selectOwnerDashboard', {
             headers: {
                 'Authorization': `${sessionStorage.getItem('authToken')}`,
                 'codLanguage' : 'PT',
@@ -86,13 +89,15 @@ const conect = {
             },
         })
         .then(res => {
-            console.log(res)
+           
             return res
         })
         .catch(err => {
             console.log(err)
             return err
         })
+
+        return response
 
     }
 

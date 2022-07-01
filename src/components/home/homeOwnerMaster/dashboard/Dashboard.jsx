@@ -6,6 +6,7 @@ import './Dashboard.css';
 import Lojas from './Lojas';
 import Usuarios from "./Usuarios";
 import Financeiro from "./Financeiro";
+import imgLoading from '../../../../assets/Rolling.gif'
 
 
 
@@ -18,128 +19,115 @@ const useDashboardState = () => {
         values: [],
         data: JSON.parse(sessionStorage.getItem('sowotesDatas')),
         dataConst: JSON.parse(sessionStorage.getItem('sowotesDatas')),
+        generalData: JSON.parse(sessionStorage.getItem('generalData')),
         hora_data: undefined,
         dadosFalsos: true,
         valueDropBox: "A-Z",
         estadoLabel: 'TODOS-ESTADOS',
-        estados: undefined
+        loadingDatasGif: false
+
 
     })
 
     useEffect(() => {
 
-        if (state.dadosFalsos == true && state.values.length == 0) {
-            generateArrayValues(state.data)
-        }
 
-
-    }, [state, state.valueDropBox])
-
-    // conect.getDashboradData("202201")
+        generateArrayValues(state.data)
 
 
 
-    
+    }, [state.estadoLabel, state.data, state.valueDropBox])
+
+
+    if (state.hora_data == undefined) {
+        time_data()
+    }
+
     function generateArrayValues(data) {
 
-        if (state.dadosFalsos) {
+        const labels = [];
+        var countStoreCompletedMonth = 0
+        var countStorePendingMonth = 0
 
-            const labels = [`Jan`, 'February', 'March', 'April', 'May', 'June', `Jan 680`, 'February', 'March', 'April', 'May', 'June',];
-            const values = labels.map(() => parseInt(Math.random() * (100 - 10) + 10));
-            var countStoreCompletedMonth = 0
-            var countStorePendingMonth = 0
+        // criar labels
+        for (let index = 0; index < data.length; index++) {
 
-            for (let index = 0; index < values.length; index++) {
+            if (state.estadoLabel == 'TODOS-ESTADOS' || state.estadoLabel == data[index].codState) {
 
-                countStoreCompletedMonth += parseInt(values[index])
-            }
-
-            countStorePendingMonth = parseInt(countStoreCompletedMonth * 0.25)
-
-            setState({
-                ...state,
-                labels: labels,
-                values: values,
-                dadosFalsos: !state.dadosFalsos,
-                countStoreCompletedMonth,
-                countStorePendingMonth
-            })
-
-        } else {
-
-
-            const retorno = [Number]
-            const labels = [];
-            var countStoreCompletedMonth = 0
-            var countStorePendingMonth = 0
-
-            for (let index = 0; index < data.length; index++) {
-
-                countStoreCompletedMonth += parseInt(data[index].countStoreCompletedMonth)
-                countStorePendingMonth += parseInt(data[index].countStorePendingMonth)
-
-                if (labels.includes(data[index].txtMonth)) {
-
-                } else {
-
-
-                    labels.push(data[index].txtMonth)
-
-                }
+                countStoreCompletedMonth += data[index].countStoreCompletedMonth || 0
+                countStorePendingMonth += data[index].countStorePendingMonth || 0
 
             }
 
+            if (labels.includes(data[index].txtMonth)) {
 
-            for (let index = 0; index < labels.length; index++) {
+            } else {
 
-                retorno[index] = parseInt(retorno[index])
+                labels.push(data[index].txtMonth)
 
-                for (let index2 = 0; index2 < data.length; index2++) {
+            }
 
-                   
+        }
 
-                    if (labels[index] == data[index2].txtMonth) {
+        // adicionar valoeres aos labels (messes)
+        var values = adicionarValoresPLabels(labels, data)
 
-                        const n = parseInt(data[index2].countStoreCreatedMonth)
-                       
-                        retorno[index] = n 
+
+        return setState({
+            ...state,
+            values: values,
+            labels,
+            dadosFalsos: !state.dadosFalsos,
+            countStoreCompletedMonth,
+            countStorePendingMonth
+
+        })
+    }
+
+    function adicionarValoresPLabels(labels, data) {
+
+        var obj = data;
+        var newArr = [];
+
+        for (let index = 0; index < labels.length; index++) {
+
+            for (let i2 = 0; i2 < obj.length; i2++) {
+
+                newArr[index] = 0
+
+                if (obj[i2].codState == state.estadoLabel || state.estadoLabel == 'TODOS-ESTADOS') {
+
+                    if (labels[index] == obj[i2].txtMonth) {
+
+                        newArr[index] += obj[i2].countStoreCreatedMonth || 0
+
                     }
 
                 }
 
             }
 
-
-
-            return setState({
-                ...state,
-                values: retorno,
-                labels,
-                dadosFalsos: !state.dadosFalsos,
-                countStoreCompletedMonth,
-                countStorePendingMonth
-
-            })
         }
 
+
+
+
+        return newArr
     }
 
     function time_data() {
 
 
-        const dateObj = state.data[state.data.length - 1].lastChanged
+        const dateObj = state.dataConst[state.data.length - 1].lastChanged
 
-        const dateUTC = new Date(Date.UTC(dateObj.date.year, dateObj.date.month, dateObj.date.day, dateObj.time.hour, dateObj.time.minute, 0))
+        const dateUTC = new Date(Date.UTC(dateObj.date.year, dateObj.date.month - 1, dateObj.date.day, dateObj.time.hour, dateObj.time.minute,))
 
         return setState({
             ...state,
-            hora_data: `${dateUTC.toLocaleDateString()} - ${dateUTC.toLocaleTimeString()}`
+            hora_data: `${dateUTC.toLocaleDateString()} - ${dateUTC.toLocaleTimeString()}`,
+            dateObj: dateObj
         })
 
-    }
-
-    if (state.hora_data == undefined) {
-        time_data()
     }
 
     function OptionEstados() {
@@ -190,31 +178,98 @@ const useDashboardState = () => {
     function changeStateLabel(filter) {
 
 
-        const newData = state.data.filter((value) => {
-
-            if (value.codState == filter) return value
-        })
-
-
         return setState({
             ...state,
-            data: newData,
             estadoLabel: filter
         })
 
     }
 
-    function dadosFalsos() {
+    function OptionDatas() {
 
-        generateArrayValues(state.data)
+        var meses = [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro"
+        ];
+        var data = state.dataConst[state.dataConst.length - 1].lastChanged
+        var mes = (data.date.month + 1)
+        var ano = data.date.year
+        const datas = []
+
+        for (let index = 0; index < 12; index++) {
+
+            if (mes - 1 <= 0) {
+                ano -= 1
+                mes = 12
+                datas[index] = {}
+                datas[index].label = `${ano}${((mes < 10) ? ("00" + mes).slice(-2) : mes)}`;
+                datas[index].mes = mes;
+                datas[index].ano = ano
+            } else {
+                mes -= 1
+                datas[index] = {}
+                datas[index].label = `${ano}${((mes < 10) ? ("00" + mes).slice(-2) : mes)}`
+                datas[index].mes = mes;
+                datas[index].ano = ano
+            }
+
+
+        }
+
+        const options = []
+
+        for (let index = 0; index < datas.length; index++) {
+
+            options[index] = <option key={datas[index].label} value={datas[index].label}>{meses[datas[index].mes - 1]}/{datas[index].ano}</option>;
+
+        }
+
+
+
+        return options
+    }
+
+    async function loadingDatas(calmonth) {
+
+        setState({
+            ...state,
+            loadingDatasGif: true
+        })
+
+        const res = await conect.getDashboradData(calmonth)
+
+
+        if (res.data) {
+
+            return setState({
+                ...state,
+                data: res.data.results[0].sowotes,
+                generalData: res.data.results[0]
+            })
+
+        }
+
 
     }
+
 
     return {
         state,
         OptionEstados,
+        OptionDatas,
         changeStateLabel,
-        dadosFalsos
+        loadingDatas
+
 
     }
 
@@ -227,8 +282,10 @@ const Dashboard = () => {
     const {
         state,
         OptionEstados,
+        OptionDatas,
         changeStateLabel,
-        dadosFalsos
+        loadingDatas
+
 
     } = useDashboardState();
 
@@ -241,16 +298,6 @@ const Dashboard = () => {
 
             <div className="menuSuperiorDashboard">
                 Dashboard
-
-                <div
-                    className="FalseDatas"
-                    onClick={e => {
-                        dadosFalsos()
-                    }}
-                >
-                    {state.dadosFalsos === false && <h4>Falsos</h4>}
-                    {state.dadosFalsos && <h4>Reais</h4>}
-                </div>
 
                 <button onClick={e => {
                     console.log(state)
@@ -283,11 +330,20 @@ const Dashboard = () => {
 
                         <div className="datas">
                             <label>Data</label>
-                            <select>
-                                <option value={state.estadoLabel}>Todos os Estados</option>
-                                {OptionEstados()}
+                            <select
+                                onChange={e => {
+                                    loadingDatas(e.target.value)
+                                }}
+                            >
+                                {OptionDatas()}
                             </select>
+
                         </div>
+                        {
+                            state.loadingDatasGif &&
+
+                            <img src={imgLoading} alt="" className="gitLoadingDatas" />
+                        }
 
                     </div>
 
@@ -304,7 +360,9 @@ const Dashboard = () => {
                 <Usuarios
                     labels={state.labels}
                     values={state.values}
-                    data={state.data}
+                    generalData={state.generalData}
+                    estadoLabel={state.estadoLabel}
+                    isLoaded={true}
                 />
                 <Financeiro
                     labels={state.labels}

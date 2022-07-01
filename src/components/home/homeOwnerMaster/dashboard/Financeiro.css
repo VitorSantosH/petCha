@@ -1,0 +1,115 @@
+.financeiroDashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.financeiroCotainerDashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 95%;
+}
+
+.controlsFianceiro div input[type=checkbox] {
+
+    width: 1.3em;
+    height: 1.3em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer
+}
+
+.controlsFianceiro div input[type=checkbox]:checked {
+    background-color: #FD9E02;
+}
+
+
+
+.financeiroCotainerDashboard .cotainerLojasCadastradas, .financeiroCotainerDashboard #estadosGraficos {
+    width: 45%;
+    min-width: 500px;
+
+}
+
+.controlsFianceiro {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0px 0px 0px 40px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+}
+
+.controlsFianceiro div {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.controlsFianceiro div label {
+    padding-left: 5px;
+}
+
+.labelsFinanceiro {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 30px 40px 30px 40px;
+
+}
+
+.labelsFinanceiro div {
+    display: flex;
+    height: 60px;
+    width: 43%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.labelsFinanceiro div div {
+    width: 20%;
+    height: 80%;
+    background: #56BC4F;
+    
+    opacity: 0.6;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    color:#2d4b2a ;
+    font-size: 18px;
+    font-weight: 1000;
+}
+
+#valueLabel2 {
+    background-color: #2CA7E4;
+    color: #083850;
+}
+
+@media only screen and (max-width: 1000px) {
+    .financeiroCotainerDashboard {
+        justify-content: center;
+    }
+
+    .labelsFinanceiro div {
+        width: 45%;
+    }
+}

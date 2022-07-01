@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart, Bar, Doughnut } from 'react-chartjs-2';
+import { useEffect } from "react";
 ChartJS.register(...registerables)
 
 
@@ -8,23 +9,92 @@ ChartJS.register(...registerables)
 
 const Usuarios = (props) => {
 
+    
+
     const span1 = "Novos usuários cadastrados";
     const span2 = 'Usuários ativos';
-    
+    const estadoLabel = props.estadoLabel
+    const dataUsers = props.generalData.sowuses ? props.generalData.sowuses : props.generalData.sowashData.sowuses
+
     const [state, setState] = useState({
+
         labels: props.labels,
-        values: props.values,
-        data: JSON.parse(sessionStorage.getItem('sowotesDatas')),
+        values: [],
+        valuesCreated: [],
         hora_data: undefined,
         generateValues: true,
         dadosFalsos: true,
+        usersData: props.generalData.sowuses ? props.generalData.sowuses : props.generalData.sowashData.sowuses,
+        usersDataCont: props.generalData.sowuses ? props.generalData.sowuses : props.generalData.sowashData.sowuses,
         valueDropBox: "A-Z",
-        estado: 'TODOS-ESTADOS'
+        activeMonth: [],
+        totalCreatedMonth: 0,
+        usersAtivos: 0,
+        isLoaded: false,
+        changed: true
+
     })
+
+    useEffect(() => {
+
+        generateUsersValues(props.generalData.sowuses ? props.generalData.sowuses : props.generalData.sowashData.sowuses)
+
+
+    }, [state.usersDataCont])
+
+
+    if (state.usersDataCont != dataUsers) {
+
+        setState({
+            ...state,
+            usersData: dataUsers,
+            usersDataCont: dataUsers
+        })
+
+    }
+
+
+
+    function generateUsersValues(data) {
+
+        const labels = [];
+
+        console.log(data)
+
+        // criar labels
+        for (let index = 0; index < data.length; index++) {
+
+            if (labels.includes(data[index].txtMonth)) {
+
+            } else {
+
+                labels.push(data[index].txtMonth)
+
+            }
+
+        }
+
+
+        // adicionar valoeres aos labels (messes)
+        var { created, activeMonth, createdMonth } = adicionarValores(labels, data)
+
+        return setState({
+            ...state,
+            values: created,
+            labels: labels,
+            dadosFalsos: !state.dadosFalsos,
+            activeMonth,
+            createdMonth,
+            isLoaded: !state.isLoaded,
+            changed: false
+
+        })
+
+    }
 
     function ordenarArray(value, estados) {
 
-     
+
         switch (value) {
             case "A-Z":
                 estados.sort()
@@ -70,106 +140,10 @@ const Usuarios = (props) => {
         }
     }
 
-    function GetNovasLojasGrafic(labels, dataArray, data, span1, span2) {
-
-     
-
-        const values = dataArray
-        var totalMonth = 0;
-        dataArray.map((value) => {
-            return totalMonth += parseInt(value)
-        })
-        if (totalMonth === 0) {
-            totalMonth = data[data.length - 1].countStoreTotalMonth
-        }
-        //const {values} = generateArrayValues(data)
-        //const totalMonth = data[data.length - 1].countStoreTotalMonth;
-        //const { labelReal } = generateArrayValues(data)
-
-        const valuesLine = values.map((value) => {
-            return value * 1.2
-        })
-        const menorValue = Math.min(...values)
-        const maiorValue = Math.max(...values)
-        const colors = values.map((value) => {
-            if (value == menorValue) {
-                return '#EE3B3B'
-            }
-            else if (value != maiorValue) {
-                return '#FD9E02';
-            }
-            else {
-                return '#56BC4F'
-            }
-        })
-
-
-
-        return (
-            <div className="cotainerLojasCadastradas">
-
-                <div className="title">
-                    <div className="textoLojasCad">
-                        <span>
-                           {span1}
-                        </span>
-                        <h5>Durante os últimos 12 meses</h5>
-                    </div>
-
-                    <div className="TotalLojasCad">
-                        {totalMonth}
-                    </div>
-
-                </div>
-                <Bar
-                    className="novasLojas"
-                    data={{
-                        labels: labels,
-                        datasets: [
-                            {
-                                type: 'line',
-                                borderColor: '#023047',
-                                borderWidth: 2,
-                                fill: false,
-                                data: [...valuesLine, ...valuesLine],
-                            },
-                            {
-                                type: 'bar',
-
-                                backgroundColor: colors,
-                                data: [...values, ...values],
-                                borderColor: 'white',
-                                borderWidth: 2,
-                            },
-
-                        ],
-
-
-
-                    }}
-                    options={{
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-
-                        borderRadius: 15,
-                        barPercentage: .6,
-
-                    }}
-
-                    width={400}
-                    height={200}
-                />
-            </div>
-        )
-    }
-
     function estadosGraficos() {
 
 
-        const data = JSON.parse(sessionStorage.getItem('sowotesDatas'));
+        const data = state.usersData
         let estados = [
             { value: 'AC', label: 'Acre' },
             { value: 'AL', label: 'Alagoas' },
@@ -205,12 +179,14 @@ const Usuarios = (props) => {
             for (let index2 = 0; index2 < estados.length; index2++) {
 
                 if (data[index1].codState == estados[index2].value) {
-                    estados[index2].countStoreCompletedMonth = data[index1].countStoreCompletedMonth
-                    values[index1] = data[index1].countStoreCompletedMonth
+
+                    estados[index2].countUserActiveMonth = data[index1].countUserActiveMonth
+                    values[index1] = data[index1].countUserActiveMonth
+
                 } else {
 
-                   // const n = parseInt(Math.random() * (20 - 1) + 1)
-                    estados[index2].countStoreCompletedMonth = 0
+                    // const n = parseInt(Math.random() * (20 - 1) + 1)
+                    estados[index2].countUserActiveMonth = 0
                     values[index1] = 0
                 }
 
@@ -222,17 +198,15 @@ const Usuarios = (props) => {
 
         ordenarArray(state.valueDropBox, estados)
 
-        
-
         let estadosDiv = estados.map(estado => {
 
             var colors
 
 
-            if (estado.countStoreCompletedMonth == menorValue) {
+            if (estado.countUserActiveMonth == menorValue) {
                 colors = '#EE3B3B'
             }
-            else if (estado.countStoreCompletedMonth >= maiorValue) {
+            else if (estado.countUserActiveMonth >= maiorValue) {
                 colors = '#56BC4F'
 
             }
@@ -245,10 +219,10 @@ const Usuarios = (props) => {
                 <div key={estado.value}>
                     <span>{estado.value}</span>
                     {/**<span>{estado.countStoreCompletedMonth}</span> */}
-                    <section className="rangeDivs" style={{ "width": estado.countStoreCompletedMonth + 5, 'backgroundColor': colors }} >
+                    <section className="rangeDivs" style={{ "width": estado.countUserActiveMonth + 5, 'backgroundColor': colors }} >
 
                     </section>
-                    <span>{estado.countStoreCompletedMonth}</span>
+                    <span>{estado.countUserActiveMonth}</span>
 
                 </div>
             )
@@ -312,18 +286,150 @@ const Usuarios = (props) => {
         )
     }
 
+    function adicionarValores(labels, data) {
+
+
+        var created = [];
+        var activeMonth = [];
+        var totalCreatedMonth = 0;
+
+
+        for (let index = 0; index < labels.length; index++) {
+
+            created[index] = 0;
+            activeMonth[index] = 0;
+
+            for (let i2 = 0; i2 < data.length; i2++) {
+
+
+                if (data[i2].codState == estadoLabel || estadoLabel == 'TODOS-ESTADOS') {
+
+                    totalCreatedMonth += data[i2].countUserCreatedMonth
+
+
+                    if (labels[index] == data[i2].txtMonth) {
+
+                        created[index] += data[i2].countUserCreatedMonth // Math.random() * (1000 - 10) + 10 
+                        activeMonth[index] += data[i2].countUserActiveMonth //Math.random() * (1000 - 10) + 10  
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        return { created, activeMonth, totalCreatedMonth };
+    }
+
+    function GetNovasLojasGrafic(labels, data, span) {
+
+
+        const values = data
+
+
+        const valuesLine = values.map((value) => {
+            return value.countStoreCreatedMonth || value * 1.2
+        })
+
+        const menorValue = Math.min(...values) || 0
+        const maiorValue = Math.max(...values) || 1
+        const colors = values.map((value) => {
+            if (value == menorValue) {
+                return '#EE3B3B'
+            }
+            else if (value != maiorValue) {
+                return '#FD9E02';
+            }
+            else {
+                return '#56BC4F'
+            }
+        })
+
+
+        return (
+            <div className="cotainerLojasCadastradas">
+
+                <div className="title">
+                    <div className="textoLojasCad">
+                        <span>
+                            {span}
+                        </span>
+                        <h5>Durante os últimos 12 meses</h5>
+                    </div>
+
+                    <div className="TotalLojasCad">
+                        {state.totalCreatedMonth}
+                    </div>
+
+                </div>
+                <Bar
+                    className="novasLojas"
+                    data={{
+                        labels: labels,
+                        datasets: [
+                            {
+                                type: 'line',
+                                borderColor: '#023047',
+                                borderWidth: 2,
+                                fill: false,
+                                data: [...valuesLine, ...valuesLine],
+                            },
+                            {
+                                type: 'bar',
+
+                                backgroundColor: colors,
+                                data: [...values, ...values],
+                                borderColor: 'white',
+                                borderWidth: 2,
+                            },
+
+                        ],
+
+
+
+                    }}
+                    options={{
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+
+                        borderRadius: 15,
+                        barPercentage: .6,
+
+                    }}
+
+                    width={400}
+                    height={200}
+                />
+
+                    <div className="labels2">
+                        
+                    </div>
+            </div>
+        )
+    }
+
     return (
         <>
 
-        
+
             <div className="lojasDashboard">
                 <div className="labelsLojas">
                     <span>Usuários</span>
-                 
+                    <button
+                        onClick={e => { console.log(state) }}
+                    >
+                        state
+                    </button>
                 </div>
                 <div className="graficNovasLojasDashboard">
-                    {GetNovasLojasGrafic(props.labels, props.values, props.data, span1)}
-                    {GetNovasLojasGrafic(props.labels, props.values, props.data, span2)}
+                    {GetNovasLojasGrafic(state.labels, state.values, span1)}
+                    {GetNovasLojasGrafic(state.labels, state.activeMonth, span2)}
                     {estadosGraficos()}
                 </div>
             </div>
