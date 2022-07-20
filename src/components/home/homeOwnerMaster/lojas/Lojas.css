@@ -1,0 +1,212 @@
+.lojas {
+    width: 100%;
+    height: 100%;
+    background-color: #F7F9FB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuSuperiorLojas {
+    display: flex;
+    align-items: center;
+    min-height: 100px;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    font-size: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    z-index: 2;
+    justify-content: space-between;
+    color: #023047;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 30px;
+}
+
+.lojasContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F7F9FB;
+}
+
+.ativas_inativas {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 5% 0px 5%;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 30px;
+}
+
+.parte1Lojas {
+    display: flex;
+    justify-content: space-between;
+    width: 18%;
+}
+
+.parte2Lojas {
+    width: 30%;
+    max-width: 350px;
+}
+
+.inputLojasCotainer {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 0px 15px 0px 5px;
+    height: 30px;
+}
+
+.inputLojasCotainer input {
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+    width: 80%;
+    height: 100%;
+
+}
+
+.inputLojasCotainer input:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
+
+}
+
+.ativas_inativas div {
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 34px;
+    text-align: center;
+    color: #292D32;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.focus {
+    border-bottom: solid 3px #FD9E02;
+}
+
+.lojasTable {
+    width: 90%;
+    min-height: 600px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.tableTitles {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.lojasTable div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    padding: 10px;
+
+
+}
+
+.tableTitles {
+    background-color: #cee1eb;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 21px;
+    color: #023047;
+}
+
+.tableRows {
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #292D32;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+
+}
+
+.tableRows .dataCadastro {
+    padding: 0;
+}
+
+.constaAtiva {
+    background-color: #56BC4F;
+    color: white;
+    border-radius: 6px;
+    min-width: 80px;
+    min-height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.constaInativa {
+    background-color: #FD9E02;
+    color: white;
+    border-radius: 6px;
+    min-width: 80px;
+    min-height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detalhes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cadastrarLoja {
+    color: white;
+    background-color: #023047;
+    height: 40px;
+    width: 210px;
+    border-radius: 10px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cadastrarLoja:active {
+    filter: brightness(3);
+}
+
+.parte1Lojas div {
+    cursor: pointer;
+}

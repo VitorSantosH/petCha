@@ -5,7 +5,7 @@ import './Dashboard.css';
 
 import Lojas from './Lojas';
 import Usuarios from "./Usuarios";
-import Financeiro from "./Financeiro";
+import Financeiro from "./financeiro/Financeiro";
 import imgLoading from '../../../../assets/Rolling.gif'
 
 
@@ -348,6 +348,7 @@ const Dashboard = () => {
                     </div>
 
                 </div>
+
                 <Lojas
                     labels={state.labels}
                     values={state.values}
@@ -364,10 +365,13 @@ const Dashboard = () => {
                     estadoLabel={state.estadoLabel}
                     isLoaded={true}
                 />
+                
                 <Financeiro
                     labels={state.labels}
                     values={state.values}
                     data={state.data}
+                    generalData={state.generalData}
+                    estadoLabel={state.estadoLabel}
                 />
 
             </div>

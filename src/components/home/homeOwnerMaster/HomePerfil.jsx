@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import './HomePerfil.css';
 import conect from '../../../services/conect';
 
@@ -8,7 +9,7 @@ import EditarPerfil from "./perfil/EditarPerfil";
 import Perfil from "./perfil/Perfil";
 import Categorias from "./categorias/Categorias";
 import Dashboard from "./dashboard/Dashboard";
-
+import Lojas from "./lojas/Lojas";
 
 // imgs 
 import logo from '../../../assets/Layer 1.png';
@@ -21,6 +22,12 @@ import imgUser from '../../../assets/ftUser.png';
 
 
 const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
+
+    const params = useParams();
+    var config
+    if (params.config) {
+        config = JSON.parse(params.config)
+    }
 
     const [homeState, setHomeState] = useState({
         display: "none",
@@ -42,12 +49,29 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
 
     })
+    const navigate = useNavigate();
+
+
 
     var arr = [$btnDashboard, $btnLojas, $btnCatgorias]
 
     useEffect(() => {
 
-
+        /**
+         *  if(config.name) {
+             setHomeState({
+                 ...homeState,
+                 screen: "LOJAS"
+             })
+         }
+         */
+        var teste = JSON.stringify({ name: 'vitor' })
+         
+        if (config) {
+            if (config.name) {
+                setBtnFocus($btnLojas)
+            }
+        }
 
         if (arr[0] !== undefined) {
             for (let index = 0; index < arr.length; index++) {
@@ -143,6 +167,10 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
                 return <Dashboard />
                 break;
 
+            case "LOJAS":
+                return <Lojas />
+                break;
+
             default:
                 break;
         }
@@ -170,9 +198,6 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
     }
 }
-
-
-
 
 const HomePerfil = (props) => {
 

@@ -59,8 +59,6 @@ const Usuarios = (props) => {
 
         const labels = [];
 
-        console.log(data)
-
         // criar labels
         for (let index = 0; index < data.length; index++) {
 

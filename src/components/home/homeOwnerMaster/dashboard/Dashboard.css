@@ -59,8 +59,11 @@
 
 .title {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+
 }
 
 .lojasCad {
@@ -90,7 +93,7 @@
     max-height: 230px;
     z-index: 9;
     margin: 10px;
-    
+
 }
 
 .totalSolicitacoesCircle {
@@ -289,7 +292,7 @@
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-    justify-content: center; 
+    justify-content: center;
 }
 
 .gitLoadingDatas {

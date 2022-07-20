@@ -4,7 +4,7 @@ import { Chart, Bar, Doughnut } from 'react-chartjs-2';
 import { useEffect } from "react";
 import './Financeiro.css';
 import { useRef } from "react";
-ChartJS.register(...registerables)
+ChartJS.register(...registerables);
 
 
 
@@ -13,50 +13,45 @@ ChartJS.register(...registerables)
 
 const Financeiro = (props) => {
 
-    const span1 = "total de vendas";
-    const span2 = 'total de taxas';
-    const span3 = 'total de agendamentos';
+   
     const estadoLabel = props.estadoLabel;
-
+    const generalData = props.generalData ? props.generalData : props.generalData.sowashData
     const inpVendas = useRef(null);
     const inpTaxas = useRef(null);
     const inpAgendas = useRef(null);
+    const span1 = "total de vendas";
+    const span2 = 'total de taxas';
+    const span3 = 'total de agendamentos';
 
-
-
-
+   
     const [state, setState] = useState({
         cheked: 'VENDAS',
         labels: [],
         values: [],
         valuesVendas: [],
-        valuesTaxas: [],
-        valuesAgendamentos: [],
-        valuesCreated: [],
+        dadosFalsos: true,
+        valueDropBox: "A-Z",
+        teste: true,
+        att: true,
+        activeMonth: [],
+        totalCreatedMonth: 0,
         vendaTotal30D: 0,
         vendaTotal12M: 0,
         taxatotal30D: 0,
         taxatotal12M: 0,
         AgendamentoTotal30D: 0,
         AgendamentoTotal12M: 0,
-        usersData: JSON.parse(sessionStorage.getItem('userData')),
-        hora_data: undefined,
-        generateValues: true,
-        dadosFalsos: true,
-        valueDropBox: "A-Z",
-        teste: true,
-        activeMonth: [],
-        totalCreatedMonth: 0,
-        usersAtivos: 0,
-        att: true
+        generalData: props.generalData,
+        generalDataCont: props.generalData,
+        sowuses: props.generalData.sowuses? generalData.sowuses: generalData.sowashData.sowuses,
+        sowordes: props.generalData.sowordes? generalData.sowordes: generalData.sowashData.sowordes,
+        sowales: props.generalData.sowales? generalData.sowales: generalData.sowashData.sowales
 
     })
 
-
-
     useEffect(() => {
 
-
+        
         if (state.att) {
             controlInpts(state.cheked)
             setState({
@@ -66,12 +61,61 @@ const Financeiro = (props) => {
         }
 
         if (state.teste) {
-            generateUsersValues(state.usersData)
+            generateUsersValues(props.generalData.sowordes? props.generalData.sowordes: props.generalData.sowashData.sowordes)
 
         }
 
-    }, [state]);
 
+
+
+    }, [state.generalData]);
+
+  
+    if (state.generalDataCont != generalData) {
+
+        setState({
+            ...state,
+            usersData: props.generalData.sowordes? props.generalData.sowordes: props.generalData.sowashData.sowordes,
+            generalDataCont: props.generalData
+        })
+
+    }
+
+
+    function generateUsersValues(data) {
+
+        const labels = [];
+
+        // criar labels
+        for (let index = 0; index < data.length; index++) {
+
+            if (labels.includes(data[index].txtMonth)) {
+
+            } else {
+
+                labels.push(data[index].txtMonth)
+
+            }
+
+        }
+
+
+        // adicionar valoeres aos labels (messes)
+        var { created, activeMonth, createdMonth } = adicionarValores(labels, data)
+
+        return setState({
+            ...state,
+            values: created,
+            labels: labels,
+            dadosFalsos: !state.dadosFalsos,
+            activeMonth,
+            createdMonth,
+            isLoaded: !state.isLoaded,
+            changed: false
+
+        })
+
+    }
 
     function controlInpts(value) {
 
@@ -90,46 +134,6 @@ const Financeiro = (props) => {
             cheked: value
         })
 
-    }
-
-    function generateUsersValues(data) {
-
-        const labels = [];
-
-
-        // criar labels
-        for (let index = 0; index < data.length; index++) {
-
-
-
-
-            if (labels.includes(data[index].txtMonth)) {
-
-            } else {
-
-                labels.push(data[index].txtMonth)
-
-            }
-
-        }
-
-
-        // adicionar valoeres aos labels (messes)
-        var { created, activeMonth, createdMonth } = adicionarValores(labels, data)
-
-
-
-
-        return setState({
-            ...state,
-            values: created,
-            labels: labels,
-            dadosFalsos: !state.dadosFalsos,
-            teste: false,
-            activeMonth,
-            createdMonth
-
-        })
     }
 
     function ordenarArray(value, estados) {
@@ -180,10 +184,11 @@ const Financeiro = (props) => {
         }
     }
 
-    function estadosGraficos(span) {
+    function GraficosEstadosUsersAtivos(span, data) {
 
+        
+        console.log(data)
 
-        const data = state.usersData
         let estados = [
             { value: 'AC', label: 'Acre' },
             { value: 'AL', label: 'Alagoas' },
@@ -224,15 +229,16 @@ const Financeiro = (props) => {
                     values[index1] = data[index1].countUserActiveMonth
 
                 } else {
-
-                    // const n = parseInt(Math.random() * (20 - 1) + 1)
+                  
                     estados[index2].countUserActiveMonth = 0
                     values[index1] = 0
+
                 }
 
             }
 
         }
+        
         const menorValue = Math.min(...values)
         const maiorValue = Math.max(...values)
 
@@ -456,23 +462,24 @@ const Financeiro = (props) => {
         if (state.cheked === "VENDAS") {
             return <>
                 {GetNovasLojasGrafic(state.labels, state.values, span1)}
-                {estadosGraficos(span1)}
+                {GraficosEstadosUsersAtivos(span1, state.sowuses)}
             </>
         }
         if (state.cheked === "TAXAS") {
             return <>
                 {GetNovasLojasGrafic(state.labels, state.valuesVendas, span2)}
-                {estadosGraficos(span2)}
+                {GraficosEstadosUsersAtivos(span2, generalData)}
             </>
         }
         if (state.cheked === "AGENDAMENTOS") {
             return <>
                 {GetNovasLojasGrafic(state.labels, state.valuesVendas, span3)}
-                {estadosGraficos(span3)}
+                {GraficosEstadosUsersAtivos(span3, generalData)}
             </>
         }
 
     }
+
     function GetLabelFinanceiro() {
 
         if (state.cheked === "VENDAS") {
@@ -483,7 +490,7 @@ const Financeiro = (props) => {
                         <strong>
                             Vendas
                         </strong>
-                      {" "}  totais nos últimos
+                      {" "}  totais nos últimos{" "}
                         <strong>
                             30 dias
                         </strong>
@@ -498,7 +505,7 @@ const Financeiro = (props) => {
                         <strong>
                             Vendas
                         </strong>
-                      {" "}  totais nos últimos
+                      {" "}  totais nos últimos {" "}
                         <strong>
                             12 messes
                         </strong>
@@ -518,7 +525,7 @@ const Financeiro = (props) => {
                         <strong>
                             Taxas
                         </strong>
-                      {" "}  totais nos últimos
+                      {" "}  totais nos últimos {" "}
                         <strong>
                             30 dias
                         </strong>
@@ -533,7 +540,7 @@ const Financeiro = (props) => {
                         <strong>
                             Taxas
                         </strong>
-                      {" "}  totais nos últimos
+                      {" "}  totais nos últimos {" "}
                         <strong>
                             12 messes
                         </strong>
@@ -553,7 +560,7 @@ const Financeiro = (props) => {
                         <strong>
                             Agendamentos
                         </strong>
-                      {" "}  totais nos últimos
+                      {" "}  totais nos últimos {" "}
                         <strong>
                             30 dias
                         </strong>
@@ -568,7 +575,7 @@ const Financeiro = (props) => {
                         <strong>
                             Agendamentos
                         </strong>
-                      {" "}  totais nos últimos
+                      {" "}  totais nos últimos {" "}
                         <strong>
                             12 messes
                         </strong>
