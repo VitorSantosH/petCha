@@ -25,13 +25,18 @@ const conect = {
             }
         }).then(res => {
 
+           
             if (res.data && res.headers.authorization) {
-                sessionStorage.setItem('authToken', res.headers.authorization);
-                sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
                 sessionStorage.setItem('generalData', JSON.stringify(res.data.results[0]))
-                sessionStorage.setItem('userData', JSON.stringify(res.data.results[0].sowashData.sowuses));
-                sessionStorage.setItem('vendas', JSON.stringify(res.data.results[0].sowashData.sowales));
+
+                if (res.data.results[0].sowashData) {
+                    sessionStorage.setItem('authToken', res.headers.authorization);
+                    sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
+                    sessionStorage.setItem('userData', JSON.stringify(res.data.results[0].sowashData.sowuses));
+                    sessionStorage.setItem('vendas', JSON.stringify(res.data.results[0].sowashData.sowales));
+                }
             }
+
 
             return res
 

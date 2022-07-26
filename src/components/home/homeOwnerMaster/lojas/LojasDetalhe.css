@@ -215,12 +215,123 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
     width: 95%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.dadosStore span, .dadosStore div, .dadosStore label {
+    color: #020303;
+}
+
+.dadosStore span, .dadosStore input {
+    font-size: 16px;
+
+}
+
+.dadosStore label {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.storeDados1 {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.storeDados1 div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.storeDados1 label {
+    opacity: 0.5;
 }
 
 .gitCaregamento {
     position: relative;
     top: 30%;
     width: 80px;
+}
+
+.cep input, .cnpj input, .tel input, .cpf input {
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+}
+
+#horariosDeAtendimento div {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#horariosDeAtendimento span {
+    background: rgba(2, 48, 71, 0.1);
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 2px;
+}
+
+#horariosDeAtendimento .fechado {
+    background: rgba(189, 189, 189, 0.1);
+    color: #BDBDBD;
+}
+
+.dadosStore {
+    margin-top: 30px;
+}
+
+.SobreLoja {
+    max-width: 50%;
+}
+
+#servicosLoja {
+    max-width: 48%;
+}
+
+#servicosLoja div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#servicosLoja div span {
+    background: rgba(2, 48, 71, 0.1);
+    border-radius: 20px;
+    margin: 5px;
+    padding: 5px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #023047;
+}
+
+[data-anime] {
+    opacity: 0;
+    transition: 0.3s;
+
+}
+
+[data-anime="left"] {
+    transform: translate3d(-50px, 0, 0);
+
+}
+
+[data-anime].animate {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
 }
 
 @media only screen and (max-width: 1000px) {
