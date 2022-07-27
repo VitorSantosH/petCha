@@ -1,15 +1,19 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import setaIcon from '../../../../assets/setaIcon.png'
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
+// imgs
+import setaIcon from '../../../../assets/setaIcon.png';
 
 const AtivasInativas = (props) => {
+
+    const navigate = useNavigate();
 
     const [state, setState] = useState({
         lojasAtivas: [],
         lojasInativas: [],
         isLoaded: false,
-        loadingProps: false
+        loadingProps: false,
+
     })
 
     useEffect(() => {
@@ -21,7 +25,7 @@ const AtivasInativas = (props) => {
     }, [state.lojasAtivas, state.lojasInativa, state.loadingProps])
 
 
-    if(props.dataLojas.data && state.loadingProps === false) {
+    if (props.dataLojas.data && state.loadingProps === false) {
         setState({
             ...state,
             loadingProps: true
@@ -32,7 +36,7 @@ const AtivasInativas = (props) => {
     async function generateLojasRows(arr) {
 
 
-       
+
         let ativas = [];
         let inativas = [];
 
@@ -60,7 +64,12 @@ const AtivasInativas = (props) => {
 
         const rows = data.map(loja => {
 
-            return <div className="tableRows" key={loja.complisData.name+loja.phones[0].fullNumber}>
+            const obj = JSON.stringify({
+                store: loja.codStore,
+                config: 'store'
+            })
+
+            return <div className="tableRows" key={loja.complisData.name + loja.phones[0].fullNumber}>
                 <div className="name">
                     {loja.complisData.name}
                 </div>
@@ -75,10 +84,9 @@ const AtivasInativas = (props) => {
                 </div>
                 <div className="ParceiroPagamento">
 
-               
-                    {loja.storacData.hasPayPartner  && <span className="constaAtiva">Ativo</span>}
-                    {!loja.storacData.hasPayPartner  && <span className="constaInativa">Inativo</span>}
-                    
+                    {loja.storacData.hasPayPartner && <span className="constaAtiva">Ativo</span>}
+                    {!loja.storacData.hasPayPartner && <span className="constaInativa">Inativo</span>}
+
                 </div>
                 <div className="statusConta">
                     {loja.storacData.isAccountCompleted ? "Completa" : "Incompleta"}
@@ -91,12 +99,14 @@ const AtivasInativas = (props) => {
                 </div>
                 <div className="detalhes">
                     <span
-                
-                    onClick={e => {
-                        props.setStoreFocus(loja.codStore) 
-                    }}
+
+                        onClick={e => {
+                            //props.setStoreFocus(loja.codStore) 
+                            navigate(`/homePerfil/store/${obj}`)
+
+                        }}
                     >
-                       <img src={setaIcon} alt={">"} />
+                        <img src={setaIcon} alt={">"} />
                     </span>
                 </div>
             </div>
@@ -107,7 +117,7 @@ const AtivasInativas = (props) => {
 
     function ReturnTable() {
 
-     
+
         return <>
             <div className="tableTitles">
                 <div className="name">

@@ -13,7 +13,8 @@ import inconPesquisa from '../../../../assets/icone=pesquisa.png'
 
 
 
-const useLojasState = () => {
+const useLojasState = (props) => {
+
 
     const [lojasState, setLojasState] = useState({
         ativas: true,
@@ -21,14 +22,42 @@ const useLojasState = () => {
         errorConexao: false,
         dataLojas: [],
         storeFocus: false,
-        codStore: 0
+        codStore: 0,
+        propsState: null
     })
 
     useEffect(() => {
 
         loadingLojas()
 
-    }, [lojasState])
+        if (props.store) {
+
+            setLojasState({
+                ...lojasState,
+                codStore: props.store,
+                storeFocus: true
+            })
+
+        }
+
+        if (props.store === undefined) {
+            setLojasState({
+                ...lojasState,
+                storeFocus: false,
+                codStore: 0
+
+            })
+        }
+
+    }, [lojasState.codStore, lojasState.storeFocus, lojasState.propsState])
+
+    if(lojasState.propsState == null || lojasState.propsState != props ) {
+        setLojasState({
+            ...lojasState,
+            propsState: props
+        })
+    }
+
 
     function changeAtiva_Inativa(value) {
 
@@ -94,14 +123,15 @@ const useLojasState = () => {
     }
 }
 
-const Lojas = () => {
+const Lojas = (props) => {
+
 
     const {
         lojasState,
         changeAtiva_Inativa,
         setStoreFocus,
         resetStoreFocus
-    } = useLojasState()
+    } = useLojasState(props)
 
     return (
         <div className="lojas">

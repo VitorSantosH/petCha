@@ -205,6 +205,13 @@
 .dashboardAtalho span {
     margin-left: 10px;
     color: #BDBDBD;
+    cursor: pointer;
+}
+.itemFocus {
+    cursor: pointer;
+}
+.dashboardAtalho span , .itemFocus {
+    transition: 0.3s;
 }
 
 .conteudoPerfil {

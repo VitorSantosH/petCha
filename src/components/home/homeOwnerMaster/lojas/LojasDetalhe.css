@@ -19,6 +19,7 @@
     height: 40px;
     width: 210px;
     font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .genericButton:active {
@@ -285,6 +286,7 @@
 #horariosDeAtendimento .fechado {
     background: rgba(189, 189, 189, 0.1);
     color: #BDBDBD;
+
 }
 
 .dadosStore {
@@ -297,6 +299,9 @@
 
 #servicosLoja {
     max-width: 48%;
+    display: flex;
+    box-sizing: border-box;
+
 }
 
 #servicosLoja div {
@@ -316,6 +321,7 @@
     font-size: 14px;
     line-height: 21px;
     color: #023047;
+    
 }
 
 [data-anime] {

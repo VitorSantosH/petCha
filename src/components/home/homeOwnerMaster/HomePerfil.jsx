@@ -24,12 +24,12 @@ import imgUser from '../../../assets/ftUser.png';
 const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
     const params = useParams();
-    var config
+    var config = { store: undefined }
     if (params.config) {
         config = JSON.parse(params.config)
     }
 
-    const [homeState, setHomeState] = useState({
+    const inicialState = {
         display: "none",
         user: {
             name: 'Rafael Coimbra',
@@ -45,31 +45,38 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
         },
         displayEditarPerfil: "none",
         btnFocos: null,
-        screen: "PERFIL"
+        screen: "PERFIL",
+        store: null
+    }
 
-
+    const [homeState, setHomeState] = useState({
+        ...inicialState
     })
-    const navigate = useNavigate();
-
-
 
     var arr = [$btnDashboard, $btnLojas, $btnCatgorias]
 
+
+
     useEffect(() => {
 
-        /**
-         *  if(config.name) {
-             setHomeState({
-                 ...homeState,
-                 screen: "LOJAS"
-             })
-         }
-         */
-        var teste = JSON.stringify({ name: 'vitor' })
-         
-        if (config) {
-            if (config.name) {
-                setBtnFocus($btnLojas)
+
+        if (config.store === undefined) {
+            setHomeState({
+                ...homeState,
+                btnFocos: null,
+                screen: "PERFIL"
+
+            })
+        }
+
+        if (config !== undefined) {
+            if (config.store) {
+                setHomeState({
+                    ...homeState,
+                    btnFocos: $btnLojas,
+                    screen: "LOJAS"
+                })
+
             }
         }
 
@@ -91,7 +98,16 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
             }
         }
 
-    }, [homeState.user, homeState.btnFocos,])
+    }, [homeState.user, homeState.btnFocos, homeState.store])
+
+
+   
+    if (homeState.store != config.store) {
+        setHomeState({
+            ...homeState,
+            store: config.store
+        })
+    }
 
 
     function setBtnFocus(referencia) {
@@ -168,7 +184,7 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
                 break;
 
             case "LOJAS":
-                return <Lojas />
+                return <Lojas store={config.store} />
                 break;
 
             default:

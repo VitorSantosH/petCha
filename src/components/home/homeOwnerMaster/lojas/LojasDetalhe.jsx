@@ -29,7 +29,6 @@ const LojasDetalhe = (props) => {
 
 
         const store = response.data.results[0]
-        console.log(store)
 
         setStateStoreDetalhe({
             ...stateStoreDetalhe,
@@ -264,11 +263,12 @@ const LojasDetalhe = (props) => {
                         </div>
 
                         <div id="servicosLoja">
-                            <label htmlFor="">Serviços da loja</label>
+                            <label htmlFor="" style={{ 'marginLeft': '10px' }}>Serviços da loja</label>
                             <div className="spansServicoLoja">
                                 {generateSpans(stateStoreDetalhe.store.matores)}
                             </div>
                         </div>
+
                     </div>
                 </div>
 
