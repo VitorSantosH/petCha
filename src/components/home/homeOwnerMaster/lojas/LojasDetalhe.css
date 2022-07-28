@@ -130,7 +130,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 47.5%;
+    width: 50%;
     height: 250px;
     margin-top: 30px;
     box-sizing: border-box;
@@ -142,6 +142,8 @@
     max-width: 360px;
     max-height: 200px;
     border-radius: 10px;
+    max-width: 100%;
+    height: 90%;
 }
 
 .resumoStore {
@@ -321,7 +323,52 @@
     font-size: 14px;
     line-height: 21px;
     color: #023047;
-    
+
+}
+
+.carrosel {
+    display: flex;
+    position: relative;
+    width: 50%;
+    height: 85%;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+
+}
+
+.carrosel img {
+    transition: 2.5s;
+    position: absolute;
+
+}
+
+.selected {
+    opacity: 1;
+}
+
+.notSelected {
+    opacity: 0;
+}
+
+.controlCarrosel {
+    z-index: 10;
+    position: relative;
+    display: flex;
+    width: 100%;
+
+    justify-content: space-between;
+}
+
+.controlCarrosel svg {
+    max-width: 30px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.controlCarrosel svg:active {
+    background-color: #FB8500;
 }
 
 [data-anime] {
@@ -346,4 +393,23 @@
         width: 90%;
     }
 
+}
+
+@media only screen and (max-width: 600px) {
+
+    .imgs_resumo {
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 0;
+    }
+
+    .imgsStore {
+        width: 100%;
+    }
+
+    .imgPrincipal, .carrosel {
+        width: 47%;
+        overflow: hidden;
+        
+    }
 }
