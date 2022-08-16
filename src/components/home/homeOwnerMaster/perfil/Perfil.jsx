@@ -10,7 +10,6 @@ const Perfil = (props) => {
         setDisplay,
         setDisplayEditPerfil,
      
-
     } = {...props}
 
 

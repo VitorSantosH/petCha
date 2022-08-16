@@ -25,8 +25,9 @@ const conect = {
             }
         }).then(res => {
 
-           
+
             if (res.data && res.headers.authorization) {
+                console.log(res)
                 sessionStorage.setItem('generalData', JSON.stringify(res.data.results[0]))
 
                 if (res.data.results[0].sowashData) {
@@ -34,6 +35,7 @@ const conect = {
                     sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
                     sessionStorage.setItem('userData', JSON.stringify(res.data.results[0].sowashData.sowuses));
                     sessionStorage.setItem('vendas', JSON.stringify(res.data.results[0].sowashData.sowales));
+                    sessionStorage.setItem('user', JSON.stringify(res.data.results[0].usomeData));
                 }
             }
 
@@ -41,6 +43,7 @@ const conect = {
             return res
 
         }).catch(err => {
+
 
             return err
         })
@@ -165,7 +168,86 @@ const conect = {
         return { response, err }
 
 
+    },
+
+    uploadImage: async (uploadedFile, codStore, isCover = false ) => {
+
+        var responseStatus
+
+        if (uploadedFile === null) {
+            return
+        }
+        else {
+
+            var data = new FormData();
+
+            data.append('file', uploadedFile,);
+            data.append('codStore', codStore,);
+            data.append('isCover', isCover,);
+
+            //http://localhost:3333/posts
+
+            responseStatus = await api.post('/Agenda_WS/File/insertFileImgStore', data, {
+
+                headers: {
+                    'Content-Type': 'multipart/form-data;',
+                    'Authorization': `${sessionStorage.getItem('authToken')}`,
+                    'codStore': `${parseInt(codStore)}`,
+                    username: `${sessionStorage.getItem('userName')}`,
+                    codOwner: `${config.codOwner}`,
+                    codLinguage: "PT",
+                    'isCover': isCover
+                },
+
+
+            }
+
+            ).then(response => {
+
+          
+                return response.status
+
+            }).catch(err => {
+              
+                return err.status
+            })
+
+
+
+        }
+
+        return responseStatus
+
+    },
+
+    deleteImage: async (codFileImg, codStore) => {
+
+        const responseStatus = await api.delete('/Agenda_WS/File/deleteFileImgStore', {
+
+            headers: {
+
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                'codStore': `${parseInt(codStore)}`,
+                username: `${sessionStorage.getItem('userName')}`,
+                codOwner: `${config.codOwner}`,
+                codLinguage: "PT",
+                codFileImg: codFileImg
+            },
+
+
+        }
+
+        ).then(response => {
+            console.log(response)
+            return response.status
+        }).catch(err => {
+            return err.status
+        })
+
+        return responseStatus
     }
+
+
 
 }
 

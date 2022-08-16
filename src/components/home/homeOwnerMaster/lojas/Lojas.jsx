@@ -6,7 +6,7 @@ import './Lojas.css';
 
 //components 
 import AtivasInativas from "./AtivasInativas";
-import LojasDetalhe from "./LojasDetalhe";
+import LojasDetalhe from "./lojaDetalhe/LojasDetalhe";
 
 // imgs 
 import inconPesquisa from '../../../../assets/icone=pesquisa.png'
@@ -14,6 +14,8 @@ import inconPesquisa from '../../../../assets/icone=pesquisa.png'
 
 
 const useLojasState = (props) => {
+
+
 
 
     const [lojasState, setLojasState] = useState({

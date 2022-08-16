@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './HomePerfil.css';
-import conect from '../../../services/conect';
+import { connect as connectRedux } from 'react-redux';
+import setStore from '../../../services/redux/actions/storeAction';
+
 
 // componentes
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
@@ -24,10 +26,14 @@ import imgUser from '../../../assets/ftUser.png';
 const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
 
     const params = useParams();
+
     var config = { store: undefined }
     if (params.config) {
         config = JSON.parse(params.config)
     }
+
+   // const userObj = JSON.parse(sessionStorage.getItem('user'));
+   
 
     const inicialState = {
         display: "none",
@@ -101,7 +107,7 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
     }, [homeState.user, homeState.btnFocos, homeState.store])
 
 
-   
+
     if (homeState.store != config.store) {
         setHomeState({
             ...homeState,
@@ -318,4 +324,10 @@ const HomePerfil = (props) => {
 }
 
 
-export default HomePerfil;
+const mapStateToProps = state => {
+    return {
+        store: state
+    }
+}
+
+export default connectRedux(mapStateToProps)(HomePerfil);

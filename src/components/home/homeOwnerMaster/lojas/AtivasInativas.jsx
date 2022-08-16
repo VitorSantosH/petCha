@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { connect as connectRedux } from 'react-redux';
+import { setStore } from '../../../../services/redux/actions/storeAction';
 
 // imgs
 import setaIcon from '../../../../assets/setaIcon.png';
@@ -99,10 +101,11 @@ const AtivasInativas = (props) => {
                 </div>
                 <div className="detalhes">
                     <span
-
                         onClick={e => {
-                            //props.setStoreFocus(loja.codStore) 
+                            props.setStoreFocus(loja.codStore)
                             navigate(`/homePerfil/store/${obj}`)
+
+                            props.actionStore(loja.codStore)
 
                         }}
                     >
@@ -159,4 +162,23 @@ const AtivasInativas = (props) => {
     )
 }
 
-export default AtivasInativas;
+const mapStateToProps = state => {
+    return {
+        store: state
+    }
+}
+
+
+const mapActionCreatorsToProp = (dispatch) => {
+
+    return {
+        actionStore: (store) => {
+            const action = setStore(store)
+            dispatch(action)
+        }
+    }
+}
+
+
+
+export default connectRedux(mapStateToProps, mapActionCreatorsToProp)(AtivasInativas);

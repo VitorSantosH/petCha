@@ -1,29 +1,36 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import conect from "../../../../services/conect";
+import conect from "../../../../../services/conect";
 import NumberFormat from "react-number-format";
 import './LojasDetalhe.css'
+import { connect } from 'react-redux';
+import EditarLoja from "../editarLoja/EditarLoja";
+
 
 //imgs 
-import setasImg from '../../../../assets/Setas.png';
-import gitCarregamento from '../../../../assets/Rolling.gif';
-import btnVoltar from '../../../../assets/bntVoltar.png';
-import btnIr from '../../../../assets/arrow-circle-right.png';
+import setasImg from '../../../../../assets/Setas.png';
+import gitCarregamento from '../../../../../assets/Rolling.gif';
+import btnVoltar from '../../../../../assets/bntVoltar.png';
+import btnIr from '../../../../../assets/arrow-circle-right.png';
 
 
 const LojasDetalhe = (props) => {
+
 
     const [stateStoreDetalhe, setStateStoreDetalhe] = useState({
         isLoading: false,
         store: undefined,
         lengthCarrosel: 0,
         carroselPosition: 0,
-        imgs: []
+        imgs: [],
+        editarLoja: false
     })
 
     useEffect(() => {
 
         if (stateStoreDetalhe.store != undefined && stateStoreDetalhe.lengthCarrosel == 0) {
+
+            if (!stateStoreDetalhe.store.fimecoData) return
             setStateStoreDetalhe({
                 ...stateStoreDetalhe,
                 lengthCarrosel: stateStoreDetalhe.store.fimecoData.fimistes.length ? stateStoreDetalhe.store.fimecoData.fimistes.length : 0
@@ -51,10 +58,12 @@ const LojasDetalhe = (props) => {
     }
 
     function generateSpans(arr) {
-        const spans = arr.map(spanTxt => {
+        const spans = arr.map((spanTxt, i) => {
 
             return <>
-                <span>
+                <span key={`${i}spanTxtMat`}
+
+                >
                     {spanTxt.matlisData.txtMat}
                 </span>
             </>
@@ -63,19 +72,19 @@ const LojasDetalhe = (props) => {
         return spans
     }
 
-    function GenerateCarrosel() {
+    function GenerateCarrosel(store,carroselPosition ) {
 
-        if (stateStoreDetalhe.store === undefined) return <></>
+        if (store === undefined) return <></>
 
-        const imgs = stateStoreDetalhe.store.fimecoData.fimistes.map((img, i) => {
+        const imgs = store.fimecoData.fimistes.map((img, i) => {
 
             return <img
-                key={`${i}-${stateStoreDetalhe.carroselPosition}`}
-                
+                key={`${i}-${carroselPosition}`}
                 src={img.fileImgUriExternal}
                 numberimage={i}
                 alt=""
-                className={i == stateStoreDetalhe.carroselPosition ? 'selected' : 'notSelected'}
+                className={carroselPosition == i ? "selected imgsCarroselDetalheStore" : "imgsCarroselDetalheStore"}
+              
             />
 
         })
@@ -87,9 +96,22 @@ const LojasDetalhe = (props) => {
 
     }
 
+    function showEditarLoja() {
+        setStateStoreDetalhe({
+            ...stateStoreDetalhe,
+            editarLoja: !stateStoreDetalhe.editarLoja
+        })
+    }
 
     return <>
 
+        <EditarLoja
+            display={stateStoreDetalhe.editarLoja}
+            loja={stateStoreDetalhe.store}
+            codStore={props.codStore}
+            generateSpans={generateSpans}
+            updateStore={getStore}
+        />
         <div className="menuSuperiorLojas">
 
 
@@ -112,7 +134,12 @@ const LojasDetalhe = (props) => {
                 <div className="genericButton inativar">
                     Inativar Loja
                 </div>
-                <div className="genericButton editar">
+                <div
+                    className="genericButton editar"
+                    onClick={e => {
+                        showEditarLoja()
+                    }}
+                >
                     Editar Loja
                 </div>
             </div>
@@ -158,7 +185,7 @@ const LojasDetalhe = (props) => {
                                 {/**
                                *   <img src={stateStoreDetalhe.store.fimecoData.fimistes[stateStoreDetalhe.carroselPosition].fileImgUriExternal} alt="" />
                                */}
-                                {GenerateCarrosel()}
+                                {GenerateCarrosel(stateStoreDetalhe.store, stateStoreDetalhe.carroselPosition)}
 
 
                                 <div className="controlCarrosel">
@@ -385,14 +412,18 @@ const LojasDetalhe = (props) => {
 
 
 
-        <div onClick={props.resetStoreFocus}>
-            Reset
-        </div>
+
+
 
 
     </>
 }
 
 
+const mapStateToProps = state => {
+    return {
+        store: state
+    }
+}
 
-export default LojasDetalhe;
+export default connect(mapStateToProps)(LojasDetalhe);
