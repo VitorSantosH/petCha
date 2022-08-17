@@ -263,6 +263,11 @@
     border: 1px solid #BDBDBD;
     border-radius: 6px;
 }
+#timeItemDay  input {
+    box-sizing: border-box;
+    max-width: 35%;
+    border: none;
+}
 
 #fechado {
     display: flex;
@@ -285,6 +290,23 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.containerUpdateStore {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.containerUpdateStore div {
+    background-color: #FB8500;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+}
+.containerUpdateStore div:active {
+    background-color: #FD9E02;
 }
 
 @media only screen and (max-width: 1200px) {

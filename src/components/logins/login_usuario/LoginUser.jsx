@@ -57,7 +57,7 @@ const UseLoginState = () => {
             console.log(error)
         }
 
-       
+
 
         switch (codAuth) {
             case 'EMPLOYEE':
@@ -219,12 +219,16 @@ const LoginUser = () => {
                         </span>
                     </div>
 
+
                     <div
                         className="fazerLoginBtn"
                         onClick={logar}
                     >
-                        Fazer Login
+                        <div>
+                            Fazer Login
+                        </div>
                     </div>
+
 
                     <div className="linkCadastro">
                         <span>

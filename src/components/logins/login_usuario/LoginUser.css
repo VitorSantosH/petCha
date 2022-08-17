@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     background: linear-gradient(91.09deg, #FB8500 0.3%, #FD9E02 100%);
-    
+
 
 }
 
@@ -15,8 +15,9 @@
     width: 50%;
     border-radius: 0px 20px 20px 0px;
     justify-content: center;
-    
+
 }
+
 #img1 {
     position: absolute;
 
@@ -46,9 +47,14 @@
     color: black;
     width: 660px;
     height: 600px;
-    align-items: center;
     border-radius: 15px;
-    margin-bottom: 100px ;
+    margin-bottom: 100px;
+    box-sizing: border-box;
+}
+
+.login div {
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .titulo {
@@ -61,23 +67,23 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 50%;
     align-items: flex-start;
     box-sizing: border-box;
-
+    padding-left: 10%;
 }
 
 .emailLogin input, .senhaLogin input {
 
-    width: 90%;
     margin-top: 5px;
     margin-bottom: 25px;
     border: 1px solid #BDBDBD;
     border-radius: 8px;
-    height: 40px;
+    height: 50px;
     padding: 5px;
     padding-left: 16px;
     padding-right: 16px;
+    width: 90%;
+    box-sizing: border-box;
 
 }
 
@@ -104,24 +110,43 @@
     text-decoration: underline;
     text-decoration-color: #FD9E02;
     line-height: 24px;
+    padding-right: 10%;
 }
 
+
+
 .fazerLoginBtn {
-    width: 50%;
-    background-color: #FB8500;
-    border-radius: 10px;
-    color: white;
-    height: 50px;
+    padding: 0px 10% 0px 10%;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    line-height: 21;
-    box-sizing: border-box;
-    overflow: hidden;
   
+    
 }
-.fazerLoginBtn:active {
+.fazerLoginBtn div {
+    background-color: #FB8500;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    line-height: 25px;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+
+.fazerLoginBtn div:active {
     background-color: #FD9E02;
 }
 
@@ -133,12 +158,12 @@
     width: 100%;
     margin-top: 30px;
     height: 60px;
-    
+
 }
 
 .linkCriarConta {
     color: #FB8500;
-    text-decoration-color: #FD9E02 ;
+    text-decoration-color: #FD9E02;
 }
 
 #logoWhiteLogin {
@@ -147,47 +172,50 @@
     max-width: 300px;
     margin-top: 50px;
 }
+
 .spanErro {
     position: relative;
     margin-top: -15px;
 }
 
-.emailLogin, .senhaLogin, .fazerLoginBtn, .esqueciSenha {
-    width: 70%;
-}
 
 @media only screen and (max-width: 1500px) {
 
     .login {
         width: 550px;
-    } 
+    }
 
 }
 
 
 
 @media only screen and (max-width: 1130px) {
-    
+
     #logoWhiteLogin {
         display: block;
     }
+
     .login {
         margin-top: 50px;
     }
+
     .loginUser {
         flex-direction: column;
         align-items: center;
     }
-    .lado1  {
+
+    .lado1 {
         display: none;
         background-color: white;
         width: 100%;
         flex-direction: column;
         border-radius: 0px 0px 20px 20px;
     }
-    #img2{
+
+    #img2 {
         margin-top: 200px;
-    } 
+    }
+
     #img1 {
         position: relative;
     }
@@ -195,8 +223,8 @@
     .login {
         width: 80vw;
         max-width: 660px;
-    } 
-   
+    }
+
 
 }
 
@@ -206,8 +234,18 @@
         height: 600px;
     }
 
-    .emailLogin, .senhaLogin, .fazerLoginBtn, .esqueciSenha {
-        width: 80%;
+    .emailLogin, .senhaLogin {
+
+        padding-left: 5%;
+
     }
+
+    .emailLogin input, .senhaLogin input {
+        width: 95%;
+    }
+    .fazerLoginBtn {
+        padding: 0px 5% 0px 5%;
+    }
+   
 
 }

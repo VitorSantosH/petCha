@@ -40,6 +40,7 @@ const conect = {
             }
 
 
+            console.log(res)
             return res
 
         }).catch(err => {
@@ -170,7 +171,36 @@ const conect = {
 
     },
 
-    uploadImage: async (uploadedFile, codStore, isCover = false ) => {
+    updateStore: async (data, codStore) => {
+
+        const responseStatus = await api.post('/Agenda_WS/Store/updateStore', data, {
+
+            headers: {
+
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                'codStore': `${parseInt(codStore)}`,
+                username: `${sessionStorage.getItem('userName')}`,
+                codOwner: `${config.codOwner}`,
+                codLinguage: "PT",
+
+            },
+
+
+        }).then(response => {
+
+            return response.status
+
+        }).catch(err => {
+
+            return err.status
+        })
+
+
+        return responseStatus
+
+    },
+
+    uploadImage: async (uploadedFile, codStore, isCover = false) => {
 
         var responseStatus
 
@@ -204,11 +234,11 @@ const conect = {
 
             ).then(response => {
 
-          
+
                 return response.status
 
             }).catch(err => {
-              
+
                 return err.status
             })
 
