@@ -263,7 +263,8 @@
     border: 1px solid #BDBDBD;
     border-radius: 6px;
 }
-#timeItemDay  input {
+
+#timeItemDay input {
     box-sizing: border-box;
     max-width: 35%;
     border: none;
@@ -284,6 +285,7 @@
 #uploadImageInput {
     display: none;
 }
+
 #labelUploadImageInput {
     cursor: pointer;
     display: flex;
@@ -305,8 +307,17 @@
     border-radius: 10px;
     color: white;
 }
+
 .containerUpdateStore div:active {
     background-color: #FD9E02;
+}
+
+.inputEditarStore {
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    box-sizing: border-box;
+    height: 35px;
+    padding-left: 5%;
 }
 
 @media only screen and (max-width: 1200px) {

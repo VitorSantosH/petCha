@@ -173,6 +173,8 @@ const conect = {
 
     updateStore: async (data, codStore) => {
 
+        console.log(data)
+
         const responseStatus = await api.post('/Agenda_WS/Store/updateStore', data, {
 
             headers: {
@@ -188,10 +190,13 @@ const conect = {
 
         }).then(response => {
 
+            console.log(response)
+
             return response.status
 
         }).catch(err => {
 
+            console.log(err)
             return err.status
         })
 
@@ -275,6 +280,56 @@ const conect = {
         })
 
         return responseStatus
+    },
+
+    activateStore: async (codStore) => {
+
+        const response = await api.get('/Agenda_WS/Store/activateStore', {
+            headers: {
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                'codStore': `${parseInt(codStore)}`,
+                username: `${sessionStorage.getItem('userName')}`,
+                codOwner: `${config.codOwner}`,
+                codLinguage: "PT"
+
+            },
+        })
+        .then(res => {
+            console.log(res) 
+            return res
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        })
+
+        return response
+
+    },
+
+    inactivateStore: async (codStore) => {
+
+        const response = await api.get('/Agenda_WS/Store/inactivateStore', {
+            headers: {
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                'codStore': `${parseInt(codStore)}`,
+                username: `${sessionStorage.getItem('userName')}`,
+                codOwner: `${config.codOwner}`,
+                codLinguage: "PT"
+
+            },
+        })
+        .then(res => {
+            console.log(res) 
+            return res
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        })
+
+        return response
+
     }
 
 

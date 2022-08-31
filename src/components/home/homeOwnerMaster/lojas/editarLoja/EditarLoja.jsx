@@ -51,7 +51,6 @@ const EditarLoja = (props) => {
 
         let stowotmes =
             [
-
                 { day: "Segunda" },
                 { day: "Terça" },
                 { day: "Quarta" },
@@ -71,6 +70,7 @@ const EditarLoja = (props) => {
                     stowotmes[index].open = true;
                     stowotmes[index].beginTime = state.store.stowotmes[index].beginTime
                     stowotmes[index].endTime = state.store.stowotmes[index].endTime
+                    stowotmes[index].isDeleted = state.store.stowotmes[index].isDeleted
 
                 }
 
@@ -134,19 +134,7 @@ const EditarLoja = (props) => {
 
         let stowotmesDivs = state.stowotmes.map((item, indice) => {
 
-            /** 
-             *   onChange={e => {
 
-                                let stowotmes = state.stowotmes;
-                                stowotmes[indice] = e.target.value;
-
-                                setState({
-                                    ...state,
-                                    stowotmes: stowotmes
-                                })
-
-                            }}
-            */
 
             return (
                 <div>
@@ -155,7 +143,21 @@ const EditarLoja = (props) => {
                         <input
                             type="checkbox"
                             name={item.day}
+                            checked={state.store.stowotmes[indice] ? state.store.stowotmes[indice].isDeleted : false}
+                            onChange={e => {
 
+                                console.log(e.target.checked)
+                                let storeTemp = state.store
+                                if (state.store.stowotmes[indice]) {
+                                    storeTemp.stowotmes[indice].isDeleted =  e.target.checked
+                                }    
+
+                                return setState({
+                                    ...state,
+                                    store: storeTemp
+                                })
+
+                            }}
                         />
                         <label htmlFor="dom">{item.day}</label>
                     </span>
@@ -175,9 +177,18 @@ const EditarLoja = (props) => {
                             <span>
                                 <input
                                     type="text"
+
                                     value={`${state.store.stowotmes[indice].beginTime.hour < 10 ? "0" + state.store.stowotmes[indice].beginTime.hour : state.store.stowotmes[indice].beginTime.hour}`}
                                     onChange={e => {
 
+                                        if (parseInt(e.target.value) > 23) {
+
+                                            return Swal.fire({
+                                                icon: 'error',
+                                                title: 'Escolha um valor válido para hora'
+                                            });
+
+                                        }
                                         var storeTemp = state.store
                                         storeTemp.stowotmes[indice].beginTime.hour = parseInt(e.target.value)
                                         setState({
@@ -190,9 +201,19 @@ const EditarLoja = (props) => {
                                 {": "}
                                 <input
                                     type="text"
+
                                     value={`${state.store.stowotmes[indice].beginTime.minute < 10 ? "0" + state.store.stowotmes[indice].beginTime.minute : state.store.stowotmes[indice].beginTime.minute}`}
 
                                     onChange={e => {
+
+                                        if (parseInt(e.target.value) > 59) {
+
+                                            return Swal.fire({
+                                                icon: 'error',
+                                                title: 'Escolha um valor válido para os minutos'
+                                            });
+
+                                        }
                                         var storeTemp = state.store
                                         storeTemp.stowotmes[indice].beginTime.minute = parseInt(e.target.value)
                                         setState({
@@ -205,12 +226,23 @@ const EditarLoja = (props) => {
                             </span>
 
                             {" ás"}
-                    
+
                             <span>
                                 <input
                                     type="text"
+
                                     value={`${state.store.stowotmes[indice].endTime.hour < 10 ? "0" + state.store.stowotmes[indice].endTime.hour : state.store.stowotmes[indice].endTime.hour}`}
                                     onChange={e => {
+
+
+                                        if (parseInt(e.target.value) > 23) {
+
+                                            return Swal.fire({
+                                                icon: 'error',
+                                                title: 'Escolha um valor válido para hora'
+                                            });
+
+                                        }
 
                                         var storeTemp = state.store
                                         storeTemp.stowotmes[indice].endTime.hour = parseInt(e.target.value)
@@ -224,9 +256,19 @@ const EditarLoja = (props) => {
                                 {": "}
                                 <input
                                     type="text"
+
                                     value={`${state.store.stowotmes[indice].endTime.minute < 10 ? "0" + state.store.stowotmes[indice].endTime.minute : state.store.stowotmes[indice].endTime.minute}`}
 
                                     onChange={e => {
+
+                                        if (parseInt(e.target.value) > 59) {
+
+                                            return Swal.fire({
+                                                icon: 'error',
+                                                title: 'Escolha um valor válido para os minutos'
+                                            });
+
+                                        }
                                         var storeTemp = state.store
                                         storeTemp.stowotmes[indice].endTime.minute = parseInt(e.target.value)
                                         setState({
@@ -243,11 +285,130 @@ const EditarLoja = (props) => {
 
                         {state.store.stuntmes[indice] && <>
                             <h4>Intervalo</h4>
+
                             <div id="timeItemDay">
-                                <span> {state.store.stuntmes[indice].beginTime.hour < 10 ? "0" + state.store.stuntmes[indice].beginTime.hour : state.store.stuntmes[indice].beginTime.hour}:{state.store.stuntmes[indice].beginTime.minute < 10 ? "0" + state.store.stuntmes[indice].beginTime.minute : state.store.stuntmes[indice].beginTime.minute}</span>
+                                {/**
+                           * 
+                           * 
+                           * 
+                           *    <span> {state.store.stuntmes[indice].beginTime.hour < 10 ? "0" + state.store.stuntmes[indice].beginTime.hour : state.store.stuntmes[indice].beginTime.hour}:{state.store.stuntmes[indice].beginTime.minute < 10 ? "0" + state.store.stuntmes[indice].beginTime.minute : state.store.stuntmes[indice].beginTime.minute}</span>
                                 ás
                                 <span>{state.store.stuntmes[indice].endTime.hour < 10 ? "0" + state.store.stuntmes[indice].endTime.hour : state.store.stuntmes[indice].endTime.hour}:{state.store.stuntmes[indice].endTime.minute < 10 ? "0" + state.store.stuntmes[indice].endTime.minute : state.store.stuntmes[indice].endTime.minute} </span>
+
+                           * 
+                           */}
+
+                                <span>
+                                    <input
+                                        type="text"
+
+                                        value={`${state.store.stuntmes[indice].beginTime.hour < 10 ? "0" + state.store.stuntmes[indice].beginTime.hour : state.store.stuntmes[indice].beginTime.hour}`}
+                                        onChange={e => {
+
+
+                                            if (parseInt(e.target.value) > 23) {
+
+                                                return Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Escolha um valor válido para hora'
+                                                });
+
+                                            }
+
+                                            var storeTemp = state.store;
+                                            storeTemp.stuntmes[indice].beginTime.hour = parseInt(e.target.value);
+
+                                            setState({
+                                                ...state,
+                                                store: storeTemp
+                                            })
+
+                                        }}
+                                    />
+                                    {": "}
+                                    <input
+                                        type="text"
+
+                                        value={`${state.store.stuntmes[indice].beginTime.minute < 10 ? "0" + state.store.stuntmes[indice].beginTime.minute : state.store.stuntmes[indice].beginTime.minute}`}
+
+                                        onChange={e => {
+
+                                            if (parseInt(e.target.value) > 59) {
+
+                                                return Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Escolha um valor válido para os minutos'
+                                                });
+
+                                            }
+                                            var storeTemp = state.store
+                                            storeTemp.stuntmes[indice].beginTime.minute = parseInt(e.target.value)
+                                            setState({
+                                                ...state,
+                                                store: storeTemp
+                                            })
+
+                                        }}
+                                    />
+                                </span>
+
+                                ás
+
+                                <span>
+                                    <input
+                                        type="text"
+
+                                        value={`${state.store.stuntmes[indice].endTime.hour < 10 ? "0" + state.store.stuntmes[indice].endTime.hour : state.store.stuntmes[indice].endTime.hour}`}
+                                        onChange={e => {
+
+                                            if (parseInt(e.target.value) > 23) {
+
+                                                return Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Escolha um valor válido para hora'
+                                                });
+
+                                            }
+
+                                            var storeTemp = state.store
+                                            storeTemp.stuntmes[indice].endTime.hour = parseInt(e.target.value)
+                                            setState({
+                                                ...state,
+                                                store: storeTemp
+                                            })
+
+                                        }}
+                                    />
+                                    {": "}
+                                    <input
+                                        type="text"
+                                        value={`${state.store.stuntmes[indice].endTime.minute < 10 ? "0" + state.store.stuntmes[indice].endTime.minute : state.store.stuntmes[indice].endTime.minute}`}
+
+                                        onChange={e => {
+
+                                            if (parseInt(e.target.value) > 59) {
+
+                                                return Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Escolha um valor válido para os minutos'
+                                                });
+
+                                            }
+                                            var storeTemp = state.store
+                                            storeTemp.stuntmes[indice].endTime.minute = parseInt(e.target.value)
+                                            setState({
+                                                ...state,
+                                                store: storeTemp
+                                            })
+
+                                        }}
+                                    />
+                                </span>
+
+
+
                             </div>
+
                         </>}
 
                     </>}
@@ -319,6 +480,28 @@ const EditarLoja = (props) => {
 
     }
 
+    async function updateStore() {
+
+        Swal.fire({
+            title: 'Salvar alterações?',
+            showDenyButton: true,
+            //showCancelButton: true,
+            confirmButtonText: 'Salvar',
+            denyButtonText: `Cancelar`,
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const responseStatus = await conect.updateStore(state.store, props.codStore)
+                if (responseStatus == 200) {
+                    Swal.fire('Alterações salvas com sucesso!', '', 'success')
+                    props.updateStore(props.codStore)
+                } else {
+                    Swal.fire('Erro inexperado, entre em contato com os adinistradores do site', '', 'success')
+                }
+            }
+        })
+
+    }
 
     return (
         <>
@@ -334,7 +517,12 @@ const EditarLoja = (props) => {
 
                             <div className="containerUpdateStore">
 
-                                <div className="buttonUpdateStore">
+                                <div
+                                    className="buttonUpdateStore"
+                                    onClick={e => {
+                                        updateStore()
+                                    }}
+                                >
                                     Salvar Alterações
                                 </div>
 
@@ -656,23 +844,74 @@ const EditarLoja = (props) => {
                                     <h3>Dados do representante legal</h3>
                                     <div className="storeDados1">
 
-                                        <div className="nome">
+                                        <div>
                                             <label htmlFor="">Nome{" "}</label>
-                                            <span>{state.store.personData.name}</span>
+                                            <input
+                                                className="inputEditarStore"
+                                                type="text"
+                                                value={state.store.personData.name}
+                                                onChange={e => {
+                                                    let storeTemp = state.store;
+                                                    storeTemp.personData.name = e.target.value;
+                                                    setState({
+                                                        ...state,
+                                                        store: storeTemp
+                                                    })
+                                                }}
+                                            />
+
                                         </div>
-                                        <div className="cpf">
+                                        <div >
                                             <label htmlFor="">CPF{" "}</label>
-                                            <NumberFormat format="###.###.###-##" value={state.store.personData.cpf} />
+                                            <NumberFormat
+                                                className="inputEditarStore"
+                                                format="###.###.###-##"
+                                                value={state.store.personData.cpf}
+                                                onChange={e => {
+                                                    let storeTemp = state.store;
+                                                    storeTemp.personData.cpf = e.target.value;
+                                                    setState({
+                                                        ...state,
+                                                        store: storeTemp
+                                                    })
+                                                }}
+                                            />
                                         </div>
 
-                                        <div className="tel">
+                                        <div>
                                             <label htmlFor="">Contato{" "}</label>
-                                            <span>{state.store.personData.phone ? state.store.personData.phone : "Não informado"}</span>
+                                            <NumberFormat
+                                                className="inputEditarStore"
+                                                format="## #####-####"
+                                                value={state.store.personData.phone}
+                                                placeholder="Não informado"
+                                                onChange={e => {
+                                                    let storeTemp = state.store;
+                                                    storeTemp.personData.phone = e.target.value;
+                                                    setState({
+                                                        ...state,
+                                                        store: storeTemp
+                                                    })
+                                                }}
+
+                                            />
                                         </div>
 
-                                        <div className="email">
+                                        <div >
                                             <label htmlFor="">E-mail{" "}</label>
-                                            <span>{state.store.personData.email}</span>
+                                            <input
+                                                type="text"
+                                                className="inputEditarStore"
+                                                value={state.store.personData.email}
+                                                onChange={e => {
+                                                    let storeTemp = state.store;
+                                                    storeTemp.personData.email = e.target.value;
+                                                    setState({
+                                                        ...state,
+                                                        store: storeTemp
+                                                    })
+                                                }}
+                                            />
                                         </div>
 
 

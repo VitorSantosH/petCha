@@ -1,0 +1,162 @@
+.cadastrarLojaCotainer {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    flex-direction: column;
+    transition: 0.5s;
+    opacity: 0;
+    color: black;
+    z-index: -1;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    margin-left: -45vw;
+    width: 90vw;
+    height: 80vh;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    border-radius: 10px 10px 0px 0px;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-family: 'Poppins';
+    font-style: normal;
+
+}
+
+.cadastrarLojaCotainerAnime {
+    opacity: 1;
+    transform: translate3d(0px, -100px, 0);
+    z-index: 15;
+}
+
+.headerCadastrarLoja {
+    width: 90vw;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 6%;
+    box-sizing: border-box;
+    color: white;
+    background: linear-gradient(91.09deg, #FB8500 0.3%, #FD9E02 100%);
+    border-radius: 10px 10px 0px 0px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 36px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.dadosLoja {
+    width: 100%;
+    padding: 24px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #023047;
+}
+
+.addImgsCadLoja {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.addImgsCadLoja .imgCap, .addImgsCadLoja .imgsCarrossel {
+    height: 180px;
+}
+
+.addImgsCadLoja .imgsCarrossel {
+    margin-left: 30px;
+}
+
+.adicionarFoto {
+    height: 14.2vh;
+    max-height: 170px;
+    min-height: 110px;
+    margin-top: 10px;
+    width: 14.8vw;
+    max-width: 250px;
+    min-width: 200px;
+}
+
+.cadastrarLojaCotainer .storeDadosEditarLoja {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.cadastrarLojaCotainer .storeDadosEditarLoja div {
+    padding-right: 20px;
+}
+
+.cadastrarLojaCotainer .name input, .cadastrarLojaCotainer .razaoSocial input, .cadastrarLojaCotainer .complemento input, .cadastrarLojaCotainer .cidade input {
+    width: 250px;
+}
+
+.storeDadosEditarLoja2 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.storeDadosEditarLoja2 div {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.resumo {
+    padding-bottom: 30px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #292D32;
+}
+
+.resumo span {
+    padding: 20px 0px
+}
+
+.sobreLoja {
+    width: 40%;
+}
+
+.sobreLoja span {
+    padding: 20px 0px;
+}
+
+.sobreLoja textarea {
+    display: flex;
+    height: 110px;
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-family: 'Poppins';
+    font-style: normal;
+    resize: none;
+}
+
+.representanteLegal h3 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    color: #023047;
+
+}
+.representanteLegal {
+    display: flex;
+    flex-direction: column;
+}
+
+.representanteLegal .storeDados1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.representanteLegal .storeDados1 div {
+    margin-right: 30px;
+}

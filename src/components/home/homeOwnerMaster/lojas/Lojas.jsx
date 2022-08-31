@@ -7,9 +7,11 @@ import './Lojas.css';
 //components 
 import AtivasInativas from "./AtivasInativas";
 import LojasDetalhe from "./lojaDetalhe/LojasDetalhe";
+import CadastrarLoja from "./cadastrarLoja/CadastrarLoja";
+
 
 // imgs 
-import inconPesquisa from '../../../../assets/icone=pesquisa.png'
+import inconPesquisa from '../../../../assets/icone=pesquisa.png';
 
 
 
@@ -25,7 +27,8 @@ const useLojasState = (props) => {
         dataLojas: [],
         storeFocus: false,
         codStore: 0,
-        propsState: null
+        propsState: null,
+        showCadastrarLoja: false
     })
 
     useEffect(() => {
@@ -51,9 +54,9 @@ const useLojasState = (props) => {
             })
         }
 
-    }, [lojasState.codStore, lojasState.storeFocus, lojasState.propsState])
+    }, [lojasState.codStore, lojasState.storeFocus, lojasState.propsState, lojasState.isLoading])
 
-    if(lojasState.propsState == null || lojasState.propsState != props ) {
+    if (lojasState.propsState == null || lojasState.propsState != props) {
         setLojasState({
             ...lojasState,
             propsState: props
@@ -69,9 +72,9 @@ const useLojasState = (props) => {
         })
     }
 
-    async function loadingLojas() {
+    async function loadingLojas(reset) {
 
-        if (lojasState.isLoading === false) {
+        if (lojasState.isLoading === false || reset === true) {
 
             const { response, err } = await conect.getStores()
 
@@ -116,12 +119,29 @@ const useLojasState = (props) => {
 
     }
 
+    function setCadastrarLoja() {
+        setLojasState({
+            ...lojasState,
+            showCadastrarLoja: !lojasState.showCadastrarLoja
+        })
+    }
+
+    async function resetStores() {
+
+        loadingLojas(true)
+
+    }
+
+
+
 
     return {
         lojasState,
         changeAtiva_Inativa,
         setStoreFocus,
-        resetStoreFocus
+        resetStoreFocus,
+        setCadastrarLoja,
+        resetStores
     }
 }
 
@@ -132,7 +152,9 @@ const Lojas = (props) => {
         lojasState,
         changeAtiva_Inativa,
         setStoreFocus,
-        resetStoreFocus
+        resetStoreFocus,
+        setCadastrarLoja,
+        resetStores
     } = useLojasState(props)
 
     return (
@@ -144,15 +166,27 @@ const Lojas = (props) => {
                 <LojasDetalhe
                     codStore={lojasState.codStore}
                     resetStoreFocus={resetStoreFocus}
+                    resetStores={resetStores}
                 />
             }
 
             {lojasState.storeFocus === false &&
+
                 <>
+
+
+                    <CadastrarLoja
+                        display={lojasState.showCadastrarLoja}
+                    />
+
                     <div className="menuSuperiorLojas">
                         Lojas
 
-                        <div className="cadastrarLoja"
+                        <div
+                            className="cadastrarLoja"
+                            onClick={e => {
+                                setCadastrarLoja();
+                            }}
                         >
                             Cadastrar Loja
                         </div>

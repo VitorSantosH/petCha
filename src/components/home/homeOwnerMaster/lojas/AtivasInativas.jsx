@@ -44,7 +44,7 @@ const AtivasInativas = (props) => {
 
         await arr.map(loja => {
 
-            if (loja.isLocked) {
+            if (!loja.isLocked) {
                 ativas.push(loja)
             } else {
                 inativas.push(loja)
@@ -94,9 +94,9 @@ const AtivasInativas = (props) => {
                     {loja.storacData.isAccountCompleted ? "Completa" : "Incompleta"}
                 </div>
                 <div className="status">
-                    {loja.isLocked &&
-                        <span className="constaAtiva">Ativa</span>}
                     {!loja.isLocked &&
+                        <span className="constaAtiva">Ativa</span>}
+                    {loja.isLocked &&
                         <span className="constaInativa">Inativa</span>}
                 </div>
                 <div className="detalhes">

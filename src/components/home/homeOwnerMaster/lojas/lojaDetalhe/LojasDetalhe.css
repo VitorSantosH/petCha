@@ -2,6 +2,17 @@
     text-decoration: underline;
 }
 
+.swal2-container.swal2-center  .swal2-popup {
+    border-top: solid 10px #FB8500;
+}
+
+.denyButtonCuston {
+    background-color: transparent;
+    border: 1px solid #EE3B3B;
+    color: #EE3B3B;
+
+}
+
 .buttonsLojaDetalhe {
     display: flex;
 }
@@ -38,6 +49,15 @@
 .inativar {
     border: 1px solid #FD9E02;
     color: #FD9E02;
+}
+
+.ativar {
+    border: 1px solid #56BC4F;
+    color: #56BC4F;
+}
+
+.ativar:active {
+    filter: brightness(2);
 }
 
 .editar {
@@ -90,6 +110,7 @@
     padding: 10px;
     border-radius: 6px;
     color: white;
+    margin-top: 0;
 }
 
 .dataCadastro {
@@ -377,6 +398,7 @@
     max-width: 30px;
     border-radius: 50%;
     background-color: white;
+    cursor: pointer;
 }
 
 .controlCarrosel svg:active {
@@ -392,7 +414,6 @@
 
 [data-anime="left"] {
     transform: translate3d(-50px, 0, 0);
-
 }
 
 [data-anime].animate {
@@ -405,7 +426,6 @@
     .imgsStore_resumoStore {
         width: 90%;
     }
-
 }
 
 @media only screen and (max-width: 600px) {

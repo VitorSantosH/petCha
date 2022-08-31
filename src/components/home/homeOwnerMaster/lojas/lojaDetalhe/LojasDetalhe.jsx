@@ -5,6 +5,11 @@ import NumberFormat from "react-number-format";
 import './LojasDetalhe.css'
 import { connect } from 'react-redux';
 import EditarLoja from "../editarLoja/EditarLoja";
+import Swal from "sweetalert2";
+
+//
+import 'animate.css'
+
 
 
 //imgs 
@@ -72,7 +77,7 @@ const LojasDetalhe = (props) => {
         return spans
     }
 
-    function GenerateCarrosel(store,carroselPosition ) {
+    function GenerateCarrosel(store, carroselPosition) {
 
         if (store === undefined) return <></>
 
@@ -84,7 +89,7 @@ const LojasDetalhe = (props) => {
                 numberimage={i}
                 alt=""
                 className={carroselPosition == i ? "selected imgsCarroselDetalheStore" : "imgsCarroselDetalheStore"}
-              
+
             />
 
         })
@@ -101,6 +106,102 @@ const LojasDetalhe = (props) => {
             ...stateStoreDetalhe,
             editarLoja: !stateStoreDetalhe.editarLoja
         })
+    }
+
+    async function activateStore(codStore) {
+
+        Swal.fire({
+            title: 'Deseja mesmo ativar essa loja?',
+            icon: 'warning',
+            showDenyButton: true,
+            confirmButtonText: ' <div className="confirmButton">  Sim, Ativar   </div>',
+            denyButtonText: '<div className="denyButtonCuston">Não, voltar</div>',
+            confirmButtonColor: '#FB8500',
+            cancelButtonColor: 'cancelButtonColor',
+            preConfirm: async (login) => {
+                return  conect.activateStore(codStore)
+                    .then(response => {
+                        console.log(response)
+                        if (!response.status == 200) {
+                            throw new Error('Erro inexperado')
+                        }
+
+                        return response
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+
+        }).then( async (result) => {
+            console.log(result)
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: "success",
+                    title: `A loja foi ativada com sucesso!`,
+                    confirmButtonText: 'Fechar',
+                    confirmButtonColor: '#FB8500',
+                    
+                    
+                })
+            }
+            await props.resetStores()
+            return getStore(props.codStore)
+        })
+
+        return    
+
+    }
+
+    async function inactivateStore(codStore) {
+
+        Swal.fire({
+            title: 'Deseja mesmo inativar essa loja?',
+            icon: 'warning',
+            showDenyButton: true,
+            confirmButtonText: ' <div className="confirmButton">  Sim, inativar   </div>',
+            denyButtonText: '<div className="denyButtonCuston">Não, voltar</div>',
+            confirmButtonColor: '#FB8500',
+            cancelButtonColor: 'cancelButtonColor',
+            preConfirm: async (login) => {
+                return  conect.inactivateStore(codStore)
+                    .then(response => {
+                        console.log(response)
+                        if (!response.status == 200) {
+                            throw new Error('Erro inexperado')
+                        }
+
+                        return response
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+
+        }).then( async (result) => {
+            console.log(result)
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: "success",
+                    title: `A loja foi inativada com sucesso!`,
+                    confirmButtonText: 'Fechar',
+                    confirmButtonColor: '#FB8500',
+                    
+                    
+                })
+            }
+            await props.resetStores()
+            return getStore(props.codStore)
+        })
+
+      return
+
     }
 
     return <>
@@ -128,12 +229,35 @@ const LojasDetalhe = (props) => {
 
 
             <div className="buttonsLojaDetalhe">
-                <div className="genericButton excluir">
-                    Excluir Loja
-                </div>
-                <div className="genericButton inativar">
-                    Inativar Loja
-                </div>
+
+
+                {stateStoreDetalhe.store &&
+                    <>
+                        <div className="genericButton excluir">
+                            Excluir Loja
+                        </div>
+                        {!stateStoreDetalhe.store.isLocked &&
+                            <div
+                                className="genericButton inativar"
+                                onClick={e => {
+                                    inactivateStore(props.codStore)
+                                }}
+                            >
+                                Inativar Loja
+                            </div>
+                        }
+                        {stateStoreDetalhe.store.isLocked &&
+                            <div className="genericButton ativar"
+                                onClick={e => {
+                                    activateStore(props.codStore)
+                                }}
+                            >
+                                Ativar Loja
+                            </div>
+                        }
+                    </>}
+
+
                 <div
                     className="genericButton editar"
                     onClick={e => {
@@ -164,8 +288,8 @@ const LojasDetalhe = (props) => {
                         </div>
                         <div className="statusStore">
                             <span>Status</span>
-                            <div className={stateStoreDetalhe.store.isLocked ? 'ativo' : 'inativo'}>
-                                {stateStoreDetalhe.store.isLocked ? 'Ativo' : 'Inativo'}
+                            <div className={!stateStoreDetalhe.store.isLocked ? 'ativo' : 'inativo'}>
+                                {!stateStoreDetalhe.store.isLocked ? 'Ativo' : 'Inativo'}
                             </div>
                         </div>
                     </div>
