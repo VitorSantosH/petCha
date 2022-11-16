@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import "./LoginUser.css";
+import Swal from 'sweetalert2';
 
+import "./LoginUser.css";
 import conect from "../../../services/conect";
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
 
@@ -9,7 +10,8 @@ import logoTitulo from '../../../assets/Layer 1.png';
 import img1 from '../../../assets/amico.png';
 import imgOlhoAberto from '../../../assets/olho-vermelhoAberto.png';
 import imgOlhoFechado from '../../../assets/olho-vermelho.png';
-import imglogoWhite from '../../../assets/logoWhite.png'
+import imglogoWhite from '../../../assets/logoWhite.png';
+import gifCarregamento from '../../../assets/Rolling.gif';
 
 
 const UseLoginState = () => {
@@ -17,36 +19,60 @@ const UseLoginState = () => {
     const [stateLogin, setStateLogin] = useState({
         stateTypePassword: true,
         stateEmailStyle: true,
-        emailValue: "",
+        emailValue: null,
         display: "none",
         isLog: false,
-        password: ""
+        password: null,
+        loading: false
 
     })
+    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i;
     const navigate = useNavigate()
 
     useEffect(() => {
 
-
-        if (stateLogin.emailValue != "master@gmail.com" && stateLogin.emailValue !== undefined && stateLogin.emailValue !== '') {
-            setStateLogin({
-                ...stateLogin,
-                stateEmailStyle: false
-            })
-        } else {
-            setStateLogin({
-                ...stateLogin,
-                stateEmailStyle: true
-            })
-        }
 
     }, [stateLogin.emailValue, stateLogin.display])
 
 
     async function logar() {
 
+
+
         const username = stateLogin.emailValue
         const password = stateLogin.password
+
+
+
+        if (username === null || username === undefined || username === "") {
+
+            setStateLogin({
+                ...stateLogin,
+                loading: false
+            })
+
+            return Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Defina o e-mail para efetuar o login',
+            })
+        }
+
+        if (password == null || password === undefined || password === "") {
+
+
+            setStateLogin({
+                ...stateLogin,
+                loading: false
+            })
+
+            return Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Digite a senha para efetuar o login',
+            })
+        }
+
         const response = await conect.login({ username, password })
 
         let codAuth
@@ -75,6 +101,11 @@ const UseLoginState = () => {
             default:
                 break;
         }
+
+        return setStateLogin({
+            ...stateLogin,
+            loading: true
+        })
     }
 
     function chanceTypeInput() {
@@ -84,12 +115,6 @@ const UseLoginState = () => {
         })
     }
 
-    function changeEmailValue(v) {
-        setStateLogin({
-            ...stateLogin,
-            emailValue: v
-        })
-    }
 
     function setDisplay(value) {
 
@@ -108,15 +133,46 @@ const UseLoginState = () => {
         })
     }
 
+
+    function EmailRegexMessage(email) {
+
+        console.log(email)
+        console.log(typeof email)
+        console.log(emailRegex.test(email))
+        if (email === null || email === undefined) {
+            return setStateLogin({
+                ...stateLogin,
+                stateEmailStyle: true,
+                emailValue: email
+            })
+        }
+        if (emailRegex.test(email)) {
+            setStateLogin({
+                ...stateLogin,
+                stateEmailStyle: true,
+                emailValue: email
+            })
+        } else {
+            setStateLogin({
+                ...stateLogin,
+                stateEmailStyle: false,
+                emailValue: email
+            })
+        }
+
+    }
+
+
     return {
         stateLogin,
         chanceTypeInput,
-        changeEmailValue,
         setDisplay,
         ReqSenha,
         conect,
         setPassword,
-        logar
+        logar,
+        EmailRegexMessage,
+        setStateLogin
     }
 
 }
@@ -129,11 +185,13 @@ const LoginUser = () => {
     const {
         stateLogin,
         chanceTypeInput,
-        changeEmailValue,
         setDisplay,
         ReqSenha,
         logar,
-        setPassword
+        setPassword,
+        EmailRegexMessage,
+        setStateLogin
+
 
     } = UseLoginState()
 
@@ -170,13 +228,12 @@ const LoginUser = () => {
                             style={{ 'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
                             value={stateLogin.emailValue}
                             onChange={e => {
-                                console.log(stateLogin.emailValue)
-                                changeEmailValue(e.target.value)
+                                EmailRegexMessage(e.target.value)
                             }}
 
                         />
 
-                        <span className="spanErro" style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B', 'display': stateLogin.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span>
+                        <span className="spanErro" style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B', 'display': stateLogin.stateEmailStyle ? 'none' : 'block' }}> Email inválido</span>
                     </div>
 
                     <div className="senhaLogin">
@@ -222,12 +279,52 @@ const LoginUser = () => {
 
                     <div
                         className="fazerLoginBtn"
-                        onClick={logar}
+                        onClick={e => {
+                            setStateLogin({
+                                ...stateLogin,
+                                loading: true
+                            })
+                            logar();
+                        }}
                     >
-                        <div>
-                            Fazer Login
-                        </div>
+
+                        {!stateLogin.loading && (
+                            <div>
+                                Fazer Login
+                            </div>
+                        )}
+
+
+                        {stateLogin.loading && (
+                            <div className="loaderDiv">
+                                <i className="fa  fa-circle-o-notch fa-spin fa-3x fa-fw "></i>
+                            </div>
+                        )}
+
+
+
+                        {/**
+                      *    {stateLogin.loading && (
+                            <div className="loaderDiv">
+                                <section class="loader">
+                                    <section class="duo duo1">
+                                        <section class="dot dot-a"></section>
+                                        <section class="dot dot-b"></section>
+                                    </section>
+                                    <section class="duo duo2">
+                                        <section class="dot dot-a"></section>
+                                        <section class="dot dot-b"></section>
+                                    </section>
+                                </section>
+                            </div>
+                        )}
+                      */}
+
                     </div>
+
+
+
+
 
 
                     <div className="linkCadastro">

@@ -20,8 +20,7 @@
     -webkit-user-select: none;
     user-select: none;
     border-radius: 10px 10px 0px 0px;
-    padding-left: 5%;
-    padding-right: 5%;
+
     font-family: 'Poppins';
     font-style: normal;
 
@@ -31,6 +30,15 @@
     opacity: 1;
     transform: translate3d(0px, -100px, 0);
     z-index: 15;
+}
+
+.cadastrarLojaCotainer2 {
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .headerCadastrarLoja {
@@ -52,7 +60,7 @@
 
 .dadosLoja {
     width: 100%;
-    padding: 24px;
+    padding: 24px 0px;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
@@ -63,14 +71,54 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: max-content;
+    padding-bottom: 30px;
 }
 
-.addImgsCadLoja .imgCap, .addImgsCadLoja .imgsCarrossel {
+
+
+.previewImgContainer {
     height: 180px;
+    margin: 0px 20px 0px 0px;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+    box-sizing: border-box;
+    overflow: hidden;
+    color: white;
+}
+.previewImgContainer i {
+    background-color: #FB8500;
+    max-width: 35px;
+    border-radius: 50%;
+    padding: 5px;
+    top: -35%;
+    right: 10%;
+    position: relative;
+    font-size: 20px;
+    cursor: pointer;
 }
 
-.addImgsCadLoja .imgsCarrossel {
-    margin-left: 30px;
+.previewImgContainer img {
+    max-height: 150px;
+    border: 1px solid rgb(160, 158, 158);
+    border-radius: 15%;
+    height: auto;
+    width: auto;
+}
+
+.addImgsCadPart2 {
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.containerPart2 {
+    display: flex; 
+    flex-wrap: wrap;
+    
 }
 
 .adicionarFoto {
@@ -106,8 +154,9 @@
 .storeDadosEditarLoja2 div {
     display: flex;
     flex-direction: column;
-
+    margin-top: 30px;
 }
+
 
 .resumo {
     padding-bottom: 30px;
@@ -147,6 +196,7 @@
     color: #023047;
 
 }
+
 .representanteLegal {
     display: flex;
     flex-direction: column;
@@ -157,6 +207,71 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+
 .representanteLegal .storeDados1 div {
     margin-right: 30px;
+}
+
+.storeDadosEditarLoja2 .btnCancelar, .btnFinalizarCadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    height: 48px;
+    width: 247px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    cursor: pointer;
+}
+
+.btnFinalizarCadastro {
+    background: #BDBDBD;
+    color: white;
+}
+
+.storeDadosEditarLoja2 .btnCancelar:active {
+    filter: brightness(3);
+}
+
+.btnFinalizarCadastro:active {
+    background-color: #ffffff;
+    color: #023047;
+}
+
+.storeDadosEditarLoja2 input {
+    text-decoration: solid;
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    height: 40px;
+    box-sizing: border-box;
+    padding-left: 10px;
+    font-size: 16px;
+    line-height: 10px;
+}
+
+.storeDadosEditarLoja2 label {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #292D32;
+    opacity: 0.6;
+}
+
+.representanteLegalAdressdata {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: row;
+    
+}
+
+.representanteLegalAdressdata div {
+    width: 190px;
+    min-width: max-content;
+    box-sizing: border-box;
 }

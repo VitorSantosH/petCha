@@ -74,7 +74,9 @@ const useLojasState = (props) => {
 
     async function loadingLojas(reset) {
 
-        if (lojasState.isLoading === false || reset === true) {
+        console.log(reset == true)
+
+        if (lojasState.isLoading === false || reset == true) {
 
             const { response, err } = await conect.getStores()
 
@@ -177,6 +179,8 @@ const Lojas = (props) => {
 
                     <CadastrarLoja
                         display={lojasState.showCadastrarLoja}
+                        resetStores={resetStores}
+                        setCadastrarLoja={setCadastrarLoja}
                     />
 
                     <div className="menuSuperiorLojas">
@@ -223,12 +227,14 @@ const Lojas = (props) => {
                         </div>
 
 
-                        <div className="lojasTable">
-                            <AtivasInativas
-                                ativas={lojasState.ativas}
-                                dataLojas={lojasState.dataLojas}
-                                setStoreFocus={setStoreFocus}
-                            />
+                        <div className="lojaBox">
+                            <div className="lojasTable">
+                                <AtivasInativas
+                                    ativas={lojasState.ativas}
+                                    dataLojas={lojasState.dataLojas}
+                                    setStoreFocus={setStoreFocus}
+                                />
+                            </div>
                         </div>
 
 

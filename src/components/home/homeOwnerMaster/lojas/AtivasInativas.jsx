@@ -103,7 +103,7 @@ const AtivasInativas = (props) => {
                     <span
                         onClick={e => {
                             props.setStoreFocus(loja.codStore)
-                            navigate(`/homePerfil/store/${obj}`)
+                            navigate(`/homePerfil/store`)
 
                             props.actionStore(loja.codStore)
 

@@ -294,14 +294,14 @@ const conect = {
 
             },
         })
-        .then(res => {
-            console.log(res) 
-            return res
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        })
+            .then(res => {
+                console.log(res)
+                return res
+            })
+            .catch(err => {
+                console.log(err)
+                return err
+            })
 
         return response
 
@@ -319,20 +319,83 @@ const conect = {
 
             },
         })
-        .then(res => {
-            console.log(res) 
-            return res
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        })
+            .then(res => {
+                console.log(res)
+                return res
+            })
+            .catch(err => {
+                console.log(err)
+                return err
+            })
 
         return response
 
-    }
+    },
+
+    generateStore: async (data, codStore) => {
+
+      
+        data.authorization =  `${sessionStorage.getItem('authToken')}`
+        data.username =  `${sessionStorage.getItem('userName')}`
+        data.codOwner= `${config.codOwner}`
+        
+        console.log(data)
+        const responseStatus = await api.post('/Agenda_WS/Store/insertStore',{...data}, {
+
+            
+            headers: {
+
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                // 'codStore': `${parseInt(codStore)}`,
+                username: `${sessionStorage.getItem('userName')}`,
+                codOwner: `${config.codOwner}`,
+                codLinguage: "PT",
+
+            },
 
 
+        }).then(response => {
+
+           
+            return response
+
+        }).catch(err => {
+
+            
+            return  err
+        })
+
+
+        return responseStatus
+
+    },
+
+    deleteStore: async (codStore) => {
+
+        const responseStatus = await api.delete('/Agenda_WS/Store/deleteStore', {
+
+            headers: {
+
+                'Authorization': `${sessionStorage.getItem('authToken')}`,
+                'codStore': `${parseInt(codStore)}`,
+                username: `${sessionStorage.getItem('userName')}`,
+                codOwner: `${config.codOwner}`,
+                codLinguage: "PT",
+                codStore: codStore
+            },
+
+
+        }
+
+        ).then(response => {
+            console.log(response)
+            return response.status
+        }).catch(err => {
+            return err.status
+        })
+
+        return responseStatus
+    },
 
 }
 

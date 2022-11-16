@@ -15,8 +15,8 @@ import 'animate.css'
 //imgs 
 import setasImg from '../../../../../assets/Setas.png';
 import gitCarregamento from '../../../../../assets/Rolling.gif';
-import btnVoltar from '../../../../../assets/bntVoltar.png';
-import btnIr from '../../../../../assets/arrow-circle-right.png';
+import arrowLeft from '../../../../../assets/arrow-circle-left.png';
+import arrowRight from '../../../../../assets/arrow-circle-right.png';
 
 
 const LojasDetalhe = (props) => {
@@ -52,8 +52,10 @@ const LojasDetalhe = (props) => {
 
         const { response } = await conect.getStore(codStore);
 
-
+        if (!response.data) return
         const store = response.data.results[0]
+        console.log(store)
+
 
         setStateStoreDetalhe({
             ...stateStoreDetalhe,
@@ -119,7 +121,7 @@ const LojasDetalhe = (props) => {
             confirmButtonColor: '#FB8500',
             cancelButtonColor: 'cancelButtonColor',
             preConfirm: async (login) => {
-                return  conect.activateStore(codStore)
+                return conect.activateStore(codStore)
                     .then(response => {
                         console.log(response)
                         if (!response.status == 200) {
@@ -136,7 +138,7 @@ const LojasDetalhe = (props) => {
             },
             allowOutsideClick: () => !Swal.isLoading()
 
-        }).then( async (result) => {
+        }).then(async (result) => {
             console.log(result)
             if (result.isConfirmed) {
                 Swal.fire({
@@ -144,15 +146,15 @@ const LojasDetalhe = (props) => {
                     title: `A loja foi ativada com sucesso!`,
                     confirmButtonText: 'Fechar',
                     confirmButtonColor: '#FB8500',
-                    
-                    
+
+
                 })
             }
             await props.resetStores()
             return getStore(props.codStore)
         })
 
-        return    
+        return
 
     }
 
@@ -167,7 +169,7 @@ const LojasDetalhe = (props) => {
             confirmButtonColor: '#FB8500',
             cancelButtonColor: 'cancelButtonColor',
             preConfirm: async (login) => {
-                return  conect.inactivateStore(codStore)
+                return conect.inactivateStore(codStore)
                     .then(response => {
                         console.log(response)
                         if (!response.status == 200) {
@@ -184,7 +186,7 @@ const LojasDetalhe = (props) => {
             },
             allowOutsideClick: () => !Swal.isLoading()
 
-        }).then( async (result) => {
+        }).then(async (result) => {
             console.log(result)
             if (result.isConfirmed) {
                 Swal.fire({
@@ -192,16 +194,37 @@ const LojasDetalhe = (props) => {
                     title: `A loja foi inativada com sucesso!`,
                     confirmButtonText: 'Fechar',
                     confirmButtonColor: '#FB8500',
-                    
-                    
+
+
                 })
             }
             await props.resetStores()
             return getStore(props.codStore)
         })
 
-      return
+        return
 
+    }
+
+    async function deleteStore(codStore) {
+
+        const status = await conect.deleteStore(codStore)
+
+        if (status == 200) {
+            Swal.fire({
+                title: 'Loja deletada com sucesso!',
+                icon: 'success'
+            })
+        } else {
+            Swal.fire({
+                title: 'Erro',
+                text: "Contate a administração",
+                icon: 'error'
+            })
+        }
+
+        props.resetStores()
+        return window.history.back()
     }
 
     return <>
@@ -224,6 +247,13 @@ const LojasDetalhe = (props) => {
                 <span>
                     Estou aqui
                 </span>
+                <div
+                    onClick={e => {
+                        console.log(stateStoreDetalhe)
+                    }}
+                >
+                    State
+                </div>
             </div>
 
 
@@ -233,7 +263,12 @@ const LojasDetalhe = (props) => {
 
                 {stateStoreDetalhe.store &&
                     <>
-                        <div className="genericButton excluir">
+                        <div
+                            className="genericButton excluir"
+                            onClick={e => {
+                                deleteStore(props.codStore)
+                            }}
+                        >
                             Excluir Loja
                         </div>
                         {!stateStoreDetalhe.store.isLocked &&
@@ -325,7 +360,8 @@ const LojasDetalhe = (props) => {
                                             }
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.6 0 0 114.6 0 256c0 141.4 114.6 256 256 256s256-114.6 256-256C512 114.6 397.4 0 256 0zM384 288H205.3l49.38 49.38c12.5 12.5 12.5 32.75 0 45.25s-32.75 12.5-45.25 0L105.4 278.6C97.4 270.7 96 260.9 96 256c0-4.883 1.391-14.66 9.398-22.65l103.1-103.1c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L205.3 224H384c17.69 0 32 14.33 32 32S401.7 288 384 288z" /></svg>
+
+                                        <img src={arrowLeft} alt="" />
 
                                     </div>
                                     <div
@@ -340,7 +376,7 @@ const LojasDetalhe = (props) => {
                                             }
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.6 0 0 114.6 0 256c0 141.4 114.6 256 256 256s256-114.6 256-256C512 114.6 397.4 0 256 0zM406.6 278.6l-103.1 103.1c-12.5 12.5-32.75 12.5-45.25 0s-12.5-32.75 0-45.25L306.8 288H128C110.3 288 96 273.7 96 256s14.31-32 32-32h178.8l-49.38-49.38c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l103.1 103.1C414.6 241.3 416 251.1 416 256C416 260.9 414.6 270.7 406.6 278.6z" /></svg>
+                                        <img src={arrowRight} alt="" />
                                     </div>
                                 </div>
 
@@ -466,67 +502,73 @@ const LojasDetalhe = (props) => {
                         <div id="horariosDeAtendimento">
                             <label htmlFor="">Horários de atendimento{" "}</label>
 
-                            <div className="horariosSpan2">
-                                <span>
-                                    {`2° à 6° -   ${stateStoreDetalhe.store.stowotmes[0].beginTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].beginTime.hour : stateStoreDetalhe.store.stowotmes[0].beginTime.hour}:${stateStoreDetalhe.store.stowotmes[0].beginTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].beginTime.minute : stateStoreDetalhe.store.stowotmes[0].beginTime.minute}   
-                                às ${stateStoreDetalhe.store.stowotmes[0].endTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].endTime.hour : stateStoreDetalhe.store.stowotmes[0].endTime.hour}:${stateStoreDetalhe.store.stowotmes[0].endTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].endTime.minute : stateStoreDetalhe.store.stowotmes[0].endTime.minute} `}
-                                </span>
-                                {" "}{" "}
-                                {stateStoreDetalhe.store.stowotmes[5] && <>
-                                    <span>{`Sáb - 
-                                ${stateStoreDetalhe.store.stowotmes[5].beginTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[5].beginTime.hour : stateStoreDetalhe.store.stowotmes[5].beginTime.hour}:${stateStoreDetalhe.store.stowotmes[5].beginTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[5].beginTime.minute : stateStoreDetalhe.store.stowotmes[5].beginTime.minute} 
-                                às
-                                ${stateStoreDetalhe.store.stowotmes[5].endTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[5].endTime.hour : stateStoreDetalhe.store.stowotmes[5].endTime.hour}:${stateStoreDetalhe.store.stowotmes[5].endTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[5].endTime.minute : stateStoreDetalhe.store.stowotmes[5].endTime.minute} `}</span>
-                                </>}
-                                <span className="fechado">Dom - Fechado </span>
-                                <span className="fechado">Feriados - Fechados</span>
-                            </div>
+                            {stateStoreDetalhe.store.stowotmes[0].beginTime && stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime && (
+                                <div className="horariosSpan2">
+                                    <span>
+                                        {`2° à 6° -   ${stateStoreDetalhe.store.stowotmes[0].beginTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].beginTime.hour : stateStoreDetalhe.store.stowotmes[0].beginTime.hour}:${stateStoreDetalhe.store.stowotmes[0].beginTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].beginTime.minute : stateStoreDetalhe.store.stowotmes[0].beginTime.minute}   
+                                        às ${stateStoreDetalhe.store.stowotmes[0].endTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].endTime.hour : stateStoreDetalhe.store.stowotmes[0].endTime.hour}:${stateStoreDetalhe.store.stowotmes[0].endTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[0].endTime.minute : stateStoreDetalhe.store.stowotmes[0].endTime.minute} `}
+                                    </span>
+                                    {" "}{" "}
+                                    {stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1] && <>
+                                        <span>{`Sáb - 
+                                        ${stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime.hour : stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime.hour}:${stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime.minute : stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].beginTime.minute} 
+                                        às
+                                        ${stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].endTime.hour < 10 ? "0" + stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].endTime.hour : stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].endTime.hour}:${stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].endTime.minute < 10 ? "0" + stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].endTime.minute : stateStoreDetalhe.store.stowotmes[stateStoreDetalhe.store.stowotmes.length - 1].endTime.minute} `}</span>
+                                    </>}
+                                    <span className="fechado">Dom - Fechado </span>
+                                    <span className="fechado">Feriados - Fechados</span>
+                                </div>
+                            )}
                         </div>
 
                     </div>
-                    <div className="storeDados1">
-                        <div className="SobreLoja">
-                            <label htmlFor="">Sobre a loja{" "}</label>
-                            <span>{stateStoreDetalhe.store.storextes[1].description}</span>
-                        </div>
+                    {stateStoreDetalhe.store.storextes[1] && (
+                        <div className="storeDados1">
 
-                        <div id="servicosLoja">
-                            <label htmlFor="" style={{ 'marginLeft': '10px' }}>Serviços da loja</label>
-                            <div className="spansServicoLoja">
-                                {generateSpans(stateStoreDetalhe.store.matores)}
+                            <div className="SobreLoja">
+                                <label htmlFor="">Sobre a loja{" "}</label>
+                                <span>{stateStoreDetalhe.store.storextes[1].description}</span>
                             </div>
-                        </div>
 
-                    </div>
+                            <div id="servicosLoja">
+                                <label htmlFor="" style={{ 'marginLeft': '10px' }}>Serviços da loja</label>
+                                <div className="spansServicoLoja">
+                                    {generateSpans(stateStoreDetalhe.store.matores)}
+                                </div>
+                            </div>
+
+                        </div>
+                    )}
+
                 </div>
 
                 <div className="dadosStore" >
 
                     <h3>Dados do representante legal</h3>
-                    <div className="storeDados1">
+                    {stateStoreDetalhe.store.userPersonData && (
+                        <div className="storeDados1">
 
-                        <div className="nome">
-                            <label htmlFor="">Nome{" "}</label>
-                            <span>{stateStoreDetalhe.store.personData.name}</span>
+                            <div className="nome">
+                                <label htmlFor="">Nome{" "}</label>
+                                <span>{stateStoreDetalhe.store.userPersonData.name}</span>
+                            </div>
+                            <div className="cpf">
+                                <label htmlFor="">CPF{" "}</label>
+                                <NumberFormat format="###.###.###-##" value={stateStoreDetalhe.store.userPersonData.cpf} />
+                            </div>
+
+                            <div className="tel">
+                                <label htmlFor="">Contato{" "}</label>
+                                <span>{stateStoreDetalhe.store.userPersonData.phone ? stateStoreDetalhe.store.userPersonData.phone : "Não informado"}</span>
+                            </div>
+
+                            <div className="email">
+                                <label htmlFor="">E-mail{" "}</label>
+                                <span>{stateStoreDetalhe.store.userPersonData.email}</span>
+                            </div>
+
                         </div>
-                        <div className="cpf">
-                            <label htmlFor="">CPF{" "}</label>
-                            <NumberFormat format="###.###.###-##" value={stateStoreDetalhe.store.personData.cpf} />
-                        </div>
-
-                        <div className="tel">
-                            <label htmlFor="">Contato{" "}</label>
-                            <span>{stateStoreDetalhe.store.personData.phone ? stateStoreDetalhe.store.personData.phone : "Não informado"}</span>
-                        </div>
-
-                        <div className="email">
-                            <label htmlFor="">E-mail{" "}</label>
-                            <span>{stateStoreDetalhe.store.personData.email}</span>
-                        </div>
-
-
-
-                    </div>
+                    )}
 
 
                 </div>

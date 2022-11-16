@@ -28,6 +28,9 @@
     transform: translate3d(0px, -100px, 0);
     z-index: 15;
 }
+.editarLoja input[type='checkbox'] {
+    cursor: pointer;
+}
 
 .headerEditarLoja {
     width: 100%;
@@ -282,11 +285,11 @@
     border-radius: 6px;
 }
 
-#uploadImageInput {
+#uploadImageInput, .uploadImageInput {
     display: none;
 }
 
-#labelUploadImageInput {
+#labelUploadImageInput, .labelUploadImageInput {
     cursor: pointer;
     display: flex;
     flex-direction: column;

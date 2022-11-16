@@ -164,6 +164,17 @@
     border-radius: 10px;
     max-width: 100%;
     height: 90%;
+   
+}
+
+.controlCarrosel img {
+    border-radius: 50%;
+    background-color: #FD9E02 ;
+    width: 30px;
+    cursor: pointer;
+}
+.controlCarrosel img:active {
+   filter: brightness(1.5);
 }
 
 .resumoStore {
@@ -384,27 +395,17 @@
 }
 
 
-
-
 .controlCarrosel {
     z-index: 10;
     position: relative;
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     justify-content: space-between;
+    padding: 10px;
+    box-sizing: border-box;
 }
-
-.controlCarrosel svg {
-    max-width: 30px;
-    border-radius: 50%;
-    background-color: white;
-    cursor: pointer;
-}
-
-.controlCarrosel svg:active {
-    background-color: #FB8500;
-}
-
 
 [data-anime] {
     opacity: 0;

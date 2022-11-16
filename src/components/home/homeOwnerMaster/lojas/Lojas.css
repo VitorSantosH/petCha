@@ -100,6 +100,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-sizing: border-box;
+    padding: 10px;
 
 }
 
@@ -114,7 +116,8 @@
 }
 
 .lojasTable {
-    width: 90%;
+    width: auto;
+    min-width:  max-content;
     min-height: 600px;
     background-color: white;
     display: flex;
@@ -126,11 +129,13 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
+
 .lojasTable div {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
+    min-width: none;
     height: 60px;
     box-sizing: border-box;
     padding: 10px;
@@ -213,6 +218,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .cadastrarLoja:active {
@@ -221,4 +227,22 @@
 
 .parte1Lojas div {
     cursor: pointer;
+}
+.lojaBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    
+    padding: 30px;
+    box-sizing: border-box;
+}
+@media only screen and (max-width: 1100px) {
+
+    .lojaBox {
+        padding-left: 50px;
+        justify-content: flex-start;
+        overflow-x: scroll;
+    }
+
 }

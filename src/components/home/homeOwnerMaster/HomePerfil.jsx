@@ -20,25 +20,25 @@ import sinoIcon from '../../../assets/notification.png';
 import dashboardIcon from '../../../assets/dashboardIcon.png';
 import lojasIcon from '../../../assets/lojasIcon.png';
 import categoriasIcon from '../../../assets/categoriasIcon.png';
-import imgUser from '../../../assets/ftUser.png';
+//import imgUser from '../../../assets/ftUser.png';
 
 
-const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
+const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias, reduxStore) => {
 
     const params = useParams();
 
     var config = { store: undefined }
-    if (params.config) {
-        config = JSON.parse(params.config)
+    if(params.store) {
+        config = {store : reduxStore}
     }
 
-   // const userObj = JSON.parse(sessionStorage.getItem('user'));
-   
+    
+    const userObj = JSON.parse(sessionStorage.getItem('user'));
 
     const inicialState = {
         display: "none",
         user: {
-            name: 'Rafael Coimbra',
+            name: userObj.name,
             tel: "31 996400879",
             email: 'rafael@gmail.com',
             cep: '99999-88',
@@ -47,7 +47,7 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias) => {
             estado: "Sâo Paulo",
             cidade: "São Paulo",
             cargo: 'Master',
-            imgPerfil: imgUser
+            imgPerfil: userObj.fimistData.fileImgUriExternal
         },
         displayEditarPerfil: "none",
         btnFocos: null,
@@ -237,7 +237,7 @@ const HomePerfil = (props) => {
         CustonRouter,
 
 
-    } = useHomeState($btnDashboard, $btnLojas, $btnCatgorias)
+    } = useHomeState($btnDashboard, $btnLojas, $btnCatgorias, props.store.storeFoco.store)
 
 
 

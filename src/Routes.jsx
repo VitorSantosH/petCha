@@ -24,7 +24,7 @@ const Rotas = () => {
         <Router>
             <Routes>
 
-                <Route path="/homePerfil/store/:config" element={<HomePerfil />} />
+                <Route path="/homePerfil/:store" element={<HomePerfil />} />
                 <Route exact path="/homePerfil" element={<HomePerfil />} />
                 <Route exact path="/homeEmployee" element={<HomeEmployee />} />
                 <Route exact path="/teste" element={<Teste />} />
