@@ -186,9 +186,6 @@ const Financeiro = (props) => {
 
     function GraficosEstadosUsersAtivos(span, data) {
 
-        
-        console.log(data)
-
         let estados = [
             { value: 'AC', label: 'Acre' },
             { value: 'AL', label: 'Alagoas' },

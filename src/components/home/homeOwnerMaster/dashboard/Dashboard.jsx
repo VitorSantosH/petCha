@@ -31,10 +31,7 @@ const useDashboardState = () => {
 
     useEffect(() => {
 
-
         generateArrayValues(state.data)
-
-
 
     }, [state.estadoLabel, state.data, state.valueDropBox])
 

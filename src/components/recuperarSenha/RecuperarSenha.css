@@ -30,6 +30,7 @@
     max-width: 690px;
     min-height: 340px;
 }
+
 .showBanner4 {
     height: 270px;
     width: 514px;
@@ -37,28 +38,34 @@
     justify-content: space-around;
 }
 
-.showBanner0 .titulo {
+.showBanner0 .titulo, .showBanner2 .titulo  {
     margin-top: 30px;
+    padding-left: 5%;
+    padding-right: 5%;
     display: flex;
     flex-direction: row;
     width: 100%;
     align-items: center;
-    justify-content: center;
-
+    justify-content: space-between;
+    box-sizing: border-box;
 
 }
 
 .showBanner0 .titulo img {
     position: relative;
-    left: -25%;
 }
 
 .showBanner0 span {
     margin-top: 50px;
-    font-weight: 600;
-    line-height: 28px;
-    font-size: 22px;
     padding: 10px;
+    margin-right: 5%;
+    margin-left: 5%;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: center;
 }
 
 .enviarEmailRec, .validarCodigo, .Prosseguir {
@@ -89,6 +96,10 @@
     justify-content: right;
 }
 
+.showBanner2 .titulo  {
+    margin-bottom: 20px;
+}
+
 #btnCerto {
     position: relative;
     top: -15px;
@@ -112,41 +123,44 @@
     line-height: 32px;
     margin-bottom: 30px;
 }
+
 #h2ShowBanner {
 
-    font-size:  36px;
+    font-size: 36px;
 }
 
 #btnVoltarValidarCod {
     position: relative;
     left: -25%;
 }
+
 .titleValidarCodigo img {
     position: relative;
     left: -45%;
 }
+
 .showBanner2 {
     padding: 20px;
     height: 335px;
     min-width: 500px;
-    
+
 }
 
 .basicInputContainer {
-   
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        width: 100%;
-        align-items: flex-start;
-        box-sizing: border-box;
-        align-items: center;
 
- 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    box-sizing: border-box;
+    align-items: center;
+
+
 }
 
 .basicInputContainer input {
-    
+
     width: 80%;
     margin-top: 5px;
     margin-bottom: 25px;
@@ -157,14 +171,16 @@
     padding-left: 16px;
     padding-right: 16px;
     font-size: 30px;
-    
+
 
 }
-.basicInputContainer  label {
+
+.basicInputContainer label {
     width: 85%;
     text-align: left;
     opacity: 0.6;
 }
+
 .basicInputContainer img {
     position: relative;
     right: -35%;
@@ -176,4 +192,3 @@
     padding: 20px;
     box-sizing: border-box;
 }
-

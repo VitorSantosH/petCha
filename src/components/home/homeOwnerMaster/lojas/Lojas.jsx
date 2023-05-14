@@ -237,7 +237,7 @@ const Lojas = (props) => {
                             </div>
                         </div>
 
-
+                        
                     </div>
                 </>
             }

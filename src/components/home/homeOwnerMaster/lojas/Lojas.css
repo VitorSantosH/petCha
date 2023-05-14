@@ -119,6 +119,7 @@
     width: auto;
     min-width:  max-content;
     min-height: 600px;
+    height: max-content;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -231,11 +232,10 @@
 .lojaBox{
     display: flex;
     justify-content: center;
-    align-items: center;
     width: 100%;
-    
     padding: 30px;
     box-sizing: border-box;
+    height: 100%;
 }
 @media only screen and (max-width: 1100px) {
 

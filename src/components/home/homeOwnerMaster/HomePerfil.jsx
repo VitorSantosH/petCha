@@ -15,7 +15,6 @@ import Lojas from "./lojas/Lojas";
 
 // imgs 
 import logo from '../../../assets/Layer 1.png';
-import userNotFoundImg from '../../../assets/user.png';
 import sinoIcon from '../../../assets/notification.png';
 import dashboardIcon from '../../../assets/dashboardIcon.png';
 import lojasIcon from '../../../assets/lojasIcon.png';
@@ -28,17 +27,18 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias, reduxStore) => {
     const params = useParams();
 
     var config = { store: undefined }
-    if(params.store) {
-        config = {store : reduxStore}
+    if (params.store) {
+        config = { store: reduxStore }
     }
 
-    
+
     const userObj = JSON.parse(sessionStorage.getItem('user'));
+
 
     const inicialState = {
         display: "none",
         user: {
-            name: userObj.name,
+            name: userObj.name || 'Não informado',
             tel: "31 996400879",
             email: 'rafael@gmail.com',
             cep: '99999-88',
@@ -47,7 +47,7 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias, reduxStore) => {
             estado: "Sâo Paulo",
             cidade: "São Paulo",
             cargo: 'Master',
-            imgPerfil: userObj.fimistData.fileImgUriExternal
+            imgPerfil: userObj.fimistData ? userObj.fimistData.fileImgUriExternal : null,
         },
         displayEditarPerfil: "none",
         btnFocos: null,
@@ -69,8 +69,8 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias, reduxStore) => {
         if (config.store === undefined) {
             setHomeState({
                 ...homeState,
-                btnFocos: null,
-                screen: "PERFIL"
+                btnFocos: $btnDashboard,
+                screen: "DASHBOARD"
 
             })
         }
@@ -241,10 +241,7 @@ const HomePerfil = (props) => {
 
 
 
-    // const ftPerfil = props.user ? props.user.imgPerfil : userNotFoundImg
-    //const response = conect.getOwnerInfo({ username: 'owner1@mind5.com.br', password: "%xK!S898" })
-    //console.log(response)
-
+  
     return (
         <div className="homePerfil">
 
@@ -257,7 +254,16 @@ const HomePerfil = (props) => {
                 </div>
 
                 <div className="bemVindoHomePerfil">
-                    <img src={homeState.user.imgPerfil} />
+                    {homeState.user.imgPerfil && (
+                        <img src={homeState.user.imgPerfil} />
+                    )}
+
+                    {!homeState.user.imgPerfil && (
+                        <i className="fa fa-user-o" aria-hidden="true"></i>
+                    )}
+
+                  
+
 
                     <div className="textCotainerPerfil">
 

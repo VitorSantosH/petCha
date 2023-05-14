@@ -5,7 +5,6 @@ import { connect as connectRedux } from 'react-redux';
 import NumberFormat from "react-number-format";
 import conect from "../../../../../services/conect";
 import Swal from 'sweetalert2';
-import DropDiv from "./dropzone";
 import './EditarLoja.css';
 
 // imgs 
@@ -16,7 +15,7 @@ import addCirculo from "../../../../../assets/add-circle.png";
 const EditarLoja = (props) => {
 
 
-
+    
     const [state, setState] = useState({
         display: false,
         store: props.loja,
@@ -90,11 +89,11 @@ const EditarLoja = (props) => {
         })
     }
 
-    function GenerateCarrosel() {
+    function GenerateCarrosel(props) {
 
-        if (state.store === undefined) return <></>
+        if (props.store === undefined) return <></>
 
-        const imgs = state.store.fimecoData.fimistes.map((img, i) => {
+        const imgs = props.store.fimecoData.fimistes.map((img, i) => {
 
 
             return (
@@ -105,16 +104,16 @@ const EditarLoja = (props) => {
                         alt=""
 
                     />
-                    <div
-                        id="trash"
+                    <i
+                        class="fa fa-trash"
                         onClick={async event => {
-                            // const res = await conect.deleteImage(img.codFileImg, props.codStore)
+    
                             deleteImage(img.codFileImg, props.codStore, event)
                         }}
                     >
-                        <img src={trash} alt="" />
 
-                    </div>
+                    </i>
+
                 </div>
             )
 
@@ -616,7 +615,8 @@ const EditarLoja = (props) => {
                                 >
                                     Salvar Alterações
                                 </div>
-
+                                {/**
+ * 
                                 <div
                                     onClick={e => {
                                         console.log(state.store)
@@ -624,6 +624,7 @@ const EditarLoja = (props) => {
                                 >
                                     Show Store state
                                 </div>
+ */}
 
                             </div>
 
@@ -641,15 +642,27 @@ const EditarLoja = (props) => {
                                 <div className="imgsEditarLoja">
 
 
-                                    <div className="imgCapa">
+                                  
+                                    <div className="imgsCarrosel">
+                                        <img
+                                            src={state.store.fimecoData.fimistCover.fileImgUriExternal}
+                                           
+                                            alt=""
 
-                                        <img src={state.store.fimecoData.fimistCover.fileImgUriExternal} alt="" />
-                                        <div id="trash">
-                                            <img src={trash} alt="" />
-                                        </div>
+                                        />
+                                        <i
+                                            class="fa fa-trash"
+                                            onClick={async event => {
+                                                // const res = await conect.deleteImage(img.codFileImg, props.codStore)
+                                             //   deleteImage(img.codFileImg, props.codStore, event)
+                                            }}
+                                        >
+
+                                        </i>
+
                                     </div>
 
-                                    {GenerateCarrosel()}
+                                    {GenerateCarrosel(state)}
 
                                     <div className="adicionarFoto">
 
@@ -678,7 +691,7 @@ const EditarLoja = (props) => {
                                 </div>
                             )}
 
-                            {state.store.userPersonData && (
+                            {state.store.peregData && (
                                 <div className="storeDadosEditarLoja">
 
                                     <div className="nameStore">
@@ -959,10 +972,10 @@ const EditarLoja = (props) => {
                                             <input
                                                 className="inputEditarStore"
                                                 type="text"
-                                                value={state.store.userPersonData ? state.store.userPersonData.name : undefined}
+                                                value={state.store.peregData ? state.store.peregData.personData.name : undefined}
                                                 onChange={e => {
                                                     let storeTemp = state.store;
-                                                    storeTemp.userPersonData.name = e.target.value;
+                                                    storeTemp.peregData.personData.name = e.target.value;
                                                     setState({
                                                         ...state,
                                                         store: storeTemp
@@ -976,10 +989,10 @@ const EditarLoja = (props) => {
                                             <NumberFormat
                                                 className="inputEditarStore"
                                                 format="###.###.###-##"
-                                                value={state.store.userPersonData ? state.store.userPersonData.cpf : undefined}
+                                                value={state.store.peregData ? state.store.peregData.personData.cpf : undefined}
                                                 onChange={e => {
                                                     let storeTemp = state.store;
-                                                    storeTemp.userPersonData.cpf = e.target.value;
+                                                    storeTemp.peregData.personData.cpf = e.target.value;
                                                     setState({
                                                         ...state,
                                                         store: storeTemp
@@ -993,11 +1006,11 @@ const EditarLoja = (props) => {
                                             <NumberFormat
                                                 className="inputEditarStore"
                                                 format="## #####-####"
-                                                value={state.store.userPersonData ? state.store.userPersonData.phone : null}
+                                                value={state.store.peregData ? state.store.peregData.personData.phone : null}
                                                 placeholder="Não informado"
                                                 onChange={e => {
                                                     let storeTemp = state.store;
-                                                    storeTemp.userPersonData.phone = e.target.value;
+                                                    storeTemp.peregData.personData.phone = e.target.value;
                                                     setState({
                                                         ...state,
                                                         store: storeTemp
@@ -1012,10 +1025,10 @@ const EditarLoja = (props) => {
                                             <input
                                                 type="text"
                                                 className="inputEditarStore"
-                                                value={state.store.userPersonData ? state.store.userPersonData.email : null}
+                                                value={state.store.peregData ? state.store.peregData.personData.email : null}
                                                 onChange={e => {
                                                     let storeTemp = state.store;
-                                                    storeTemp.userPersonData.email = e.target.value;
+                                                    storeTemp.peregData.personData.email = e.target.value;
                                                     setState({
                                                         ...state,
                                                         store: storeTemp

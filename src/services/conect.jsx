@@ -8,13 +8,14 @@ const conect = {
 
     login: async (props) => {
 
+      
         const string = `${props.username}:${props.password}`
         const emBase64 = btoa(string)
         sessionStorage.setItem('userName', props.username);
 
         const response = await api.get('/Agenda_WS/Home/main', {
             headers: {
-                // codOwner: 26, >>>>>>> NECESSARIO, PASSEI PARA O HEADER NA API
+                 codOwner: 3,// >>>>>>> NECESSARIO, PASSEI PARA O HEADER NA API
                 // role: 'EMPREGADO',
                 // codEmployee: 28,
                 // codStore: 28,
@@ -26,11 +27,14 @@ const conect = {
         }).then(res => {
 
 
+
             if (res.data && res.headers.authorization) {
-                console.log(res)
+     
+
                 sessionStorage.setItem('generalData', JSON.stringify(res.data.results[0]))
 
-                if (res.data.results[0].sowashData) {
+
+                if (res.data.results[0]) {
                     sessionStorage.setItem('authToken', res.headers.authorization);
                     sessionStorage.setItem('sowotesDatas', JSON.stringify(res.data.results[0].sowashData.sowotes));
                     sessionStorage.setItem('userData', JSON.stringify(res.data.results[0].sowashData.sowuses));
@@ -39,14 +43,13 @@ const conect = {
                 }
             }
 
-
-            console.log(res)
+        
             return res
 
         }).catch(err => {
 
-
-            return err
+            console.log(err)
+            return err.response
         })
 
         return response
@@ -334,15 +337,15 @@ const conect = {
 
     generateStore: async (data, codStore) => {
 
-      
-        data.authorization =  `${sessionStorage.getItem('authToken')}`
-        data.username =  `${sessionStorage.getItem('userName')}`
-        data.codOwner= `${config.codOwner}`
-        
-        console.log(data)
-        const responseStatus = await api.post('/Agenda_WS/Store/insertStore',{...data}, {
 
-            
+        data.authorization = `${sessionStorage.getItem('authToken')}`
+        data.username = `${sessionStorage.getItem('userName')}`
+        data.codOwner = `${config.codOwner}`
+
+        console.log(data)
+        const responseStatus = await api.post('/Agenda_WS/Store/insertStore', { ...data }, {
+
+
             headers: {
 
                 'Authorization': `${sessionStorage.getItem('authToken')}`,
@@ -356,13 +359,13 @@ const conect = {
 
         }).then(response => {
 
-           
+
             return response
 
         }).catch(err => {
 
-            
-            return  err
+
+            return err
         })
 
 

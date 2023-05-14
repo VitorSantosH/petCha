@@ -11,7 +11,7 @@ import img1 from '../../../assets/amico.png';
 import imgOlhoAberto from '../../../assets/olho-vermelhoAberto.png';
 import imgOlhoFechado from '../../../assets/olho-vermelho.png';
 import imglogoWhite from '../../../assets/logoWhite.png';
-import gifCarregamento from '../../../assets/Rolling.gif';
+
 
 
 const UseLoginState = () => {
@@ -19,10 +19,10 @@ const UseLoginState = () => {
     const [stateLogin, setStateLogin] = useState({
         stateTypePassword: true,
         stateEmailStyle: true,
-        emailValue: null,
+        emailValue: "",
         display: "none",
         isLog: false,
-        password: null,
+        password: undefined,
         loading: false
 
     })
@@ -41,7 +41,7 @@ const UseLoginState = () => {
 
         const username = stateLogin.emailValue
         const password = stateLogin.password
-
+        let codAuth
 
 
         if (username === null || username === undefined || username === "") {
@@ -75,12 +75,31 @@ const UseLoginState = () => {
 
         const response = await conect.login({ username, password })
 
-        let codAuth
 
-        try {
-            codAuth = response.data.results[0].usomeData.codAuthGroup
-        } catch (error) {
-            console.log(error)
+
+        if (response.status === 401) {
+
+            setStateLogin({
+                ...stateLogin,
+                loading: false
+            })
+
+            return Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'E-mail ou senha inválidos',
+            })
+
+
+        }
+
+        if (response.data) {
+
+            try {
+                codAuth = response.data.results[0].usomeData.codAuthGroup
+            } catch (error) {
+                console.log(error)
+            }
         }
 
 
@@ -124,7 +143,7 @@ const UseLoginState = () => {
         })
     }
     function ReqSenha() {
-        return <RecuperarSenha display={stateLogin.display} setDisplay={setDisplay} />
+        return <RecuperarSenha display={stateLogin.display} setDisplay={setDisplay} email={stateLogin.emailValue} />
     }
     function setPassword(value) {
         setStateLogin({
@@ -268,11 +287,23 @@ const LoginUser = () => {
                     <div
                         className="esqueciSenha"
                         onClick={e => {
+
+                            if (stateLogin.emailValue == null) {
+                                return   Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Defina o e-mail para recuperar sua senha',
+                                })
+
+                                
+                            }
                             setDisplay('flex')
                         }}
                     >
                         <span>
+
                             Esqueci minha senha
+                            
                         </span>
                     </div>
 
@@ -301,24 +332,6 @@ const LoginUser = () => {
                             </div>
                         )}
 
-
-
-                        {/**
-                      *    {stateLogin.loading && (
-                            <div className="loaderDiv">
-                                <section class="loader">
-                                    <section class="duo duo1">
-                                        <section class="dot dot-a"></section>
-                                        <section class="dot dot-b"></section>
-                                    </section>
-                                    <section class="duo duo2">
-                                        <section class="dot dot-a"></section>
-                                        <section class="dot dot-b"></section>
-                                    </section>
-                                </section>
-                            </div>
-                        )}
-                      */}
 
                     </div>
 

@@ -8,8 +8,6 @@ ChartJS.register(...registerables)
 
 const Lojas = (props) => {
 
-   
-    
     
     const [state, setState] = useState({
         labels: props.labels,
@@ -71,7 +69,6 @@ const Lojas = (props) => {
         }
     }
 
-  
 
     function GetNovasLojasGrafic(labels, data) {
 
@@ -90,7 +87,7 @@ const Lojas = (props) => {
         })
 
         const menorValue = Math.min(...values) || 0
-        const maiorValue = Math.max(...values) ||1
+        const maiorValue = Math.max(...values) || 0
         const colors = values.map((value) => {
             if (value == menorValue) {
                 return '#EE3B3B'
@@ -173,8 +170,7 @@ const Lojas = (props) => {
                 backgroundColor: ['#28C76F', '#EA5455']
             }],
 
-            // These labels appear in the legend and in the tooltips when hovering different arcs
-
+     
 
         };
 
@@ -256,6 +252,7 @@ const Lojas = (props) => {
 
 
         const data = JSON.parse(sessionStorage.getItem('sowotesDatas'));
+       
         let estados = [
             { value: 'AC', label: 'Acre' },
             { value: 'AL', label: 'Alagoas' },
@@ -293,11 +290,11 @@ const Lojas = (props) => {
                 if (data[index1].codState == estados[index2].value) {
                     estados[index2].countStoreCompletedMonth = data[index1].countStoreCompletedMonth
                     values[index1] = data[index1].countStoreCompletedMonth
-                } else {
 
-                   // const n = parseInt(Math.random() * (20 - 1) + 1)
-                    estados[index2].countStoreCompletedMonth = 0
-                    values[index1] = 0
+                }
+
+                if(!estados[index2].countStoreCompletedMonth) {
+                    estados[index2].countStoreCompletedMonth = 0; 
                 }
 
             }

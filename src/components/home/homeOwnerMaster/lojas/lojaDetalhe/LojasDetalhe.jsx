@@ -545,26 +545,29 @@ const LojasDetalhe = (props) => {
                 <div className="dadosStore" >
 
                     <h3>Dados do representante legal</h3>
-                    {stateStoreDetalhe.store.userPersonData && (
+                    {stateStoreDetalhe.store.peregData && (
                         <div className="storeDados1">
 
                             <div className="nome">
                                 <label htmlFor="">Nome{" "}</label>
-                                <span>{stateStoreDetalhe.store.userPersonData.name}</span>
+                                <span>{stateStoreDetalhe.store.peregData.personData.name}</span>
                             </div>
                             <div className="cpf">
                                 <label htmlFor="">CPF{" "}</label>
-                                <NumberFormat format="###.###.###-##" value={stateStoreDetalhe.store.userPersonData.cpf} />
+                                <NumberFormat
+                                    format="###.###.###-##"
+                                    value={stateStoreDetalhe.store.peregData.personData.cpf}
+                                />
                             </div>
 
                             <div className="tel">
                                 <label htmlFor="">Contato{" "}</label>
-                                <span>{stateStoreDetalhe.store.userPersonData.phone ? stateStoreDetalhe.store.userPersonData.phone : "Não informado"}</span>
+                                <span>{stateStoreDetalhe.store.peregData.personData.phone ? stateStoreDetalhe.store.peregData.personData.phone : "Não informado"}</span>
                             </div>
 
                             <div className="email">
                                 <label htmlFor="">E-mail{" "}</label>
-                                <span>{stateStoreDetalhe.store.userPersonData.email}</span>
+                                <span>{stateStoreDetalhe.store.peregData.personData.email}</span>
                             </div>
 
                         </div>

@@ -128,6 +128,8 @@ const useRecSenha = (props) => {
 
     function showBanner() {
 
+        const email = props.email
+
         if (recState.stage === 0) {
             return (
                 <div className="showBanner0">
@@ -137,12 +139,23 @@ const useRecSenha = (props) => {
                     <div className="titulo">
                         <img src={btnVoltar} alt="" onClick={resetState} />
                         <h2>Recuperar Senha</h2>
+                        <img
+                            src={btnFechar}
+                            id='btnFechar'
+                            alt=""
+                            onClick={resetState}
+                        />
                     </div>
-                   
+
                     <span>
-                        Para recuperação de sua senha, enviaremos um código para o e-mail de cadastro para podermos validar sua conta.
+                        {` Para recuperação de sua senha, enviaremos um código para o `}
+                        <strong>
+                            {`e-mail`}
+                            {` (${email}) `}
+                        </strong>
+                        {` para podermos validar sua conta.`}
                     </span>
-                   
+
                     <div className="enviarEmailRec" onClick={nextStage} >
 
                         Enviar código por e-mail
@@ -157,10 +170,10 @@ const useRecSenha = (props) => {
 
                     <div className="iconsBanner1">
 
-                        <img 
-                            src={btnFechar} 
-                            id='btnFechar' 
-                            alt="" 
+                        <img
+                            src={btnFechar}
+                            id='btnFechar'
+                            alt=""
                             onClick={resetState}
                         />
 
@@ -180,10 +193,25 @@ const useRecSenha = (props) => {
             return (
                 <div className="showBanner2">
 
-                    <div className="titleValidarCodigo">
+                 {/**
+                  *    <div className="titleValidarCodigo">
                         <img src={btnVoltar} alt="" id="btnVoltarValidarCod" onClick={backStage} />
 
                         <h2 id="h2ShowBanner">Validar código</h2>
+
+                    </div>
+
+                  */}
+
+                    <div className="titulo">
+                        <img src={btnVoltar} alt="" onClick={resetState} />
+                        <h2 id="h2ShowBanner">Validar código</h2>
+                        <img
+                            src={btnFechar}
+                            id='btnFechar'
+                            alt=""
+                            onClick={resetState}
+                        />
                     </div>
 
                     <div className="basicInputContainer">
@@ -320,7 +348,7 @@ const useRecSenha = (props) => {
                     <div className="Prosseguir" onClick={e => {
 
                         resetState()
-                        
+
 
                     }}>
                         <span>Fechar</span>

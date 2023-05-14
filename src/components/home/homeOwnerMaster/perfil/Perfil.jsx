@@ -9,8 +9,8 @@ const Perfil = (props) => {
         homeState,
         setDisplay,
         setDisplayEditPerfil,
-     
-    } = {...props}
+
+    } = { ...props }
 
 
     return (
@@ -47,21 +47,31 @@ const Perfil = (props) => {
 
                     <div className="barraSuperior">
 
-                    </div>
+                        <div className="informacoesPerfil">
+                            {homeState.user.imgPerfil && (
+                                <img src={homeState.user.imgPerfil} />
+                            )}
 
-                    <div className="informacoesPerfil">
+                            {!homeState.user.imgPerfil && (
+                                <i className="fa fa-user-o" aria-hidden="true"></i>
+                            )}
 
-                        <img src={homeState.user.imgPerfil} alt="" />
 
-                        <div className="infoPerfilText">
-                            <div className="cargo">
-                                {homeState.user.cargo}
+
+                          
+
+                            <div className="infoPerfilText">
+                                <div className="cargo">
+                                    {homeState.user.cargo}
+                                </div>
+                                <h2>
+                                    {homeState.user.name}
+                                </h2>
                             </div>
-                            <h2>
-                                {homeState.user.name}
-                            </h2>
                         </div>
                     </div>
+
+
 
                 </div>
 
@@ -120,7 +130,35 @@ const Perfil = (props) => {
 
 
             </div>
+
+            <div className="menusuperior menuInferiorMobile">
+                Perfil
+
+                <div className="editarPerfil">
+
+                    <div
+                        className="btnAltSenha"
+                        onClick={e => {
+                            setDisplay('flex')
+                        }}
+                    >
+                        Alterar senha
+                    </div>
+
+                    <div
+                        className="btnAltPerfil"
+                        onClick={e => {
+                            setDisplayEditPerfil('flex')
+
+                        }}
+                    >
+                        Editar perfil
+                    </div>
+
+                </div>
+            </div>
         </>
+
     )
 }
 

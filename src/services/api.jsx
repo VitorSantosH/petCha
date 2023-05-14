@@ -5,7 +5,7 @@ const api = axios.create({
     baseURL: config.baseURL,
     headers: {
         
-        'codOwner': 26,
+        'codOwner': 3,
         'codPlatform': 'web' ,
         'codLanguage': "PT" ,
         codCountry: "BR",
@@ -14,6 +14,5 @@ const api = axios.create({
     }
 })
 
-// 'Authorization': "Bearer: eyJhbGciOiJIUzUxMiJ9.eyJjb2RQbGF0Zm9ybSI6IndlYiIsImNvZE93bmVyIjoiMjYiLCJ1c2VybmFtZSI6InN0b3JlMUBtaW5kNS5jb20uYnIiLCJjcmVhdGVkT24iOiIyMDIyMDUyNjAwMzA1NCIsImV4cCI6MTY1MzUzOTQ1NH0.9tqzIWwq2A1N_zTT6H77KrThgBBTJyxCgQ12C37pUVABXOW9AU87FoCdkZlJVZAl8uyqOEr_hbulFQ8KkZpm-Q",
 
 export default api
