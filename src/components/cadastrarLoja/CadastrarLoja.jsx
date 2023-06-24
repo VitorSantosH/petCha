@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import NumberFormat from 'react-number-format'
 import api from '../../services/api';
+import Swal from 'sweetalert2';
 
 import './CadastrarLoja.css';
 
@@ -9,11 +10,12 @@ import './CadastrarLoja.css';
 import logoTitulo from '../../assets/Layer 1.png';
 import img1 from '../../assets/amico.png';
 import imglogoWhite from '../../assets/logoWhite.png'
+import btnVoltar from '../../assets/bntVoltar.png'
 
 
 const UseLoginState = () => {
 
-    const [stateLogin, setStateLogin] = useState({
+    const [stateCadLoja, setStateCadLoja] = useState({
         stateTypePassword: true,
         stateEmailStyle: true,
         emailValue: undefined,
@@ -26,100 +28,140 @@ const UseLoginState = () => {
         isPreenchido: undefined
 
     })
+    const emailRegex = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
     useEffect(() => {
 
 
-        if (stateLogin.emailValue != "master@gmail.com" && stateLogin.emailValue !== undefined && stateLogin.emailValue !== '') {
-            setStateLogin({
-                ...stateLogin,
+        if (stateCadLoja.emailValue !== undefined && stateCadLoja.emailValue !== '') {
+            setStateCadLoja({
+                ...stateCadLoja,
                 stateEmailStyle: false
             })
         } else {
-            setStateLogin({
-                ...stateLogin,
+            setStateCadLoja({
+                ...stateCadLoja,
                 stateEmailStyle: true
             })
         }
 
-        if(stateLogin.telefoneValue != undefined && stateLogin.name != undefined && stateLogin.emailValue != undefined) {
-            console.log('aqui')
-            setStateLogin({
-                ...stateLogin,
-                styleCadBtn: true 
+        if (stateCadLoja.telefoneValue != undefined && stateCadLoja.name != undefined && stateCadLoja.emailValue != undefined) {
+
+            setStateCadLoja({
+                ...stateCadLoja,
+                styleCadBtn: true
             })
         } else {
-           
-            setStateLogin({
-                ...stateLogin,
-                styleCadBtn: false 
+
+            setStateCadLoja({
+                ...stateCadLoja,
+                styleCadBtn: false
             })
 
         }
 
-    }, [stateLogin.emailValue, stateLogin.display, stateLogin.emailValue, stateLogin.telefoneValue, stateLogin.name ])
+    }, [stateCadLoja.emailValue, stateCadLoja.display, stateCadLoja.emailValue, stateCadLoja.telefoneValue, stateCadLoja.name])
 
     function conect() {
 
+       
         api.post('/Agenda_WS/Prospect/insertOtpProspectStore', {
             codOwner: 26,
-            prospectEmail: 'wytorh@gmail.com',
+            prospectEmail: stateCadLoja.emailValue,
             codLanguage: "PT"
 
         },
             {
                 headers: {
-            
+
                 }
             }
-          
+
         ).then(res => {
-            console.log(res)
+            
+            return Swal.fire({
+                icon: 'Success',
+                title: 'Loja Cadastrada com sucesso',
+                text: res.response.data.returnMessage,
+            })
+
         }).catch(err => {
-            console.log(err)
+          
+            return Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: err.response.data.returnMessage,
+            })
         })
 
     }
 
     function chanceTypeInput() {
-        setStateLogin({
-            ...stateLogin,
-            stateTypePassword: !stateLogin.stateTypePassword
+        setStateCadLoja({
+            ...stateCadLoja,
+            stateTypePassword: !stateCadLoja.stateTypePassword
         })
     }
 
-    function changeEmailValue(v) {
-        setStateLogin({
-            ...stateLogin,
-            emailValue: v
-        })
-    }
+
 
     function changeNameValue(v) {
-        setStateLogin({
-            ...stateLogin,
+        setStateCadLoja({
+            ...stateCadLoja,
             name: v
         })
     }
 
     function changeTelValue(formattedValue, value) {
-        console.log(stateLogin)
-        setStateLogin({
-            ...stateLogin,
-            telefoneValue: value ,
+
+        setStateCadLoja({
+            ...stateCadLoja,
+            telefoneValue: value,
             formatedTel: formattedValue
         })
     }
 
 
+    function EmailRegexMessage(email) {
+
+        /**
+         *         console.log(email)
+                console.log(typeof email)
+                console.log(emailRegex.test(email))
+         */
+        if (email === null || email === undefined) {
+            return setStateCadLoja({
+                ...stateCadLoja,
+                stateEmailStyle: true,
+                emailValue: email
+            })
+        }
+        if (emailRegex.test(email)) {
+            setStateCadLoja({
+                ...stateCadLoja,
+                stateEmailStyle: true,
+                emailValue: email
+            })
+        } else {
+            setStateCadLoja({
+                ...stateCadLoja,
+                stateEmailStyle: false,
+                emailValue: email
+            })
+        }
+
+    }
+
+
+
     return {
-        stateLogin,
+        stateCadLoja,
         chanceTypeInput,
-        changeEmailValue,
         conect,
         changeNameValue,
         changeTelValue,
-        
+        EmailRegexMessage
+
     }
 
 }
@@ -130,12 +172,13 @@ const UseLoginState = () => {
 const CadastrarLoja = () => {
 
     const {
-        stateLogin,
-        changeEmailValue,
+        stateCadLoja,
+
         conect,
         changeNameValue,
         changeTelValue,
-        
+        EmailRegexMessage,
+
 
     } = UseLoginState()
 
@@ -155,8 +198,17 @@ const CadastrarLoja = () => {
             <div className="lado2">
 
                 <div className="login">
+                    <div className="btnCadLojaDiv">
+                        <a class="linkCriarConta" href="/">
+                            <img
+                                src={btnVoltar}
+                                alt=""
+                                id="btnVoltarCadLoja"
+                            />
+                        </a>
 
-                    <h1 className="titulo">
+                    </div>
+                    <h1 className="titulo" id="tituloCadastro">
                         Cadastrar loja
                     </h1>
 
@@ -166,18 +218,17 @@ const CadastrarLoja = () => {
                         </label>
                         <input
                             type="text"
-                            name="email"
+                            name="nameInput"
                             placeholder="Digite seu E-mail"
-                            // style={{ 'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
-                            value={stateLogin.name}
+                            // style={{ 'borderColor': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B' }}
+                            value={stateCadLoja.name}
                             onChange={e => {
-
                                 changeNameValue(e.target.value)
                             }}
 
                         />
 
-                        {/** <span className="spanErro" style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B', 'display': stateLogin.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span> */}
+                        {/** <span className="spanErro" style={{ 'color': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B', 'display': stateCadLoja.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span> */}
                     </div>
 
                     <div className="emailLogin">
@@ -189,15 +240,16 @@ const CadastrarLoja = () => {
                             type="text"
                             name="email"
                             placeholder="Digite seu E-mail"
-                            style={{ 'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
-                            value={stateLogin.emailValue}
+                            style={{ 'borderColor': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B' }}
+                            value={stateCadLoja.emailValue}
                             onChange={e => {
-                                changeEmailValue(e.target.value)
+                                EmailRegexMessage(e.target.value)
                             }}
+
 
                         />
 
-                        <span className="spanErro" style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B', 'display': stateLogin.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span>
+                        <span className="spanErro" style={{ 'color': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B', 'display': stateCadLoja.stateEmailStyle ? 'none' : 'block' }}> Insira um e-mail válido</span>
                     </div>
 
                     <div className="emailLogin">
@@ -209,27 +261,28 @@ const CadastrarLoja = () => {
                             className='inputTel'
                             aria-describedby=""
                             placeholder="(11) 98000-0000"
-                            value={stateLogin.formatedTel}
-                            //  style={{ 'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
+                            value={stateCadLoja.formatedTel}
+                            //  style={{ 'borderColor': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B' }}
                             onValueChange={(values) => {
                                 const { formattedValue, value } = values;
                                 let cellPattern = new RegExp(/^([0-9]{2}[9]{1}[0-9]{7,8})$/);
-                               
+
                                 changeTelValue(formattedValue, value)
-                               
+
 
                             }}
                         />
 
 
-                        {/** <span className="spanErro" style={{ 'color': stateLogin.stateEmailStyle ? '' : '#EE3B3B', 'display': stateLogin.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span> */}
+                        {/** <span className="spanErro" style={{ 'color': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B', 'display': stateCadLoja.stateEmailStyle ? 'none' : 'block' }}> *Não existe uma conta com esse E-mail</span> */}
                     </div>
 
 
 
 
                     <div
-                        className={stateLogin.styleCadBtn ? "btnCadPreenchido" : 'btnCadVazio'}
+                        className={stateCadLoja.styleCadBtn ? "btnCadPreenchido" : 'btnCadVazio'}
+                        id="btnCadPreenchido"
                         onClick={conect}
                     >
                         Cadastrar loja

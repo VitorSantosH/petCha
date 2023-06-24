@@ -23,12 +23,21 @@
     flex-direction: column;
     align-items: center;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    user-select: none;
 }
 
 .showBanner0 {
     box-sizing: border-box;
     max-width: 690px;
     min-height: 340px;
+}
+
+.showBanner0 img, .showBanner2 img, .bannerResetPass img {
+    cursor: pointer;
+}
+
+.enviarEmailRec {
+    cursor: pointer;
 }
 
 .showBanner4 {
@@ -38,7 +47,7 @@
     justify-content: space-around;
 }
 
-.showBanner0 .titulo, .showBanner2 .titulo  {
+.showBanner0 .titulo, .showBanner2 .titulo, .bannerResetPass .titulo {
     margin-top: 30px;
     padding-left: 5%;
     padding-right: 5%;
@@ -51,7 +60,7 @@
 
 }
 
-.showBanner0 .titulo img {
+.showBanner0 .titulo img, .showBanner2 .titulo img, .bannerResetPass .titulo img {
     position: relative;
 }
 
@@ -81,7 +90,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
 
+.enviarEmailRec:active, .validarCodigo:active, .Prosseguir:active {
+    filter: brightness(1.3);
 }
 
 .showBanner1 {
@@ -96,7 +109,12 @@
     justify-content: right;
 }
 
-.showBanner2 .titulo  {
+.iconsBanner1 img, .showBanner1 .validarCodigo {
+    cursor: pointer;
+}
+
+
+.showBanner2 .titulo {
     margin-bottom: 20px;
 }
 
@@ -146,6 +164,20 @@
 
 }
 
+.showBanner3 .titulo {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    align-items: center;    
+}
+
+.showBanner3 .titulo  h1 {
+    opacity: 0.7;
+}
+
+
 .basicInputContainer {
 
     display: flex;
@@ -170,8 +202,7 @@
     padding: 5px;
     padding-left: 16px;
     padding-right: 16px;
-    font-size: 30px;
-
+    font-size: 20px;
 
 }
 
@@ -187,8 +218,62 @@
     top: -60px
 }
 
+.basicInputContainer span {
+    font-size: 16px;
+    width: 85%;
+   
+}
+
 .showBanner3 {
     min-width: 500px;
     padding: 20px;
     box-sizing: border-box;
+}
+
+.containerBanner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    z-index: -1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(15, 15, 15, 0.3);
+    transition: 0.4s;
+}
+
+.bannerReqSenha {
+   
+    transition: 0.4s;
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    user-select: none;
+ 
+
+}
+
+.animeBanner {
+
+    opacity: 1;
+    transform: translate3d(0px, -100px, 0);
+    z-index: 2;
+    transition: 0.4s;
+
+}
+
+.loader {
+    animation: is-rotating 0.5s infinite;
+    border: 6px solid #e5e5e5;
+    border-radius: 50%;
+    border-top-color: #FB8500;
+    height: 30px;
+    width:  30px;
+   
+}
+
+@keyframes is-rotating {
+    to {
+        transform: rotate(1turn);
+    }
 }

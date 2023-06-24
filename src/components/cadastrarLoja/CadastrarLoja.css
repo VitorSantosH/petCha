@@ -25,3 +25,19 @@
     border-radius: 10px;
     background-color: #FB8500 ;
 }
+#btnCadPreenchido {
+    width: 82%;
+    cursor: pointer;
+}
+#tituloCadastro {
+    margin-top: 10px;
+}
+.btnCadLojaDiv{
+    width: 100%;
+    align-items: flex-start;
+    padding: 15px;
+}
+#btnVoltarCadLoja {
+    border-radius: 50%;
+
+}

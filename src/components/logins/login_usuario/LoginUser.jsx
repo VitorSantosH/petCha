@@ -10,8 +10,8 @@ import logoTitulo from '../../../assets/Layer 1.png';
 import img1 from '../../../assets/amico.png';
 import imgOlhoAberto from '../../../assets/olho-vermelhoAberto.png';
 import imgOlhoFechado from '../../../assets/olho-vermelho.png';
-import imglogoWhite from '../../../assets/logoWhite.png';
-
+import logoWhite from '../../../assets/logoWhite.png';
+import logoname from '../../../assets/petchaName.png';
 
 
 const UseLoginState = () => {
@@ -26,7 +26,11 @@ const UseLoginState = () => {
         loading: false
 
     })
-    const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i;
+
+    const emailRegex = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+
+    // const emailRegex = /^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$/;
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -74,6 +78,9 @@ const UseLoginState = () => {
         }
 
         const response = await conect.login({ username, password })
+
+
+        // const dec = atob(response.headers.authorization)
 
 
 
@@ -142,9 +149,11 @@ const UseLoginState = () => {
             display: value
         })
     }
+
     function ReqSenha() {
         return <RecuperarSenha display={stateLogin.display} setDisplay={setDisplay} email={stateLogin.emailValue} />
     }
+
     function setPassword(value) {
         setStateLogin({
             ...stateLogin,
@@ -152,12 +161,19 @@ const UseLoginState = () => {
         })
     }
 
+    function EmailRegex(email) {
+
+        if (emailRegex.test(email)) {
+            return false
+        } else {
+            return true
+        }
+
+    }
 
     function EmailRegexMessage(email) {
 
-        console.log(email)
-        console.log(typeof email)
-        console.log(emailRegex.test(email))
+
         if (email === null || email === undefined) {
             return setStateLogin({
                 ...stateLogin,
@@ -190,6 +206,7 @@ const UseLoginState = () => {
         conect,
         setPassword,
         logar,
+        EmailRegex,
         EmailRegexMessage,
         setStateLogin
     }
@@ -208,6 +225,7 @@ const LoginUser = () => {
         ReqSenha,
         logar,
         setPassword,
+        EmailRegex,
         EmailRegexMessage,
         setStateLogin
 
@@ -226,7 +244,10 @@ const LoginUser = () => {
                 <img src={img1} id='img2' alt="" />
             </div>
 
-            <img src={imglogoWhite} id='logoWhiteLogin' alt="" />
+            <div className="logoWhiteDiv" id='logoWhiteLogin'>
+                <img src={logoWhite} alt="" id="logoWhiteLoginImg1" />
+                <img src={logoname} id="logoWhiteLoginImg2" alt="Petcha" />
+            </div>
 
             <div className="lado2">
 
@@ -241,8 +262,9 @@ const LoginUser = () => {
                             E-mail
                         </label>
                         <input
-                            type="text"
+                            type="email"
                             name="email"
+                            id="email"
                             placeholder="Digite seu E-mail"
                             style={{ 'borderColor': stateLogin.stateEmailStyle ? '' : '#EE3B3B' }}
                             value={stateLogin.emailValue}
@@ -286,24 +308,38 @@ const LoginUser = () => {
 
                     <div
                         className="esqueciSenha"
-                        onClick={e => {
 
-                            if (stateLogin.emailValue == null) {
-                                return   Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Defina o e-mail para recuperar sua senha',
-                                })
-
-                                
-                            }
-                            setDisplay('flex')
-                        }}
                     >
-                        <span>
+                        <span
+
+                            onClick={e => {
+
+                                if (stateLogin.emailValue === null || stateLogin.emailValue === undefined) {
+                                    return Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Defina o e-mail para recuperar sua senha',
+                                    })
+
+
+                                }
+
+                                if (EmailRegex(stateLogin.emailValue)) {
+
+                                    return Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Defina o e-mail para recuperar a senha',
+                                    })
+                                }
+
+                                setDisplay('flex')
+
+                            }}
+                        >
 
                             Esqueci minha senha
-                            
+
                         </span>
                     </div>
 
@@ -327,8 +363,8 @@ const LoginUser = () => {
 
 
                         {stateLogin.loading && (
-                            <div className="loaderDiv">
-                                <i className="fa  fa-circle-o-notch fa-spin fa-3x fa-fw "></i>
+                            <div>
+                                <span className="c-loader"></span>
                             </div>
                         )}
 

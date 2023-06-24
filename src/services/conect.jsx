@@ -8,14 +8,27 @@ const conect = {
 
     login: async (props) => {
 
-      
+
         const string = `${props.username}:${props.password}`
         const emBase64 = btoa(string)
         sessionStorage.setItem('userName', props.username);
 
+        console.log(emBase64)
+        console.log(atob(emBase64))
+
+
+        /**
+         *     
+        const cod = sessionStorage.getItem('authToken').split(" ")
+        const str = cod[1]
+        console.log(cod[1])
+        const decoded = window.atob(str)
+        return console.log(decoded)
+         */
+
         const response = await api.get('/Agenda_WS/Home/main', {
             headers: {
-                 codOwner: 3,// >>>>>>> NECESSARIO, PASSEI PARA O HEADER NA API
+                codOwner: 3,// >>>>>>> NECESSARIO, PASSEI PARA O HEADER NA API
                 // role: 'EMPREGADO',
                 // codEmployee: 28,
                 // codStore: 28,
@@ -27,11 +40,12 @@ const conect = {
         }).then(res => {
 
 
-
+            console.log(res.headers.authorization)
             if (res.data && res.headers.authorization) {
-     
+
 
                 sessionStorage.setItem('generalData', JSON.stringify(res.data.results[0]))
+
 
 
                 if (res.data.results[0]) {
@@ -43,16 +57,86 @@ const conect = {
                 }
             }
 
-        
+
             return res
 
         }).catch(err => {
 
-            console.log(err)
+
             return err.response
         })
 
+        console.log(response)
+
         return response
+    },
+
+    getCodOtp: async (props) => {
+
+        const data = {
+
+            codOwner: 3,
+            username: props.email,
+            codLanguage: "PT"
+
+        }
+
+
+
+        const response = await api.post('/Agenda_WS/User/insertOtpUserPassword', { ...data }, {
+            headers: {
+                codOwner: 3,
+                // username: props.email,
+                codLanguage: "PT"
+            }
+        }).then(res => {
+
+           
+            return res.data.returnCode
+
+        }).catch(err => {
+
+           
+            return 0
+        })
+
+        return await response
+
+    },
+
+    changePassword: async (props) => {
+
+        const data = {
+
+            codOwner: 3,
+            username: props.email,
+            password: props.password,
+            otpPassword: props.otpPassword,
+            codLanguage: "PT"
+
+        }
+
+
+
+        const response = await api.post('/Agenda_WS/User/updateUserPassword', { ...data }, {
+            headers: {
+                codOwner: 3,
+                // username: props.email,
+                codLanguage: "PT"
+            }
+        }).then(res => {
+
+
+            return { success: true, message: undefined }
+
+        }).catch(err => {
+
+            console.log(err)
+            return { success: false, message: err.response }
+        })
+
+        return await response
+
     },
 
     getOwnerInfo: async (props) => {
