@@ -46,7 +46,7 @@
     background-color: white;
     color: black;
     width: 660px;
-    height: 600px;
+    min-height: 600px;
     border-radius: 15px;
     margin-bottom: 100px;
     box-sizing: border-box;

@@ -34,8 +34,9 @@ const useRecSenha = (props) => {
     })
 
     const regexCodValid = /^\d{6}$/;
-    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\\-_=+{};:,<.>]).*$/
+    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\\-_=+{};:,<.>]).{8,15}$/
 
+    console.log(recState)
 
     useEffect(() => {
 
@@ -46,6 +47,12 @@ const useRecSenha = (props) => {
 
     async function alterarSenha() {
 
+
+        const verifyPass = verifyPassword()
+
+        if (!verifyPass) {
+            return
+        }
 
         setRecState({
             ...recState,
@@ -92,23 +99,19 @@ const useRecSenha = (props) => {
         const result = await conect.getCodOtp({ email: email })
 
         if (result) {
-            return setRecState({
-                ...recState,
-                loadingCodOtp: false
-            })
+
+            return false
 
         } else {
 
             props.setDisplay('none');
-            setRecState({
-                ...recState,
-                loadingCodOtp: false
-            })
-            return Swal.fire({
+            resetState();
+            Swal.fire({
                 icon: 'error',
                 title: 'Erro',
                 text: `Ocorreu um erro inexperado, tente novamente mais tarde`,
             })
+            return true
         }
 
     }
@@ -136,16 +139,104 @@ const useRecSenha = (props) => {
 
     }
 
+    function changeStyleInput(n) {
+
+        if (n === 0) {
+            return setRecState({
+                ...recState,
+                inputNovaSenhaStyle: !recState.inputNovaSenhaStyle
+            })
+        }
+        if (n === 1) {
+            return setRecState({
+                ...recState,
+                inputOldSenhaStyle: !recState.inputOldSenhaStyle
+            })
+        }
+        return
+    }
+
+    function nextStage(reset = false) {
+
+        if(reset) return 
+
+        if (recState.stage + 1 > 4) return
+
+        return setRecState({
+            ...recState,
+            stage: recState.stage + 1
+        })
+    }
+
+    function backStage() {
+        if (recState.stage - 1 < 0) return
+        setRecState({
+            ...recState,
+            stage: recState.stage - 1
+        })
+    }
+
+    function verifyPassword() {
+
+        const newPassword = recState.newPassword
+        const confirmNewPassword = recState.confirmNewPassword
+
+        if (!newPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: `Digite a nova senha.`,
+            })
+            return false
+        }
+
+        if (!regexPassword.test(newPassword)) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: "A senha deve conter de 8 a 15 caracteres, incluindo números, letras maiúsculas, minúsculas e caracteres especiais.",
+            })
+            return false
+        }
+
+
+        if (!confirmNewPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: `Confirme a senha, digitando-a novamente no segundo campo.`,
+            })
+            return false
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: `As senhas não são iguais.`,
+            })
+            return false
+        }
+
+        return true
+
+    }
+
     function showBanner(display) {
 
         const email = props.email
         let showBanner = null
         const $banner0 = useRef(null)
 
-        if (display === "flex" && showBanner === null) {
+        if (display === "flex" && recState.stage === null) {
             //   $banner0.current.className = "showBanner0 bannerReqSenha animeBanner"
             //  console.log($banner0)
-            showBanner = 0
+            // showBanner = 0
+            setRecState({
+                ...recState,
+                stage: 0
+            })
         }
 
 
@@ -158,12 +249,12 @@ const useRecSenha = (props) => {
                     style={{ 'zIndex': display === "flex" ? 1 : -1 }}
                 >
 
-                    <div className={showBanner === 0 ? "showBanner0 bannerReqSenha animeBanner" : "showBanner0 bannerReqSenha"}
+                    <div className={recState.stage === 0 ? "showBanner0 bannerReqSenha animeBanner" : "showBanner0 bannerReqSenha"}
                         ref={$banner0}
                     >
 
                         <div className="titulo">
-                            <img lt="" onClick={resetState} />
+                            <img lt="" />
                             <h2>Recuperar Senha</h2>
                             <img
                                 src={btnFechar}
@@ -183,13 +274,8 @@ const useRecSenha = (props) => {
                         </span>
 
                         <div className="enviarEmailRec" onClick={async e => {
-
-
-                            await getCodOtp(email);
-                            $banner0.current.classList.remove("animeBanner")
-
-                            return nextStage();
-
+                            const reset = await getCodOtp(email);
+                            return nextStage(reset);
                         }} >
 
                             {!recState.loadingCodOtp && (
@@ -224,7 +310,11 @@ const useRecSenha = (props) => {
 
                         <h2>Um código foi enviado ao seu e-mail.</h2>
 
-                        <div className="validarCodigo" onClick={nextStage}>
+                        <div className="validarCodigo" onClick={e => {
+
+                            nextStage()
+
+                        }}>
                             Validar código
                         </div>
 
@@ -259,6 +349,7 @@ const useRecSenha = (props) => {
                                 type="text"
                                 name="validarCod"
                                 placeholder="Código de 6 dígitos"
+
                                 style={{
                                     'borderColor': recState.codigoValidStyle ||
                                         recState.codigoValidStyle === '' ? '' : '#EE3B3B'
@@ -266,7 +357,6 @@ const useRecSenha = (props) => {
                                 value={recState.codInputValue}
                                 onChange={e => {
 
-                                    console.log(recState)
                                     return setRecState({
                                         ...recState,
                                         codInputValue: e.target.value,
@@ -363,6 +453,7 @@ const useRecSenha = (props) => {
                                 id="newPass"
                                 type={recState.inputNovaSenhaStyle ? 'password' : "text"}
                                 value={recState.novaSenha}
+
                                 onChange={e => setRecState({
                                     ...recState,
                                     newPassword: e.target.value,
@@ -388,10 +479,11 @@ const useRecSenha = (props) => {
 
                             <label htmlFor="NovaSenha"> Confirme nova senha</label>
                             <input
-                                name="confirmeNewPass"
-                                id="confirmeNewPass"
+                                name="confirmNewPassword"
+                                id="confirmNewPassword"
                                 type={recState.inputOldSenhaStyle ? 'password' : "text"}
                                 value={recState.confirmNewPassword}
+
                                 onChange={e => setRecState({
                                     ...recState,
                                     confirmNewPassword: e.target.value,
@@ -414,34 +506,20 @@ const useRecSenha = (props) => {
 
                         </div>
 
-                        {recState.senhasBaten && (
-                            <div className="Prosseguir" onClick={alterarSenha}>
+                        <div
+                            className={recState.senhasBaten && regexPassword.test(recState.newPassword) ? "Prosseguir" : "buttonProsseguirDesativado"}
+                            onClick={alterarSenha}>
 
-
-                                {!recState.loadingSendNewPassword && (
-                                    <span>Alterar senha</span>
-                                )}
-
-                                {recState.loadingSendNewPassword && (
-
-                                    <div className="loader"></div>
-
-                                )}
-                            </div>
-                        )}
-
-                        {!recState.senhasBaten && (
-                            <div
-                                className="buttonProsseguirDesativado"
-                                onClick={e => {
-                                    return verifyPassword(e, recState.newPassword, recState.confirmNewPassword)
-                                }}
-                            >
-
+                            {!recState.loadingSendNewPassword && (
                                 <span>Alterar senha</span>
+                            )}
 
-                            </div>
-                        )}
+                            {recState.loadingSendNewPassword && (
+
+                                <div className="loader"></div>
+
+                            )}
+                        </div>
 
                     </div>
 
@@ -473,80 +551,6 @@ const useRecSenha = (props) => {
 
 
         )
-
-    }
-
-    function changeStyleInput(n) {
-
-        if (n === 0) {
-            return setRecState({
-                ...recState,
-                inputNovaSenhaStyle: !recState.inputNovaSenhaStyle
-            })
-        }
-        if (n === 1) {
-            return setRecState({
-                ...recState,
-                inputOldSenhaStyle: !recState.inputOldSenhaStyle
-            })
-        }
-        return
-    }
-
-    function nextStage() {
-
-        if (recState.stage + 1 > 4) return
-        setRecState({
-            ...recState,
-            stage: recState.stage + 1
-        })
-    }
-
-    function backStage() {
-        if (recState.stage - 1 < 0) return
-        setRecState({
-            ...recState,
-            stage: recState.stage - 1
-        })
-    }
-
-    function verifyPassword(event, newPassword, confirmeNewPass) {
-
-        if (!newPassword) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: `Digite a nova senha.`,
-            })
-        }
-
-        if(!regexPassword.test(newPassword)) {
-
-            return Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text:"A senha deve conter: Números, letras maiúsculas, minúsculas e caracteres especiais.",
-            })
-        }
-
-
-        if (!confirmeNewPass) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: `Confirme a senha, digitando-a novamente no segundo campo.`,
-            })
-        }
-
-        if (newPassword !== confirmeNewPass) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: `As senhas não são iguais.`,
-            })
-        }
-
-
 
     }
 

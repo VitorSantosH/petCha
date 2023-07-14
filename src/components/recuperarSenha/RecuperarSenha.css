@@ -24,6 +24,7 @@
     align-items: center;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
     user-select: none;
+    box-sizing: border-box;
 }
 
 .showBanner0 {
@@ -158,7 +159,7 @@
 
 .showBanner2 {
     padding: 20px;
-    min-width: 500px;
+    width: 500px;
 }
 
 .showBanner3 .titulo {
@@ -223,7 +224,7 @@
 }
 
 .showBanner3 {
-    min-width: 500px;
+    width: 500px;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -238,6 +239,8 @@
     justify-content: center;
     background-color: rgba(15, 15, 15, 0.3);
     transition: 0.4s;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .bannerReqSenha {
@@ -247,7 +250,7 @@
     z-index: -1;
     position: absolute;
     user-select: none;
- 
+    transform: translate3d(0px, 100vh, 0);
 
 }
 
@@ -261,7 +264,7 @@
 }
 
 .loader {
-    animation: is-rotating 0.5s infinite;
+    animation: is-rotating 0.40s  infinite ;
     border: 6px solid #e5e5e5;
     border-radius: 50%;
     border-top-color: #FB8500;
@@ -272,7 +275,7 @@
 
 @keyframes is-rotating {
     to {
-        transform: rotate(1turn);
+        transform: rotate(360deg);
     }
 }
 
@@ -294,4 +297,20 @@
 
 .buttonProsseguirDesativado :active {
     filter: brightness(1.3);
+}
+
+@media  only screen and (max-width: 1000px) {
+    .showBanner0, .showBanner1, .showBanner2, .showBanner3, .showBanner4 {
+        max-width: 90%;
+    }
+
+    .showBanner0 span {
+        margin-top: 20px;
+        padding: 10px;
+       
+    }
+
+    .enviarEmailRec, .validarCodigo, .Prosseguir {
+        margin-bottom: 10px;
+    }
 }

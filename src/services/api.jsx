@@ -5,7 +5,7 @@ const api = axios.create({
     baseURL: config.baseURL,
     headers: {
         
-        'codOwner': 3,
+        'codOwner': config.codOwner,
         'codPlatform': 'web' ,
         'codLanguage': "PT" ,
         codCountry: "BR",
