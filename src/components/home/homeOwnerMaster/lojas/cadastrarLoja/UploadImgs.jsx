@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import conect from "../../../../../services/conect";
+import connect from "../../../../../services/connect";
 
 
 // imgs
@@ -27,7 +27,7 @@ const useUploadState = (props) => {
     
     
     
-                const responseStatus = await conect.uploadImage(event.target.files[0], props.codStore)
+                const responseStatus = await connect.uploadImage(event.target.files[0], props.codStore)
     
                 if (responseStatus == 200) {
                     Swal.fire({

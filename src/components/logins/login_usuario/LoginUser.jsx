@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 import "./LoginUser.css";
-import conect from "../../../services/conect";
+import connect from "../../../services/connect";
 import RecuperarSenha from "../../recuperarSenha/RecuperarSenha";
 
 import logoTitulo from '../../../assets/Layer 1.png';
@@ -77,7 +77,7 @@ const UseLoginState = () => {
             })
         }
 
-        const response = await conect.login({ username, password })
+        const response = await connect.login({ username, password })
 
 
         // const dec = atob(response.headers.authorization)
@@ -203,7 +203,7 @@ const UseLoginState = () => {
         chanceTypeInput,
         setDisplay,
         ReqSenha,
-        conect,
+        connect,
         setPassword,
         logar,
         EmailRegex,

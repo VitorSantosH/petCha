@@ -30,7 +30,6 @@
 .showBanner0 {
     box-sizing: border-box;
     max-width: 690px;
-    min-height: 340px;
 }
 
 .showBanner0 img, .showBanner2 img, .bannerResetPass img {
@@ -91,6 +90,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    margin: 20px
 }
 
 .enviarEmailRec:active, .validarCodigo:active, .Prosseguir:active {

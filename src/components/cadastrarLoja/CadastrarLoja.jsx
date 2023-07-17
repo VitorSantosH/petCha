@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import connect from "../../services/conect";
+import connect from "../../services/connect.jsx";
 import NumberFormat from 'react-number-format'
-import api from '../../services/api';
 import Swal from 'sweetalert2';
 
 import './CadastrarLoja.css';
@@ -22,7 +21,7 @@ const UseLoginState = () => {
         stateEmailStyle: true,
         emailValue: undefined,
         name: undefined,
-        telefoneValue: undefined,
+        telNumber: undefined,
         formatedTel: undefined,
         display: "none",
         isLog: false,
@@ -39,7 +38,9 @@ const UseLoginState = () => {
 
     })
     const emailRegex = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
+    const nameRegex = /^(?=(?:.*[A-Za-z]){3})[\p{L}\p{M}'\-\s]+$/u;
     const regexCodValid = /^\d{6}$/;
+    const telRegex = /^([0-9]{2}[9]{1}[0-9]{7,8})$/;
 
     useEffect(() => {
 
@@ -56,7 +57,8 @@ const UseLoginState = () => {
             })
         }
 
-        if (stateCadLoja.telefoneValue != undefined && stateCadLoja.name != undefined && stateCadLoja.emailValue != undefined) {
+        if (telRegex.test(stateCadLoja.telNumber) && nameRegex.test(stateCadLoja.name) && emailRegex.test(stateCadLoja.emailValue) && stateCadLoja.name !== undefined) {
+
 
             setStateCadLoja({
                 ...stateCadLoja,
@@ -71,9 +73,10 @@ const UseLoginState = () => {
 
         }
 
-    }, [stateCadLoja.emailValue, stateCadLoja.display, stateCadLoja.emailValue, stateCadLoja.telefoneValue, stateCadLoja.name])
+    }, [stateCadLoja.emailValue, stateCadLoja.display, stateCadLoja.emailValue, stateCadLoja.telNumber, stateCadLoja.name])
 
 
+    // solicia o envio do codigo par ao email do usuário
     async function getCodNewAccount(props) {
 
         setStateCadLoja({
@@ -88,40 +91,25 @@ const UseLoginState = () => {
             return false
 
         } else {
-            
-            resetState();
+
+
             Swal.fire({
                 icon: 'error',
                 title: 'Erro',
                 text: `Ocorreu um erro inexperado, tente novamente mais tarde`,
             })
-            return true
+            return resetState();
         }
 
     }
 
-    async function createNewAccount(props) {
+    async function startNewAccountCreation(props) {
 
         setStateCadLoja({
             ...stateCadLoja,
-            loading: true
+            loading: true,
+            display: 'flex'
         })
-
-        const responseCod = await connect.getCodNewAccount(props)
-
-        if (!responseCod.success) {
-
-            return Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: responseCod.err.data.returnMessage,
-            })
-
-        }
-
-
-
-
 
     }
 
@@ -143,7 +131,7 @@ const UseLoginState = () => {
 
         setStateCadLoja({
             ...stateCadLoja,
-            telefoneValue: value,
+            telNumber: value,
             formatedTel: formattedValue
         })
     }
@@ -151,9 +139,6 @@ const UseLoginState = () => {
     function EmailRegexMessage(email) {
 
         /**
-         *         console.log(email)
-                console.log(typeof email)
-                console.log(emailRegex.test(email))
          */
         if (email === null || email === undefined) {
             return setStateCadLoja({
@@ -193,16 +178,12 @@ const UseLoginState = () => {
 
         if (display === "flex" && stateCadLoja.stage === null) {
             //   $banner0.current.className = "showBanner0 bannerReqSenha animeBanner"
-            //  console.log($banner0)
             // showBanner = 0
             setStateCadLoja({
                 ...stateCadLoja,
                 stage: 0
             })
         }
-
-
-
 
         return (
             <>
@@ -213,7 +194,7 @@ const UseLoginState = () => {
 
 
                     <div className={stateCadLoja.stage === 0 ? "showBanner0 bannerReqSenha animeBanner" : "showBanner0 bannerReqSenha"}
-                        
+
                     >
 
                         <div className="titulo">
@@ -237,7 +218,7 @@ const UseLoginState = () => {
                         </span>
 
                         <div className="enviarEmailRec" onClick={async e => {
-                            const reset = await getCodNewAccount({email: stateCadLoja.emailValue});
+                            const reset = await getCodNewAccount({ email: stateCadLoja.emailValue });
                             return nextStage(reset);
                         }} >
 
@@ -317,7 +298,7 @@ const UseLoginState = () => {
                                     'borderColor': stateCadLoja.codigoValidStyle ||
                                         stateCadLoja.codigoValidStyle === '' ? '' : '#EE3B3B'
                                 }}
-                                value={stateCadLoja.codInputValue}
+                                value={stateCadLoja.codInputValue || ""}
                                 onChange={e => {
 
                                     return setStateCadLoja({
@@ -347,8 +328,9 @@ const UseLoginState = () => {
 
 
                         <div
+
                             className="Prosseguir"
-                            onClick={e => {
+                            onClick={async e => {
 
                                 if (stateCadLoja.codInputValue === null || stateCadLoja.codInputValue === undefined) {
                                     return Swal.fire({
@@ -366,16 +348,49 @@ const UseLoginState = () => {
                                     })
                                 }
 
-                                /**
-                                 *     if (!stateCadLoja.codInputValue) {
-                                        return setstateCadLoja({
-                                            ...stateCadLoja,
-                                            validateCodError: true
-                                        })
-                                    }
-                                 */
 
-                                nextStage();
+                             
+
+                                const request = await connect.generateNewAccountRequest({
+                                    name: stateCadLoja.name,
+                                    email: stateCadLoja.emailValue,
+                                    tel: stateCadLoja.telNumber,
+                                    codOtp: stateCadLoja.codInputValue,
+                                    textOpcional: stateCadLoja.textOpcional
+
+                                });
+
+                                if (request.success) {
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Solicitação de cadastro registrada com sucesso.',
+                                        text: 'Em breve um de nossos representantes comerciais entrará em contato',
+                                        confirmButtonText: "Obrigado",
+                                    }).then((result) => {
+
+                                        if (result.isConfirmed) {
+                                            resetState();
+                                            return window.location.href = "/";
+
+                                        } else if (result.isDenied) {
+
+                                            return resetState();
+                                        }
+                                    })
+
+                                } else {
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Erro',
+                                        text: request.err.response.data.returnMessage,
+                                    })
+
+                                    return resetState()
+
+                                }
+
                             }}>
 
 
@@ -398,6 +413,7 @@ const UseLoginState = () => {
         )
 
     }
+
     function resetState() {
 
 
@@ -406,7 +422,7 @@ const UseLoginState = () => {
             stateEmailStyle: true,
             emailValue: undefined,
             name: undefined,
-            telefoneValue: undefined,
+            telNumber: undefined,
             formatedTel: undefined,
             display: "none",
             isLog: false,
@@ -415,10 +431,14 @@ const UseLoginState = () => {
             textOpcional: undefined,
             optCod: undefined,
             loading: false,
-            stage: null
+            stage: null,
+            codigoValidStyle: true,
+            codInputValue: undefined,
+            loadingCodOtp: false,
         })
 
     }
+
     function nextStage(reset = false) {
 
         if (reset) return
@@ -444,18 +464,51 @@ const UseLoginState = () => {
         })
     }
 
+    function testData() {
+
+        const erros = []
+
+        if (!emailRegex.test(stateCadLoja.emailValue)) {
+            erros.push("e-mail")
+        }
+        if (!nameRegex.test(stateCadLoja.name) || !stateCadLoja.name) {
+            erros.push("nome")
+        }
+        if (!telRegex.test(stateCadLoja.telNumber)) {
+            erros.push("telefone")
+        }
+
+        if (erros.length == 0) return true
+
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: `Por favor, preencha corretamente: ${erros.map((campo, index) => {
+
+                if (index > 0) {
+                    return ` ${campo}`
+                } else return `${campo}`
+
+
+            })} `,
+        })
+
+        return false
+    }
 
 
     return {
         stateCadLoja,
         chanceTypeInput,
-        createNewAccount,
+        startNewAccountCreation,
         changeNameValue,
         changeTelValue,
         EmailRegexMessage,
         changeTextOpc,
         showBanner,
-        setDisplay
+        setDisplay,
+        testData
 
     }
 
@@ -468,13 +521,14 @@ const CadastrarLoja = () => {
 
     const {
         stateCadLoja,
-        createNewAccount,
+        startNewAccountCreation,
         changeNameValue,
         changeTelValue,
         EmailRegexMessage,
         changeTextOpc,
         showBanner,
-        setDisplay
+        setDisplay,
+        testData
 
 
     } = UseLoginState()
@@ -487,13 +541,7 @@ const CadastrarLoja = () => {
             {showBanner(stateCadLoja.display)}
             <div className="loginUser">
 
-                <button
-                    onClick={e => {
-                        setDisplay()
-                    }}
-                >
-                    display
-                </button>
+
 
                 <div className="lado1">
                     <img src={logoTitulo} id='img1' alt="" />
@@ -520,7 +568,7 @@ const CadastrarLoja = () => {
                         </h1>
 
                         <div className="emailLogin">
-                            <label htmlFor="email">
+                            <label htmlFor="nameInput">
                                 Nome
                             </label>
                             <input
@@ -528,7 +576,7 @@ const CadastrarLoja = () => {
                                 name="nameInput"
                                 placeholder="Digite seu nome..."
                                 // style={{ 'borderColor': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B' }}
-                                value={stateCadLoja.name}
+                                value={stateCadLoja.name || ""}
                                 onChange={e => {
                                     changeNameValue(e.target.value)
                                 }}
@@ -548,7 +596,7 @@ const CadastrarLoja = () => {
                                 name="email"
                                 placeholder="Digite seu E-mail"
                                 style={{ 'borderColor': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B' }}
-                                value={stateCadLoja.emailValue}
+                                value={stateCadLoja.emailValue || ""}
                                 onChange={e => {
                                     EmailRegexMessage(e.target.value)
                                 }}
@@ -568,7 +616,7 @@ const CadastrarLoja = () => {
                                 className='inputTel'
                                 aria-describedby=""
                                 placeholder="(11) 98000-0000"
-                                value={stateCadLoja.formatedTel}
+                                value={stateCadLoja.formatedTel || ""}
                                 //  style={{ 'borderColor': stateCadLoja.stateEmailStyle ? '' : '#EE3B3B' }}
                                 onValueChange={(values) => {
                                     const { formattedValue, value } = values;
@@ -607,7 +655,14 @@ const CadastrarLoja = () => {
                                 className={stateCadLoja.styleCadBtn ? "btnCadPreenchido" : 'btnCadVazio'}
                                 id="btnCadPreenchido"
                                 onClick={async e => {
-                                    createNewAccount({ email: stateCadLoja.emailValue, nome: stateCadLoja.name, tel: stateCadLoja.telefoneValue, textOpcional: stateCadLoja.textOpcional })
+                                    const testDataRusult = testData();
+
+                                    if (testDataRusult) {
+
+                                        startNewAccountCreation({ email: stateCadLoja.emailValue, nome: stateCadLoja.name, tel: stateCadLoja.telNumber, textOpcional: stateCadLoja.textOpcional })
+
+                                    }
+
                                 }
                                 }
                             >

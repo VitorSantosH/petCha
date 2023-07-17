@@ -26,6 +26,16 @@
     background-color: #FB8500;
 }
 
+
+.btnCadPreenchido:hover {
+    background-color: #FFAA33;
+}
+
+
+.btnCadPreenchido:active {
+    background-color: #C26E00;
+}
+
 #btnCadPreenchido {
     width: 90%;
     cursor: pointer;
@@ -47,6 +57,7 @@
     opacity: 0.6;
 
 }
+
 #btnCadPreenchido div {
     display: flex;
     justify-content: center;
@@ -71,8 +82,8 @@
 
 
 @media only screen and (max-width: 800px) {
-   
-     .emailLogin textarea,  #btnCadPreenchido {
+
+    .emailLogin textarea, #btnCadPreenchido {
         width: 95%;
     }
 

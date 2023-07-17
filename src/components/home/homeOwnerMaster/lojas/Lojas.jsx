@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import conect from "../../../../services/conect";
+import connect from "../../../../services/connect";
 import './Lojas.css';
 
 //components 
@@ -78,7 +78,7 @@ const useLojasState = (props) => {
 
         if (lojasState.isLoading === false || reset == true) {
 
-            const { response, err } = await conect.getStores()
+            const { response, err } = await connect.getStores()
 
             if (err) {
 

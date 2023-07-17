@@ -3,7 +3,7 @@ import './RecuperarSenha.css'
 
 
 //funções - components
-import conect from "../../services/conect";
+import connect from "../../services/connect";
 import Swal from 'sweetalert2';
 
 //assets
@@ -59,7 +59,7 @@ const useRecSenha = (props) => {
             loadingSendNewPassword: true
         })
 
-        const resp = await conect.changePassword({
+        const resp = await connect.changePassword({
             email: props.email,
             password: recState.newPassword,
             otpPassword: recState.codInputValue
@@ -96,7 +96,7 @@ const useRecSenha = (props) => {
             loadingCodOtp: true
         })
 
-        const result = await conect.getCodOtp({ email: email })
+        const result = await connect.getCodOtp({ email: email })
 
         if (result) {
 

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { connect as connectRedux } from 'react-redux';
 import NumberFormat from "react-number-format";
-import conect from "../../../../../services/conect";
+import connect from "../../../../../services/connect";
 import Swal from 'sweetalert2';
 import './EditarLoja.css';
 
@@ -525,7 +525,7 @@ const EditarLoja = (props) => {
         if (event.target.files[0].size < 2097152) {
 
 
-            const responseStatus = await conect.uploadImage(event.target.files[0], props.codStore)
+            const responseStatus = await connect.uploadImage(event.target.files[0], props.codStore)
 
             if (responseStatus == 200) {
                 Swal.fire({
@@ -556,7 +556,7 @@ const EditarLoja = (props) => {
 
     async function deleteImage(codFileImg, codStore, event) {
 
-        const responseStatus = await conect.deleteImage(codFileImg, codStore)
+        const responseStatus = await connect.deleteImage(codFileImg, codStore)
 
         if (responseStatus == 200) {
 
@@ -581,7 +581,7 @@ const EditarLoja = (props) => {
         }).then(async (result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                const responseStatus = await conect.updateStore(state.store, props.codStore)
+                const responseStatus = await connect.updateStore(state.store, props.codStore)
                 if (responseStatus == 200) {
                     Swal.fire('Alterações salvas com sucesso!', '', 'success')
                     props.updateStore(props.codStore)
@@ -653,7 +653,7 @@ const EditarLoja = (props) => {
                                         <i
                                             class="fa fa-trash"
                                             onClick={async event => {
-                                                // const res = await conect.deleteImage(img.codFileImg, props.codStore)
+                                                // const res = await connect.deleteImage(img.codFileImg, props.codStore)
                                              //   deleteImage(img.codFileImg, props.codStore, event)
                                             }}
                                         >

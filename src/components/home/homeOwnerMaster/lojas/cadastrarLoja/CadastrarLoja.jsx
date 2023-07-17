@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import Swal from "sweetalert2";
-import conect from "../../../../../services/conect";
+import connect from "../../../../../services/connect.jsx";
 import "./CadastrarLoja.css";
 import RepresentanteLegal from "./RepresentanteLegal";
 import UploadImgs from "./UploadImgs";
@@ -112,7 +112,7 @@ const useCadastroState = (props) => {
 
             if (result.isConfirmed) {
 
-                const resp = await conect.generateStore(cadastrarLojaState.store)
+                const resp = await connect.generateStore(cadastrarLojaState.store)
 
                 if (resp.status == 200) {
 
@@ -154,7 +154,7 @@ const useCadastroState = (props) => {
 
         for (let index = 0; index < files.length; index++) {
 
-            responseStatus[index] = await conect.uploadImage(files[index].file, codStore, isCover)
+            responseStatus[index] = await connect.uploadImage(files[index].file, codStore, isCover)
 
             if (responseStatus[index] == 200) numberUpload++
         }

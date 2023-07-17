@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import conect from "../../../../services/conect";
+import connect from "../../../../services/connect";
 import './Dashboard.css';
 
 
@@ -243,7 +243,7 @@ const useDashboardState = () => {
             loadingDatasGif: true
         })
 
-        const res = await conect.getDashboradData(calmonth)
+        const res = await connect.getDashboradData(calmonth)
 
 
         if (res.data) {

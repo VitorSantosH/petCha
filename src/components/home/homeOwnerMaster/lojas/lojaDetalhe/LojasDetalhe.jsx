@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import conect from "../../../../../services/conect";
+import connect from "../../../../../services/connect";
 import NumberFormat from "react-number-format";
 import './LojasDetalhe.css'
-import { connect } from 'react-redux';
+import { connect as connectRedux } from 'react-redux';
 import EditarLoja from "../editarLoja/EditarLoja";
 import Swal from "sweetalert2";
 
@@ -50,7 +50,7 @@ const LojasDetalhe = (props) => {
 
     async function getStore(codStore) {
 
-        const { response } = await conect.getStore(codStore);
+        const { response } = await connect.getStore(codStore);
 
         if (!response.data) return
         const store = response.data.results[0]
@@ -121,7 +121,7 @@ const LojasDetalhe = (props) => {
             confirmButtonColor: '#FB8500',
             cancelButtonColor: 'cancelButtonColor',
             preConfirm: async (login) => {
-                return conect.activateStore(codStore)
+                return connect.activateStore(codStore)
                     .then(response => {
                         console.log(response)
                         if (!response.status == 200) {
@@ -169,7 +169,7 @@ const LojasDetalhe = (props) => {
             confirmButtonColor: '#FB8500',
             cancelButtonColor: 'cancelButtonColor',
             preConfirm: async (login) => {
-                return conect.inactivateStore(codStore)
+                return connect.inactivateStore(codStore)
                     .then(response => {
                         console.log(response)
                         if (!response.status == 200) {
@@ -208,7 +208,7 @@ const LojasDetalhe = (props) => {
 
     async function deleteStore(codStore) {
 
-        const status = await conect.deleteStore(codStore)
+        const status = await connect.deleteStore(codStore)
 
         if (status == 200) {
             Swal.fire({
@@ -595,4 +595,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(LojasDetalhe);
+export default connectRedux(mapStateToProps)(LojasDetalhe);

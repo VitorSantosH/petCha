@@ -2,7 +2,7 @@
 import api from "./api";
 import config from './.config.jsx';
 
-const conect = {
+const connect = {
 
 
 
@@ -13,17 +13,13 @@ const conect = {
         const emBase64 = btoa(string)
         sessionStorage.setItem('userName', props.username);
 
-        // console.log(emBase64)
-        // console.log(atob(emBase64))
 
 
         /**
          *     
         const cod = sessionStorage.getItem('authToken').split(" ")
         const str = cod[1]
-        console.log(cod[1])
         const decoded = window.atob(str)
-        return console.log(decoded)
          */
 
         const response = await api.get('/Agenda_WS/Home/main', {
@@ -40,7 +36,6 @@ const conect = {
         }).then(res => {
 
 
-            console.log(res.headers.authorization)
             if (res.data && res.headers.authorization) {
 
 
@@ -66,7 +61,6 @@ const conect = {
             return err.response
         })
 
-        console.log(response)
 
         return response
     },
@@ -106,7 +100,7 @@ const conect = {
 
     getCodNewAccount: async (props) => {
 
-      const response = await  api.post('/Agenda_WS/Prospect/insertOtpProspectStore', {
+        const response = await api.post('/Agenda_WS/Prospect/insertOtpProspectStore', {
 
             codOwner: config.codOwner,
             codLanguage: config.codLanguage,
@@ -124,14 +118,47 @@ const conect = {
 
         ).then(res => {
 
-            console.log(res)
 
-            return {success: true , res}
+            return { success: true, res }
 
         }).catch(err => {
 
-            console.log(err)
-            return {success: false , err}
+            return { success: false, err }
+
+        })
+
+        return response
+
+    },
+
+    generateNewAccountRequest: async (props) => {
+
+
+        const data = {
+            codOwner: config.codOwner,
+            codLanguage: config.codLanguage,
+            prospectEmail: props.email,
+            prospectName: props.name,
+            prospectPhone: props.tel,
+            password: props.codOtp,
+            notes: props.textOpcional
+        }
+
+        const response = await api.post('Agenda_WS/Prospect/insertProspectStore', { ...data },
+            {
+                headers: {
+
+                }
+            }
+
+        ).then(res => {
+
+
+            return { success: true, res }
+
+        }).catch(err => {
+
+            return { success: false,  err }
 
         })
 
@@ -167,7 +194,6 @@ const conect = {
         }).catch(err => {
 
 
-            console.log(err)
             return { success: false, message: err.response.data.returnMessage }
         })
 
@@ -192,12 +218,10 @@ const conect = {
 
         ).then(res => {
 
-            console.log(res)
             return res
 
         }).catch(err => {
 
-            console.log(err)
             return err
 
         })
@@ -223,7 +247,6 @@ const conect = {
                 return res
             })
             .catch(err => {
-                console.log(err)
                 return err
             })
 
@@ -296,7 +319,6 @@ const conect = {
 
     updateStore: async (data, codStore) => {
 
-        console.log(data)
 
         const responseStatus = await api.post('/Agenda_WS/Store/updateStore', data, {
 
@@ -313,13 +335,11 @@ const conect = {
 
         }).then(response => {
 
-            console.log(response)
 
             return response.status
 
         }).catch(err => {
 
-            console.log(err)
             return err.status
         })
 
@@ -396,7 +416,6 @@ const conect = {
         }
 
         ).then(response => {
-            console.log(response)
             return response.status
         }).catch(err => {
             return err.status
@@ -418,11 +437,9 @@ const conect = {
             },
         })
             .then(res => {
-                console.log(res)
                 return res
             })
             .catch(err => {
-                console.log(err)
                 return err
             })
 
@@ -443,11 +460,9 @@ const conect = {
             },
         })
             .then(res => {
-                console.log(res)
                 return res
             })
             .catch(err => {
-                console.log(err)
                 return err
             })
 
@@ -462,7 +477,6 @@ const conect = {
         data.username = `${sessionStorage.getItem('userName')}`
         data.codOwner = `${config.codOwner}`
 
-        console.log(data)
         const responseStatus = await api.post('/Agenda_WS/Store/insertStore', { ...data }, {
 
 
@@ -511,7 +525,6 @@ const conect = {
         }
 
         ).then(response => {
-            console.log(response)
             return response.status
         }).catch(err => {
             return err.status
@@ -523,4 +536,4 @@ const conect = {
 }
 
 
-export default conect;
+export default connect;
