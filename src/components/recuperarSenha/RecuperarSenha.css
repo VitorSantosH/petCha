@@ -27,6 +27,13 @@
     box-sizing: border-box;
 }
 
+.showBanner4 h2, h4  {
+    text-align: center;
+    font-size: 16px;
+    opacity: 0.7;
+    padding: 0 5px;
+}
+
 .showBanner0 {
     box-sizing: border-box;
     max-width: 690px;

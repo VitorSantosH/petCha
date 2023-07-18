@@ -36,7 +36,6 @@ const useRecSenha = (props) => {
     const regexCodValid = /^\d{6}$/;
     const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\\-_=+{};:,<.>]).{8,15}$/
 
-    console.log(recState)
 
     useEffect(() => {
 
@@ -231,7 +230,6 @@ const useRecSenha = (props) => {
 
         if (display === "flex" && recState.stage === null) {
             //   $banner0.current.className = "showBanner0 bannerReqSenha animeBanner"
-            //  console.log($banner0)
             // showBanner = 0
             setRecState({
                 ...recState,

@@ -88,8 +88,11 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias, reduxStore) => {
 
         if (arr[0] !== undefined) {
             for (let index = 0; index < arr.length; index++) {
+                console.log(arr[index])
+
                 if (arr[index] !== homeState.btnFocos) {
                     arr[index].current.attributes.class.value = 'dashboardAtalho'
+                   
                 } else {
 
 
@@ -216,6 +219,7 @@ const useHomeState = ($btnDashboard, $btnLojas, $btnCatgorias, reduxStore) => {
         EditarPerfilFunc,
         setBtnFocus,
         CustonRouter,
+        setScreen,
 
 
     }
@@ -235,13 +239,14 @@ const HomePerfil = (props) => {
         EditarPerfilFunc,
         setBtnFocus,
         CustonRouter,
+        setScreen
 
 
     } = useHomeState($btnDashboard, $btnLojas, $btnCatgorias, props.store.storeFoco.store)
 
 
 
-  
+
     return (
         <div className="homePerfil">
 
@@ -250,7 +255,16 @@ const HomePerfil = (props) => {
             <div className="menuLateral">
 
                 <div className="logoHomePerfil">
-                    <img src={logo} alt="" />
+                    <img
+                        src={logo}
+                        alt=""
+                        onClick={e => {
+                        
+                                setBtnFocus($btnDashboard)
+                            
+                        }}
+
+                    />
                 </div>
 
                 <div className="bemVindoHomePerfil">
@@ -262,10 +276,15 @@ const HomePerfil = (props) => {
                         <i className="fa fa-user-o" aria-hidden="true"></i>
                     )}
 
-                  
 
 
-                    <div className="textCotainerPerfil">
+
+                    <div 
+                    className="textCotainerPerfil"
+                    onClick={e => {
+                        setScreen("PERFIL")
+                    }}
+                    >
 
                         <div className="cargo">
                             {homeState.user.cargo}

@@ -34,6 +34,8 @@ const UseLoginState = () => {
         codigoValidStyle: true,
         codInputValue: undefined,
         loadingCodOtp: false,
+        loadingSRnewAccount: false,
+        requestResult: undefined
 
 
     })
@@ -348,8 +350,11 @@ const UseLoginState = () => {
                                     })
                                 }
 
+                                setStateCadLoja({
+                                    ...stateCadLoja,
+                                    loadingSRnewAccount: true
+                                })
 
-                             
 
                                 const request = await connect.generateNewAccountRequest({
                                     name: stateCadLoja.name,
@@ -361,24 +366,11 @@ const UseLoginState = () => {
                                 });
 
                                 if (request.success) {
-
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Solicitação de cadastro registrada com sucesso.',
-                                        text: 'Em breve um de nossos representantes comerciais entrará em contato',
-                                        confirmButtonText: "Obrigado",
-                                    }).then((result) => {
-
-                                        if (result.isConfirmed) {
-                                            resetState();
-                                            return window.location.href = "/";
-
-                                        } else if (result.isDenied) {
-
-                                            return resetState();
-                                        }
+                                    setStateCadLoja({
+                                        ...stateCadLoja,
+                                        loadingSRnewAccount: false,
+                                        requestResult: request
                                     })
-
                                 } else {
 
                                     Swal.fire({
@@ -391,12 +383,22 @@ const UseLoginState = () => {
 
                                 }
 
+                                return nextStage();
+
                             }}>
 
+                            {!stateCadLoja.loadingSRnewAccount && (
+                                <div>
+                                    Prosseguir
+                                </div>
+                            )}
 
-                            <span>
-                                Prosseguir
-                            </span>
+
+                            {stateCadLoja.loadingSRnewAccount && (
+                                <div>
+                                    <span className="c-loader"></span>
+                                </div>
+                            )}
 
 
                         </div>
@@ -404,7 +406,31 @@ const UseLoginState = () => {
 
                     </div>
 
+                    <div className={stateCadLoja.stage === 3 ? "showBanner4 bannerReqSenha animeBanner" : "showBanner4 bannerReqSenha"}
 
+                    >
+
+                        <img src={btnCrto} alt="" />
+
+                        <h2>
+                            Solicitação de cadastro registrada com sucesso.
+                        </h2>
+
+                        <h4>
+                            Em breve um de nossos representantes comerciais entrará em contato
+                        </h4>
+
+                        <div className="Prosseguir" onClick={e => {
+                            resetState();
+                            return window.location.href = "/";
+                        }}>
+                            <span>Obrigado!</span>
+                        </div>
+
+
+
+
+                    </div>
                 </div>
 
             </>
@@ -435,6 +461,8 @@ const UseLoginState = () => {
             codigoValidStyle: true,
             codInputValue: undefined,
             loadingCodOtp: false,
+            loadingSRnewAccount: false,
+            requestResult: undefined
         })
 
     }
