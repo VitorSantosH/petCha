@@ -65,6 +65,17 @@ const connect = {
         return response
     },
 
+    logout: async () => {
+
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('sowotesDatas');
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('vendas');
+        sessionStorage.removeItem('user');
+
+
+        return window.location.href = "/";
+    },
     getCodOtp: async (props) => {
 
         const data = {

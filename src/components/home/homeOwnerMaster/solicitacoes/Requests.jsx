@@ -1,14 +1,14 @@
 import React from "react";
+import "./Requests.css";
 
-import imgPadUser from "../../../../assets/imgPadUser.png"
 
-const Perfil = (props) => {
+const Requests = (props) => {
 
 
     const {
         homeState,
         setDisplay,
-        setDisplayEditPerfil,
+        setDisplayEditRequests,
 
     } = { ...props }
 
@@ -16,9 +16,9 @@ const Perfil = (props) => {
     return (
         <>
             <div className="menusuperior">
-                Perfil
+                Requests
 
-                <div className="editarPerfil">
+                <div className="editarRequests">
 
                     <div
                         className="btnAltSenha"
@@ -30,37 +30,37 @@ const Perfil = (props) => {
                     </div>
 
                     <div
-                        className="btnAltPerfil"
+                        className="btnAltRequests"
                         onClick={e => {
-                            setDisplayEditPerfil('flex')
+                            setDisplayEditRequests('flex')
 
                         }}
                     >
-                        Editar perfil
+                        Editar Requests
                     </div>
 
                 </div>
             </div>
-            <div className="conteudoPerfil">
+            <div className="conteudoRequests">
 
                 <div className="parteSuperior">
 
                     <div className="barraSuperior">
 
-                        <div className="informacoesPerfil">
-                            {!homeState.user.imgPerfil && (
-                                <img src={homeState.user.imgPerfil} />
+                        <div className="informacoesRequests">
+                            {homeState.user.imgRequests && (
+                                <img src={homeState.user.imgRequests} />
                             )}
 
-                            {homeState.user.imgPerfil && (
-                                   <img src={imgPadUser} alt="" />
+                            {!homeState.user.imgRequests && (
+                                <i className="fa fa-user-o" aria-hidden="true"></i>
                             )}
 
 
 
                           
 
-                            <div className="infoPerfilText">
+                            <div className="infoRequestsText">
                                 <div className="cargo">
                                     {homeState.user.cargo}
                                 </div>
@@ -77,7 +77,7 @@ const Perfil = (props) => {
 
                 <div className="parteInferior">
 
-                    <div className="texto1Perfil">
+                    <div className="texto1Requests">
 
                         <div className="infos">
                             <label htmlFor="name">Nome completo</label>
@@ -96,7 +96,7 @@ const Perfil = (props) => {
 
                     </div>
 
-                    <div className="texto2Perfil">
+                    <div className="texto2Requests">
 
                         <div className="infos">
                             <label htmlFor="cep">CEP</label>
@@ -132,9 +132,9 @@ const Perfil = (props) => {
             </div>
 
             <div className="menusuperior menuInferiorMobile">
-                Perfil
+                Requests
 
-                <div className="editarPerfil">
+                <div className="editarRequests">
 
                     <div
                         className="btnAltSenha"
@@ -146,13 +146,13 @@ const Perfil = (props) => {
                     </div>
 
                     <div
-                        className="btnAltPerfil"
+                        className="btnAltRequests"
                         onClick={e => {
-                            setDisplayEditPerfil('flex')
+                            setDisplayEditRequests('flex')
 
                         }}
                     >
-                        Editar perfil
+                        Editar Requests
                     </div>
 
                 </div>
@@ -163,4 +163,4 @@ const Perfil = (props) => {
 }
 
 
-export default Perfil;
+export default Requests;

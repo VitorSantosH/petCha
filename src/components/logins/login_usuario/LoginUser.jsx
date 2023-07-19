@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 import "./LoginUser.css";
@@ -16,6 +16,10 @@ import logoname from '../../../assets/petchaName.png';
 
 const UseLoginState = () => {
 
+
+    //const userObj = JSON.parse(sessionStorage.getItem('user'));
+
+
     const [stateLogin, setStateLogin] = useState({
         stateTypePassword: true,
         stateEmailStyle: true,
@@ -29,9 +33,15 @@ const UseLoginState = () => {
 
     const emailRegex = /^[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/;
 
-    // const emailRegex = /^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$/;
+
 
     const navigate = useNavigate()
+
+    if (sessionStorage.getItem('user')) {
+        
+         return window.location.href = "/homePerfil"
+
+    }
 
     useEffect(() => {
 
@@ -40,7 +50,6 @@ const UseLoginState = () => {
 
 
     async function logar() {
-
 
 
         const username = stateLogin.emailValue
