@@ -312,11 +312,11 @@ const HomePerfil = (props) => {
                         setBtnFocus($btnPerfil)
                     }}
                 >
-                    {!homeState.user.imgPerfil && (
+                    {homeState.user.imgPerfil && (
                         <img src={homeState.user.imgPerfil} />
                     )}
 
-                    {homeState.user.imgPerfil && (
+                    {!homeState.user.imgPerfil && (
                         <img src={imgPadUser} alt="" />
                   )}
 

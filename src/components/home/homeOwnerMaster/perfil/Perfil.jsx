@@ -48,11 +48,11 @@ const Perfil = (props) => {
                     <div className="barraSuperior">
 
                         <div className="informacoesPerfil">
-                            {!homeState.user.imgPerfil && (
+                            {homeState.user.imgPerfil && (
                                 <img src={homeState.user.imgPerfil} />
                             )}
 
-                            {homeState.user.imgPerfil && (
+                            {!homeState.user.imgPerfil && (
                                    <img src={imgPadUser} alt="" />
                             )}
 
