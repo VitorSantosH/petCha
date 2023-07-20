@@ -110,15 +110,12 @@ const useHomeState = (btnsArray, reduxStore, $btnDashboard, $btnLojas) => {
 
     }, [homeState.user, homeState.btnFocos, homeState.store])
 
-
-
     if (homeState.store != config.store) {
         setHomeState({
             ...homeState,
             store: config.store
         })
     }
-
 
     function setBtnFocus(referencia) {
 
@@ -130,7 +127,6 @@ const useHomeState = (btnsArray, reduxStore, $btnDashboard, $btnLojas) => {
         })
 
     }
-
 
     function setDisplay(value) {
 

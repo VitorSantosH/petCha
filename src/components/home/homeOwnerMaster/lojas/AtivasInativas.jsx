@@ -91,7 +91,11 @@ const AtivasInativas = (props) => {
 
                 </div>
                 <div className="statusConta">
-                    {loja.storacData.isAccountCompleted ? "Completa" : "Incompleta"}
+                    <span
+                    className={loja.storacData.isAccountCompleted? "constaAtiva" : "constaInativa"} 
+                    >
+                        {loja.storacData.isAccountCompleted ? "Completa" : "Incompleta"}
+                    </span>
                 </div>
                 <div className="status">
                     {!loja.isLocked &&

@@ -28,7 +28,9 @@ const LojasDetalhe = (props) => {
         lengthCarrosel: 0,
         carroselPosition: 0,
         imgs: [],
-        editarLoja: false
+        editarLoja: false,
+        dateHint: undefined,
+        showHint: false
     })
 
     useEffect(() => {
@@ -56,12 +58,24 @@ const LojasDetalhe = (props) => {
         const store = response.data.results[0]
         console.log(store)
 
-
+        const dataAtual = new Date();
+        const dataFormatada = formatarData(dataAtual);
+        console.log(dataFormatada)
         setStateStoreDetalhe({
             ...stateStoreDetalhe,
             isLoading: true,
-            store: store
+            store: store,
+            dateHint: dataFormatada
         })
+    }
+    function formatarData(data) {
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        const hora = String(data.getHours()).padStart(2, '0');
+        const minutos = String(data.getMinutes()).padStart(2, '0');
+
+        return `${dia}/${mes}/${ano} - ${hora}:${minutos}`;
     }
 
     function generateSpans(arr) {
@@ -227,6 +241,15 @@ const LojasDetalhe = (props) => {
         return window.history.back()
     }
 
+    const toggleHint = () => {
+
+        return setStateStoreDetalhe({
+            ...stateStoreDetalhe,
+            showHint: !stateStoreDetalhe.showHint
+        });
+    };
+
+
     return <>
 
         <EditarLoja
@@ -308,7 +331,11 @@ const LojasDetalhe = (props) => {
         {!stateStoreDetalhe.store && <img className="gitCaregamento" src={gitCarregamento}></img>}
         {stateStoreDetalhe.store &&
             <>
-                <div className="storeName">
+                <div
+                    className="storeName"
+
+                >
+
                     <div className="name">
                         {stateStoreDetalhe.store.companyData.name}
                     </div>
@@ -327,7 +354,11 @@ const LojasDetalhe = (props) => {
                                 {!stateStoreDetalhe.store.isLocked ? 'Ativo' : 'Inativo'}
                             </div>
                         </div>
+
+
+
                     </div>
+
                 </div>
                 <div className="imgs_resumo">
                     <div className="imgsStore">
@@ -361,13 +392,15 @@ const LojasDetalhe = (props) => {
                                         }}
                                     >
 
-                                        <img src={arrowLeft} alt="" />
+                                        <img id={stateStoreDetalhe.carroselPosition === 0 ? "inativeImgControlCarrosel" : ""}
+                                            src={arrowLeft} alt=""
+                                        />
 
                                     </div>
                                     <div
 
                                         onClick={e => {
-
+                                            console.log(stateStoreDetalhe.lengthCarrosel, stateStoreDetalhe.carroselPosition)
                                             if (stateStoreDetalhe.lengthCarrosel - 1 >= stateStoreDetalhe.carroselPosition + 1) {
                                                 setStateStoreDetalhe({
                                                     ...stateStoreDetalhe,
@@ -376,7 +409,8 @@ const LojasDetalhe = (props) => {
                                             }
                                         }}
                                     >
-                                        <img src={arrowRight} alt="" />
+                                        <img id={stateStoreDetalhe.lengthCarrosel - 1 == stateStoreDetalhe.carroselPosition ? "inativeImgControlCarrosel" : ""}
+                                            src={arrowRight} alt="" />
                                     </div>
                                 </div>
 
@@ -384,8 +418,29 @@ const LojasDetalhe = (props) => {
                         </>}
                     </div>
 
-                    <div className="resumoStore">
-                        <h3>Resumo do negócio desde o início</h3>
+                    <div
+                        className="resumoStore"
+                        onMouseLeave={toggleHint}
+                        onMouseOver={e => {
+                            console.log("aqui")
+                            setStateStoreDetalhe({
+                                ...stateStoreDetalhe,
+                                showHint: true
+                            })
+                        }}
+                    >
+                        <div className="businessSummaryTitle">
+                            <h3>
+                                Resumo do negócio desde o início
+
+                            </h3>
+                            {stateStoreDetalhe.showHint && (
+                                <span className="hint">
+                                    Resumo atualizado em {stateStoreDetalhe.dateHint}
+                                </span>
+                            )}
+                        </div>
+
                         <div className="containerBanners" >
 
                             <div className="servicos">
@@ -449,7 +504,13 @@ const LojasDetalhe = (props) => {
                             </label>
                             <span>
 
-                                <NumberFormat format="##.###.###/####-##" value={stateStoreDetalhe.store.companyData.cnpj} />
+                                <NumberFormat
+                                    className="inputNumberFormat"
+                                    disabled
+                                    format="##.###.###/####-##"
+                                    value={stateStoreDetalhe.store.companyData.cnpj}
+
+                                />
                             </span>
                         </div>
 
@@ -468,7 +529,9 @@ const LojasDetalhe = (props) => {
                                 CEP
                             </label>
                             <span>
-                                <NumberFormat format="######-##" value={stateStoreDetalhe.store.addressData.postalCode} />
+                                <NumberFormat
+                                    className="inputNumberFormat"
+                                    disabled format="######-##" value={stateStoreDetalhe.store.addressData.postalCode} />
                             </span>
                         </div>
 
@@ -497,7 +560,9 @@ const LojasDetalhe = (props) => {
                         </div>
                         <div className="tel">
                             <label htmlFor="">Telefone da loja{" "}</label>
-                            <NumberFormat format="##-#########" value={stateStoreDetalhe.store.phones[0].fullNumber} />
+                            <NumberFormat
+                                className="inputNumberFormat"
+                                disabled format="##-#########" value={stateStoreDetalhe.store.phones[0].fullNumber} />
                         </div>
                         <div id="horariosDeAtendimento">
                             <label htmlFor="">Horários de atendimento{" "}</label>
@@ -534,6 +599,8 @@ const LojasDetalhe = (props) => {
                                 <label htmlFor="" style={{ 'marginLeft': '10px' }}>Serviços da loja</label>
                                 <div className="spansServicoLoja">
                                     {generateSpans(stateStoreDetalhe.store.matores)}
+                                    {generateSpans(stateStoreDetalhe.store.matores)}
+                                    {generateSpans(stateStoreDetalhe.store.matores)}
                                 </div>
                             </div>
 
@@ -555,6 +622,8 @@ const LojasDetalhe = (props) => {
                             <div className="cpf">
                                 <label htmlFor="">CPF{" "}</label>
                                 <NumberFormat
+                                    className="inputNumberFormat"
+                                    disabled
                                     format="###.###.###-##"
                                     value={stateStoreDetalhe.store.peregData.personData.cpf}
                                 />

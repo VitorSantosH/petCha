@@ -176,7 +176,18 @@
 .controlCarrosel img:active {
    filter: brightness(1.5);
 }
-
+#inativeImgControlCarrosel {
+    background-color: gray;
+}
+.businessSummaryTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.businessSummaryTitle span {
+    font-size: 14px;
+}
 .resumoStore {
     width: 47.5%;
     height: 200px;
@@ -341,6 +352,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    max-height: 250px;
+    overflow-y: scroll;
 }
 
 #servicosLoja div span {
@@ -378,6 +391,9 @@
     user-select: none;
 
 
+}
+.inputNumberFormat {
+    color: #020303;
 }
 
 .imgsCarroselDetalheStore {
